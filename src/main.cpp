@@ -9,6 +9,8 @@
 #include "shared.h"
 #include "overworld.h"
 #include "world0.h"
+#include "world1.h"
+#include "world2.h"
 
 
 
@@ -16,8 +18,8 @@
 enum GameMode {
     GAME_MODE_OVERWORLD = -1,
     GAME_MODE_WORLD_0 = 0,
-    GAME_MODE_WORLD_1,
-    GAME_MODE_WORLD_2,
+    GAME_MODE_WORLD_1 = 1,
+    GAME_MODE_WORLD_2 = 2,
     GAME_MODE_WORLD_3,
     GAME_MODE_WORLD_4,
     GAME_MODE_WORLD_5,
@@ -65,10 +67,10 @@ void InitCorrectWorld(GameMode gm) {
             World0::Init();
             break;
         case GAME_MODE_WORLD_1:
-            //World1::Init();
+            World1::Init();
             break;
         case GAME_MODE_WORLD_2:
-            //World2::Init();
+            World2::Init();
             break;
         case GAME_MODE_WORLD_3:
             //World3::Init();
@@ -91,10 +93,10 @@ void DrawCorrectWorld(GameMode gm) {
             World0::Draw();
             break;
         case GAME_MODE_WORLD_1:
-            //World1::Draw();
+            World1::Draw();
             break;
         case GAME_MODE_WORLD_2:
-            //World2::Draw();
+            World2::Draw();
             break;
         case GAME_MODE_WORLD_3:
             //World3::Draw();
@@ -124,13 +126,13 @@ void UpdateCorrectWorld(GameMode &gm, GameState &gs) {
                 gm = GAME_MODE_OVERWORLD;
             break;
         case GAME_MODE_WORLD_1:
-            /*if (World1::Update(gs) == WORLD_COMPLETED)
+            if (World1::Update(gs) == WORLD_COMPLETED)
                 gm = GAME_MODE_OVERWORLD;
-            break;*/
+            break;
         case GAME_MODE_WORLD_2:
-            /*if (World2::Update(gs) == WORLD_COMPLETED)
+            if (World2::Update(gs) == WORLD_COMPLETED)
                 gm = GAME_MODE_OVERWORLD;
-            break;*/
+            break;
         case GAME_MODE_WORLD_3:
             /*if (World3::Update(gs) == WORLD_COMPLETED)
                 gm = GAME_MODE_OVERWORLD;
