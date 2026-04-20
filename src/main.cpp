@@ -49,7 +49,7 @@ int main() {
             DrawCorrectWorld(currentGameMode);
                         
             // Global UI (optional)
-            DrawText(TextFormat("Score: %d", gameState.score), 10, 10, 20, YELLOW);
+            DrawText(TextFormat("Score: %d", gameState.score), 10, 10, 20, PINK);
             DrawText(TextFormat("HP: %i", gameState.health), 10, 40, 20, RED);
         //END DRAWING
         EndDrawing();

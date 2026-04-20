@@ -2,5 +2,3 @@
 Spring 2026 Collaborative Programming Project
 
 This is where you will describe this awesome project in full detail after changing the title above
-
-1
