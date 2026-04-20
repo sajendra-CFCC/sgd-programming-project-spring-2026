@@ -28,7 +28,7 @@ int UpdateOverworld(GameState &game) {
 }
 
 void DrawOverworld() {
-    DrawText("ARCADE BOSS DUNGEON MULTIVERSE", 150, 100, 30, WHITE);
+    DrawText("CLASS ARCADE BOSS DUNGEON", 150, 100, 30, WHITE);
     DrawText("Press 0 - World 0", 200, 200, 20, YELLOW);
     DrawText("Press 1 - World 1", 200, 240, 20, GRAY);
     DrawText("Press 2 - World 2", 200, 260, 20, GRAY);
