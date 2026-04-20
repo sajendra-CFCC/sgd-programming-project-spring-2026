@@ -34,6 +34,6 @@ void DrawOverworld() {
     DrawText("Press 2 - World 2", 200, 240, 20, YELLOW);
     DrawText("Press 3 - World 3", 200, 260, 20, YELLOW);
     DrawText("Press 4 - World 4", 200, 280, 20, YELLOW);
-    DrawText("Press 5 - World 5", 200, 300, 20, YELLOW);
+    DrawText("Press 5 - World 5", 200, 300, 20, DARKPURPLE);
     DrawText("ESC - Quit", 200, 400, 20, RAYWHITE);
 }
