@@ -8,6 +8,9 @@ namespace World1 {
     int text_y = 100;
     int circ_x = SCREEN_WIDTH/2;
     int circ_y = SCREEN_HEIGHT/2;
+    int boss_x;
+    int boss_y;
+    int boss_scale;
 
     void Init() {
         world_complete = false;
@@ -15,10 +18,25 @@ namespace World1 {
         text_y = 100;
         circ_x = SCREEN_WIDTH/2;
         circ_y = SCREEN_HEIGHT/2;
+        boss_x = SCREEN_WIDTH / 2;
+        boss_y = SCREEN_HEIGHT / 2 - 200;
+        boss_scale = 1;
     }
 
     WorldUpdateResult Update(GameState& game) {
         game.score++;
+
+        BossState& currentBoss = Bosses::ActiveBoss(game);
+
+        if (IsKeyPressed(KEY_SPACE)) {
+            currentBoss.health -= 10;
+        }
+
+        if (currentBoss.health <= 0) {
+            bool moreBosses = Bosses::AdvanceToNext(game);
+            if (!moreBosses)
+                world_complete = true;
+        }
 
         if (IsKeyPressed(KEY_SPACE)) {
             world_complete = true;
@@ -50,5 +68,7 @@ namespace World1 {
     void Draw() {
         DrawText("World 1 - Press SPACE to finish", text_x, text_y, 20, WHITE);
         DrawCircle(circ_x, circ_y, 10, BLUE);
+        Bosses::Draw(currentBoss, boss_x, boss_y, boss_scale);
+        Bosses::DrawHealthBar(currentBoss, boss_x - boss_size, boss_y + boss_size, boss_size * 2);
     }
 }
