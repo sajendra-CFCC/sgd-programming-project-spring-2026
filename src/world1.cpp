@@ -38,7 +38,7 @@ namespace World1 {
     }
 
     void Draw() {
-        DrawText("Template World - Press SPACE to finish", text_x, text_y, 20, WHITE);
+        DrawText("World 1 - Press SPACE to finish", text_x, text_y, 20, WHITE);
         DrawCircle(circ_x, circ_y, 20, BLUE);
     }
 }
