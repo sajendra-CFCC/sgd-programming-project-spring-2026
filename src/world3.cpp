@@ -1,5 +1,4 @@
-#include "world0.h"
-#include "bosses.h"
+#include "world3.h"
 #include <iostream>
 
 namespace World0 {
@@ -27,7 +26,7 @@ namespace World0 {
         BossState& currentBoss  = Bosses::ActiveBoss(game);
         
         if (IsKeyPressed(KEY_SPACE)) {
-            currentBoss.health -= 10;
+            currentBoss.health -= 5;
             
         }
 
