@@ -4,11 +4,15 @@ namespace World1 {
     bool world_complete = false;
     int text_x = 100;
     int text_y = 100;
+    int circ_x = 300;
+    int circ_y = 200;
 
     void Init() {
         world_complete = false;
         text_x = 100;
         text_y = 100;
+        circ_x = 200;
+        circ_y = 200;
     }
 
     WorldUpdateResult Update(GameState& game) {
@@ -19,13 +23,13 @@ namespace World1 {
         }
 
         if (IsKeyDown(KEY_LEFT))
-            text_x--;
+            circ_x--;
         if (IsKeyDown(KEY_RIGHT))
-            text_x++;
+            circ_x++;
         if (IsKeyDown(KEY_UP))
-            text_y--;
+            circ_y--;
         if (IsKeyDown(KEY_DOWN))
-            text_y++;
+            circ_y++;
 
         if (world_complete)
             return WORLD_COMPLETED;
@@ -35,5 +39,6 @@ namespace World1 {
 
     void Draw() {
         DrawText("Template World - Press SPACE to finish", text_x, text_y, 20, WHITE);
+        DrawCircle(circ_x, circ_y, 20, BLUE);
     }
 }
