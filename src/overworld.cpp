@@ -15,12 +15,12 @@ int UpdateOverworld(GameState &game) {
     if( IsKeyPressed(KEY_TWO) ) {
         return 2;
     }
-    if( IsKeyPressed(KEY_THREE) ) {
+   /* if( IsKeyPressed(KEY_THREE) ) {
         return 3;
     }
     if (IsKeyPressed(KEY_FOUR)) {
         return 4;
-    }
+    }*/
     if (IsKeyPressed(KEY_FIVE)) {
         return 5;
     }

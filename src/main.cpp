@@ -136,12 +136,12 @@ void UpdateCorrectWorld(GameMode &gm, GameState &gs) {
             break;
         case GAME_MODE_WORLD_3:
             /*if (World3::Update(gs) == WORLD_COMPLETED)
-                gm = GAME_MODE_OVERWORLD;
-            break;*/
+                gm = GAME_MODE_OVERWORLD;*/
+            break;
         case GAME_MODE_WORLD_4:
             /*if (World4::Update(gs) == WORLD_COMPLETED)
-                gm = GAME_MODE_OVERWORLD;
-            break;*/
+                gm = GAME_MODE_OVERWORLD;*/
+            break;
         case GAME_MODE_WORLD_5:
             if (World5::Update(gs) == WORLD_COMPLETED)
                 gm = GAME_MODE_OVERWORLD;
