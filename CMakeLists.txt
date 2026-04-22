@@ -34,11 +34,20 @@ include_directories(
 add_executable(${PROJECT_NAME} 
 	"shared.h"
 	src/main.cpp
+    src/bosses.h
+    src/bosses.cpp
 	src/overworld.h
 	src/overworld.cpp
 	src/world0.h
 	src/world0.cpp
+    src/world1.h
+    src/world1.cpp
+    src/world2.h
+    src/world2.cpp 
+    src/world5.h
+    src/world5.cpp
 )
+
 target_link_libraries(${PROJECT_NAME} raylib) #we want to link raylib to our project
 
 #optional step, copy assets (if they exist)
