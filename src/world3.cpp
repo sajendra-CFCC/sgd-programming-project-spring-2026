@@ -26,7 +26,7 @@ namespace World0 {
         BossState& currentBoss  = Bosses::ActiveBoss(game);
         
         if (IsKeyPressed(KEY_SPACE)) {
-            currentBoss.health -= 10;
+            currentBoss.health -= 5;
             
         }
 
