@@ -1,31 +1,31 @@
 #include "world5.h"
-
+// for whatever reason main.cpp has an error on the #include "raygui.h" on my system but it works fine anyway. Thank you VSCode, very cool!
 namespace World5 {
     bool world_complete = false;
-    int text_x = 100;
-    int text_y = 100;
+    int PlayerX = 400;
+    int PlayerY = 300;
 
     void Init() {
         world_complete = false;
-        text_x = 100;
-        text_y = 100;
+        PlayerX = 400;
+        PlayerY = 300;
     }
 
     WorldUpdateResult Update(GameState& game) {
         game.score++;
 
-        if (IsKeyPressed(KEY_SPACE)) {
+        if (IsKeyPressed(KEY_ESCAPE)) {
             world_complete = true;
         }
 
         if (IsKeyDown(KEY_LEFT))
-            text_x--;
+            PlayerX--;
         if (IsKeyDown(KEY_RIGHT))
-            text_x++;
+            PlayerX++;
         if (IsKeyDown(KEY_UP))
-            text_y--;
+            PlayerY--;
         if (IsKeyDown(KEY_DOWN))
-            text_y++;
+            PlayerY++;
 
         if (world_complete)
             return WORLD_COMPLETED;
@@ -34,6 +34,8 @@ namespace World5 {
     }
 
     void Draw() {
-        DrawText("Template World - Press SPACE to finish", text_x, text_y, 20, WHITE);
+        DrawText(TextFormat("Press ESC to finish / Press ARROWS to move"), 320, 10, 20, WHITE);
+        DrawText(TextFormat("Survive to gain SCORE"), 564, 40, 20, WHITE);
+        DrawCircle(PlayerX, PlayerY, 20, BLUE);
     }
 }
