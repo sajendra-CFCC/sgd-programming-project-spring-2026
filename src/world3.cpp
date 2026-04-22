@@ -2,16 +2,23 @@
 #include "bosses.h"
 #include <iostream>
 
-namespace World0 {
+namespace World3 {
     bool world_complete;
         
     int boss_x;
     int boss_y;
     int boss_scale;
 
+    Music bgm;
+
     void Init() {
         //set up anything you need for your game / world here
         world_complete = false;
+
+        //InitAudioDevice();
+
+        //// level background music
+        //Music bgm = LoadMusicStream("/assets/mp3/active_camo.mp3");
         
 
         boss_x = SCREEN_WIDTH / 2;
@@ -21,6 +28,9 @@ namespace World0 {
     }
 
     WorldUpdateResult Update(GameState& game) {
+        
+        
+
         game.score++; // just updating score every frame for some reason
         
         //get the current boss
@@ -37,7 +47,7 @@ namespace World0 {
             if (!moreBosses)
                 world_complete = true;
         }
-       
+        //PlayMusicStream(bgm);
 
         if (world_complete)
             return WORLD_COMPLETED;
@@ -49,7 +59,7 @@ namespace World0 {
         //do the drawing for your world here
         int text_x = 100;
         int text_y = 100;
-        DrawText("Template World - Press SPACE to hit boss", text_x, text_y, 20, WHITE);
+        DrawText("Evan and Richie World - Press SPACE to hit boss", text_x, text_y, 20, WHITE);
 
         //get the current boss
         const BossState& currentBoss = Bosses::ActiveBoss(game);
@@ -57,7 +67,10 @@ namespace World0 {
 
         Bosses::Draw(currentBoss, boss_x, boss_y, boss_scale);
         Bosses::DrawHealthBar(currentBoss, boss_x - boss_size, boss_y + boss_size, boss_size * 2);
-
         
+
+        /*UnloadMusicStream(bgm);
+        CloseAudioDevice();*/
     }
+
 }
