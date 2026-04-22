@@ -13,6 +13,7 @@
 #include "world1.h"
 #include "world2.h"
 #include "world3.h"
+#include "world4.h"
 #include "world5.h"
 #include "world6.h"
 
@@ -90,7 +91,7 @@ void InitCorrectWorld(GameMode gm) {
             World3::Init();
             break;
         case GAME_MODE_WORLD_4:
-            //World4::Init();
+            World4::Init();
             break;
         case GAME_MODE_WORLD_5:
             World5::Init();
@@ -119,7 +120,7 @@ void DrawCorrectWorld(GameMode gm, GameState& gs) {
             World3::Draw(gs);
             break;
         case GAME_MODE_WORLD_4:
-            //World4::Draw();
+            World4::Draw(gs);
             break;
         case GAME_MODE_WORLD_5:
             World5::Draw();
@@ -174,10 +175,10 @@ void UpdateCorrectWorld(GameMode &gm, GameState &gs) {
                 WorldTimerUpdate(gs, gm);
             break;
         case GAME_MODE_WORLD_4:
-            /*if (World4::Update(gs) == WORLD_COMPLETED)
+            if (World4::Update(gs) == WORLD_COMPLETED)
                 gm = GAME_MODE_OVERWORLD;
             else
-                WorldTimerUpdate(gs, gm);*/
+                WorldTimerUpdate(gs, gm);
             break;
         case GAME_MODE_WORLD_5:
             if (World5::Update(gs) == WORLD_COMPLETED)
