@@ -65,10 +65,11 @@ namespace World1 {
             return WORLD_IN_PROGRESS;
     }
 
-    void Draw() {
+    void Draw(const GameState& game) {
+                
         DrawText("World 1 - Press SPACE to finish", text_x, text_y, 20, WHITE);
         DrawCircle(circ_x, circ_y, 10, BLUE);
-        Bosses::Draw(currentBoss, boss_x, boss_y, boss_scale);
-        Bosses::DrawHealthBar(currentBoss, boss_x - boss_size, boss_y + boss_size, boss_size * 2);
+        //Bosses::Draw(currentBoss, boss_x, boss_y, boss_scale);
+        //Bosses::DrawHealthBar(currentBoss, boss_x - boss_size, boss_y + boss_size, boss_size * 2);
     }
 }

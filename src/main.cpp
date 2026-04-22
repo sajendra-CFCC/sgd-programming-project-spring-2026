@@ -110,7 +110,7 @@ void DrawCorrectWorld(GameMode gm, GameState& gs) {
             World0::Draw(gs);
             break;
         case GAME_MODE_WORLD_1:
-            World1::Draw();
+            World1::Draw(gs);
             break;
         case GAME_MODE_WORLD_2:
             World2::Draw();
