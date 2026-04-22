@@ -13,6 +13,7 @@
 #include "world1.h"
 #include "world2.h"
 #include "world5.h"
+#include "world6.h"
 
 
 
@@ -25,6 +26,7 @@ enum GameMode {
     GAME_MODE_WORLD_3,
     GAME_MODE_WORLD_4,
     GAME_MODE_WORLD_5 = 5,
+    GAME_MODE_WORLD_6 = 6,
     GAME_MODE_GAME_OVER,
     GAME_MODE_WIN_SCREEN
 };
@@ -92,6 +94,9 @@ void InitCorrectWorld(GameMode gm) {
         case GAME_MODE_WORLD_5:
             World5::Init();
             break;
+        case GAME_MODE_WORLD_6:
+            World6::Init();
+            break;
     }
 }
 
@@ -117,6 +122,9 @@ void DrawCorrectWorld(GameMode gm, GameState& gs) {
             break;
         case GAME_MODE_WORLD_5:
             World5::Draw();
+            break;
+        case GAME_MODE_WORLD_6:
+            World6::Draw(gs);
             break;
         case GAME_MODE_WIN_SCREEN:
             //
@@ -172,6 +180,12 @@ void UpdateCorrectWorld(GameMode &gm, GameState &gs) {
             break;
         case GAME_MODE_WORLD_5:
             if (World5::Update(gs) == WORLD_COMPLETED)
+                gm = GAME_MODE_OVERWORLD;
+            else
+                WorldTimerUpdate(gs, gm);
+            break;
+        case GAME_MODE_WORLD_6:
+            if (World6::Update(gs) == WORLD_COMPLETED)
                 gm = GAME_MODE_OVERWORLD;
             else
                 WorldTimerUpdate(gs, gm);
