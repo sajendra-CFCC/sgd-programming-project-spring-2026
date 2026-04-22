@@ -24,6 +24,9 @@ int UpdateOverworld(GameState &game) {
     if (IsKeyPressed(KEY_FIVE)) {
         return 5;
     }
+    if (IsKeyPressed(KEY_SIX)) {
+        return 6;
+    }
     return -1; //stay on the MENU
 }
 
@@ -35,5 +38,6 @@ void DrawOverworld() {
     DrawText("Press 3 - World 3", 200, 260, 20, YELLOW);
     DrawText("Press 4 - World 4", 200, 280, 20, YELLOW);
     DrawText("Press 5 - World 5", 200, 300, 20, DARKPURPLE);
+    DrawText("Press 6 - World 6", 200, 320, 20, YELLOW);
     DrawText("ESC - Quit", 200, 400, 20, RAYWHITE);
 }
