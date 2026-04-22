@@ -1,4 +1,6 @@
 #include "world1.h"
+#include "bosses.h"
+#include <iostream>
 
 namespace World1 {
     bool world_complete = false;
@@ -22,14 +24,22 @@ namespace World1 {
             world_complete = true;
         }
 
-        if (IsKeyDown(KEY_LEFT))
+        if (IsKeyDown(KEY_LEFT)) {
             circ_x--;
-        if (IsKeyDown(KEY_RIGHT))
+            circ_x--;
+        }
+        if (IsKeyDown(KEY_RIGHT)) {
             circ_x++;
-        if (IsKeyDown(KEY_UP))
+            circ_x++;
+        }
+        if (IsKeyDown(KEY_UP)) {
             circ_y--;
-        if (IsKeyDown(KEY_DOWN))
+            circ_y--;
+        }
+        if (IsKeyDown(KEY_DOWN)) {
             circ_y++;
+            circ_y++;
+        }
 
         if (world_complete)
             return WORLD_COMPLETED;
