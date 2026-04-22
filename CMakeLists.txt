@@ -32,7 +32,7 @@ include_directories(
 
 #add our source file to the project
 add_executable(${PROJECT_NAME} 
-	src/shared.h
+	"shared.h"
 	src/main.cpp
     src/bosses.h
     src/bosses.cpp
