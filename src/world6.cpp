@@ -24,7 +24,7 @@ namespace World6 {
         game.score++; // just updating score every frame for some reason
         
         //get the current boss
-        BossState& currentBoss  = Bosses::ActiveBoss(game);
+        /*BossState& currentBoss = Bosses::ActiveBoss(game);
         
         if (IsKeyPressed(KEY_SPACE)) {
             currentBoss.health -= 10;
@@ -36,7 +36,7 @@ namespace World6 {
             bool moreBosses = Bosses::AdvanceToNext(game);
             if (!moreBosses)
                 world_complete = true;
-        }
+        }*/
        
 
         if (world_complete)
