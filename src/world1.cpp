@@ -69,7 +69,11 @@ namespace World1 {
                 
         DrawText("World 1 - Press SPACE to finish", text_x, text_y, 20, WHITE);
         DrawCircle(circ_x, circ_y, 10, BLUE);
-        //Bosses::Draw(currentBoss, boss_x, boss_y, boss_scale);
-        //Bosses::DrawHealthBar(currentBoss, boss_x - boss_size, boss_y + boss_size, boss_size * 2);
+        
+        //get the current boss
+        const BossState& currentBoss = Bosses::ActiveBoss(game);
+        int boss_size = 30 * boss_scale; //this is temporary and only works for first boss maybe
+        Bosses::Draw(currentBoss, boss_x, boss_y, boss_scale);
+        Bosses::DrawHealthBar(currentBoss, boss_x - boss_size, boss_y + boss_size, boss_size * 2);
     }
 }
