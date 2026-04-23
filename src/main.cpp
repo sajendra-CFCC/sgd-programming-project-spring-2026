@@ -44,7 +44,7 @@ int main() {
     SetTargetFPS(60);
 
     GameMode currentGameMode = GAME_MODE_OVERWORLD;
-    GameState gameState; //check defualt values in shared.h
+    GameState gameState; //check default values in shared.h
     Bosses::InitAll(gameState);
 
     while ( !WindowShouldClose() ) {
