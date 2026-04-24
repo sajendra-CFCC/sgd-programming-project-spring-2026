@@ -6,9 +6,9 @@ namespace World4 {
     bool world_complete;
         
 
-    int PlayerX = 400;
-    int PlayerY = 300;
-
+    Vector2 playerPosition = { 400, 300 };
+    int playerSize = 20;
+    
     int boss_x;
     int boss_y;
     int boss_scale;
@@ -16,10 +16,9 @@ namespace World4 {
     void Init() {
         //set up anything you need for your game / world here
         world_complete = false;
-        
-        int PlayerX = 400;
-        int PlayerY = 300;
-       
+        playerPosition.x = SCREEN_WIDTH / 2;
+        playerPosition.y = SCREEN_HEIGHT - playerSize;
+               
 
         boss_x = SCREEN_WIDTH / 2;
         boss_y = SCREEN_HEIGHT / 2;
@@ -55,9 +54,11 @@ namespace World4 {
 
     void Draw(const GameState& game) {
         //do the drawing for your world here
-   
-        DrawTriangle(Vector2 {400,100},Vector2 {300,300},Vector2 {500,300},RED);
-       
+        
+        
+        //DrawTriangle(Vector2 {400,100},Vector2 {300,300},Vector2 {500,300},RED);
+        DrawPoly(playerPosition, 3, playerSize, -90, GREEN);
+        
         int text_x = 100;
         int text_y = 100;
         DrawText("Template World - Press SPACE to hit boss", text_x, text_y, 20, WHITE);
