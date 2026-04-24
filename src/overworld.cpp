@@ -32,12 +32,12 @@ int UpdateOverworld(GameState &game) {
 
 void DrawOverworld() {
     DrawText("CLASS ARCADE BOSS DUNGEON", 150, 100, 30, WHITE);
-    DrawText("Press 0 - World 0", 200, 200, 20, YELLOW);
-    DrawText("Press 1 - World 1", 200, 220, 20, YELLOW);
-    DrawText("Press 2 - World 2", 200, 240, 20, YELLOW);
-    DrawText("Press 3 - World 3", 200, 260, 20, YELLOW);
-    DrawText("Press 4 - World 4", 200, 280, 20, YELLOW);
-    DrawText("Press 5 - World 5", 200, 300, 20, DARKPURPLE);
-    DrawText("Press 6 - World 6", 200, 320, 20, YELLOW);
+    DrawText("Press 0 - World 0 (Template)", 200, 200, 20, YELLOW);
+    DrawText("Press 1 - World 1 (Luke/Jonathan)", 200, 220, 20, YELLOW);
+    DrawText("Press 2 - World 2 (Jordon/Janiya)", 200, 240, 20, YELLOW);
+    DrawText("Press 3 - World 3 (Evan/Richie)", 200, 260, 20, YELLOW);
+    DrawText("Press 4 - World 4 (Rocco/Josh)", 200, 280, 20, YELLOW);
+    DrawText("Press 5 - World 5 (Braedyn)", 200, 300, 20, DARKPURPLE);
+    DrawText("Press 6 - World 6 (Haley/Alden)", 200, 320, 20, YELLOW);
     DrawText("ESC - Quit", 200, 400, 20, RAYWHITE);
 }

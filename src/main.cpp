@@ -13,6 +13,7 @@
 #include "world1.h"
 #include "world2.h"
 #include "world3.h"
+#include "world4.h"
 #include "world5.h"
 #include "world6.h"
 
@@ -22,12 +23,12 @@
 enum GameMode {
     GAME_MODE_OVERWORLD = -1,
     GAME_MODE_WORLD_0 = 0,
-    GAME_MODE_WORLD_1 = 1,
-    GAME_MODE_WORLD_2 = 2,
+    GAME_MODE_WORLD_1,
+    GAME_MODE_WORLD_2,
     GAME_MODE_WORLD_3,
     GAME_MODE_WORLD_4,
-    GAME_MODE_WORLD_5 = 5,
-    GAME_MODE_WORLD_6 = 6,
+    GAME_MODE_WORLD_5,
+    GAME_MODE_WORLD_6,
     GAME_MODE_GAME_OVER,
     GAME_MODE_WIN_SCREEN
 };
@@ -43,7 +44,7 @@ int main() {
     SetTargetFPS(60);
 
     GameMode currentGameMode = GAME_MODE_OVERWORLD;
-    GameState gameState; //check defualt values in shared.h
+    GameState gameState; //check default values in shared.h
     Bosses::InitAll(gameState);
 
     while ( !WindowShouldClose() ) {
@@ -90,7 +91,7 @@ void InitCorrectWorld(GameMode gm) {
             World3::Init();
             break;
         case GAME_MODE_WORLD_4:
-            //World4::Init();
+            World4::Init();
             break;
         case GAME_MODE_WORLD_5:
             World5::Init();
@@ -110,7 +111,7 @@ void DrawCorrectWorld(GameMode gm, GameState& gs) {
             World0::Draw(gs);
             break;
         case GAME_MODE_WORLD_1:
-            World1::Draw();
+            World1::Draw(gs);
             break;
         case GAME_MODE_WORLD_2:
             World2::Draw();
@@ -119,7 +120,7 @@ void DrawCorrectWorld(GameMode gm, GameState& gs) {
             World3::Draw(gs);
             break;
         case GAME_MODE_WORLD_4:
-            //World4::Draw();
+            World4::Draw(gs);
             break;
         case GAME_MODE_WORLD_5:
             World5::Draw();
@@ -174,10 +175,10 @@ void UpdateCorrectWorld(GameMode &gm, GameState &gs) {
                 WorldTimerUpdate(gs, gm);
             break;
         case GAME_MODE_WORLD_4:
-            /*if (World4::Update(gs) == WORLD_COMPLETED)
+            if (World4::Update(gs) == WORLD_COMPLETED)
                 gm = GAME_MODE_OVERWORLD;
             else
-                WorldTimerUpdate(gs, gm);*/
+                WorldTimerUpdate(gs, gm);
             break;
         case GAME_MODE_WORLD_5:
             if (World5::Update(gs) == WORLD_COMPLETED)

@@ -30,6 +30,10 @@ namespace Bosses {
 		return false;  // all dead
 	}
 
+	void Draw(const BossState& boss, float x, float y, float scale) {
+		Draw(boss, { x,y }, scale);
+	}
+
 	void Bosses::Draw(const BossState& boss, Vector2 pos, float scale) {
 		switch (boss.type) {
 			case BOSS_CREATURE_A:
@@ -51,8 +55,32 @@ namespace Bosses {
 		}
 	}
 
-	void Draw(const BossState& boss, float x, float y, float scale) {
-		Draw(boss, {x,y}, scale);
+	Rectangle Bosses::GetHitbox(const BossState& boss, Vector2 pos, float scale) {
+		switch (boss.type) {
+			case BOSS_CREATURE_A:
+				return { pos.x - 30 * scale, pos.y - 30 * scale, 60 * scale, 60 * scale };
+			case BOSS_CREATURE_B:
+				return { pos.x - 25 * scale, pos.y - 30 * scale, 50 * scale, 60 * scale };
+			case BOSS_CREATURE_C:
+				return { pos.x - 30 * scale, pos.y - 30 * scale, 60 * scale, 60 * scale };
+			default:
+				return { 0, 0, 0, 0 };
+		}
+	}
+
+	Rectangle GetHitbox(const BossState& boss, float x, float y, float scale) 	{
+		return GetHitbox(boss, { x,y }, scale);
+	}
+
+	float Bosses::GetHitRadius(const BossState& boss, float scale) {
+		switch (boss.type) {
+			case BOSS_CREATURE_A:
+				return 30 * scale;
+			case BOSS_CREATURE_C:
+				return 30 * scale;
+			default:
+				return 25 * scale;
+		}
 	}
 
 	void Bosses::DrawHealthBar(const BossState& boss, Vector2 pos, float width) {
@@ -63,6 +91,7 @@ namespace Bosses {
 		DrawRectangle(pos.x, pos.y, fill, 14, RED);
 		DrawRectangleLinesEx({ pos.x, pos.y, width, 14 }, 1, BLACK);
 	}
+
 	void DrawHealthBar(const BossState& boss, float x, float y, float width) {
 		DrawHealthBar(boss, {x,y}, width);
 	}
