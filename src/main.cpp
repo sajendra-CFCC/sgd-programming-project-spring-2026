@@ -23,12 +23,12 @@
 enum GameMode {
     GAME_MODE_OVERWORLD = -1,
     GAME_MODE_WORLD_0 = 0,
-    GAME_MODE_WORLD_1,
-    GAME_MODE_WORLD_2,
+    GAME_MODE_WORLD_1 = 1,
+    GAME_MODE_WORLD_2 = 2,
     GAME_MODE_WORLD_3,
     GAME_MODE_WORLD_4,
-    GAME_MODE_WORLD_5,
-    GAME_MODE_WORLD_6,
+    GAME_MODE_WORLD_5 = 5,
+    GAME_MODE_WORLD_6 = 6,
     GAME_MODE_GAME_OVER,
     GAME_MODE_WIN_SCREEN
 };
@@ -44,7 +44,7 @@ int main() {
     SetTargetFPS(60);
 
     GameMode currentGameMode = GAME_MODE_OVERWORLD;
-    GameState gameState; //check default values in shared.h
+    GameState gameState; //check defualt values in shared.h
     Bosses::InitAll(gameState);
 
     while ( !WindowShouldClose() ) {
@@ -114,7 +114,7 @@ void DrawCorrectWorld(GameMode gm, GameState& gs) {
             World1::Draw(gs);
             break;
         case GAME_MODE_WORLD_2:
-            World2::Draw();
+            World2::Draw(gs);
             break;
         case GAME_MODE_WORLD_3:
             World3::Draw(gs);
