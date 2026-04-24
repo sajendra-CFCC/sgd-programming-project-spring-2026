@@ -82,12 +82,15 @@ namespace World6 {
         DrawText("Battery Life -", text_x, text_y, 20, WHITE);
         DrawText("E to Close Window", 500, 550, 20, WHITE);
         DrawText("Q to Close Door", 100, 550, 20, WHITE);
+        
         //Shapes
         DrawRectangleLines(100,200, door_width, door_height, PINK);
         DrawRectangleLines(500, 200, window_width, window_height, BLUE);
+        
         //battery life bar
         DrawRectangleLines(250, 100, 500, 20, RED);
         DrawRectangle(250, 100, battery_life / 2, 20, RED);
+        
         //door
         if (IsKeyDown(KEY_Q)&& battery_life > 0) {
             battery_life-= 1;
