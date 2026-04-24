@@ -1,6 +1,8 @@
 #include "world3.h"
 #include "bosses.h"
 #include <iostream>
+#include <external/stb_rect_pack.h>
+#pragma once 
 
 namespace World3 {
     bool world_complete;
@@ -36,8 +38,7 @@ namespace World3 {
         BossState& currentBoss  = Bosses::ActiveBoss(game);
         
         if (IsKeyPressed(KEY_SPACE)) {
-            currentBoss.health -= 10;
-            
+          
         }
 
 
@@ -58,12 +59,12 @@ namespace World3 {
         //do the drawing for your world here
         int text_x = 250;
         int text_y = 100;
-        DrawText("Evan and Richie World", text_x, text_y, 25, WHITE);
+        DrawText("Evan and Richie World", text_x, text_y, 25, PURPLE);
 
-        //get the current boss
+       // get the current boss
         const BossState& currentBoss = Bosses::ActiveBoss(game);
         int boss_size = 30 * boss_scale;
-
+        
         Bosses::Draw(currentBoss, boss_x, boss_y, boss_scale);
         Bosses::DrawHealthBar(currentBoss, boss_x - boss_size, boss_y + boss_size, boss_size * 2);
         
