@@ -57,9 +57,9 @@ namespace World3 {
 
     void Draw(const GameState& game) {
         //do the drawing for your world here
-        int text_x = 100;
+        int text_x = 250;
         int text_y = 100;
-        DrawText("Evan and Richie World - Use Arrow Keys to move Left and Right!", text_x, text_y, 20, WHITE);
+        DrawText("Evan and Richie World", text_x, text_y, 25, WHITE);
 
         //get the current boss
         const BossState& currentBoss = Bosses::ActiveBoss(game);
