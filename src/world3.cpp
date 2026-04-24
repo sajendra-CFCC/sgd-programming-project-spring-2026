@@ -69,6 +69,7 @@ namespace World3 {
         //do the drawing for your world here
             player_x = 200;
             player_y = 150;
+            //DrawRectangle()
 
         int text_x = 250;
         int text_y = 100;
