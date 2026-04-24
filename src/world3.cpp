@@ -8,7 +8,6 @@ namespace World3 {
     int boss_x;
     int boss_y;
     int boss_scale;
-
     Music bgm;
 
     void Init() {
