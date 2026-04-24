@@ -11,6 +11,14 @@ namespace World6 {
 
     int battery_life;
 
+    int door_height;
+    int door_width;
+
+    int window_height;
+    int window_width;
+
+    Texture2D texture;
+
     void Init() {
         //set up anything you need for your game / world here
         world_complete = false;
@@ -21,7 +29,12 @@ namespace World6 {
         boss_scale = 1;
         battery_life = 1000;
 
-        
+        Image image = LoadImage("assets/images/kittysprite.png");     // Loads to RAM
+        ImageResize(&image, 100, 100);                      // Optional manipulation
+        texture = LoadTextureFromImage(image);    // Transfers to GPU VRAM
+        UnloadImage(image);
+
+ 
     }
 
     WorldUpdateResult Update(GameState& game) {
@@ -52,33 +65,46 @@ namespace World6 {
         int text_x = 100;
         int text_y = 100;
 
+        int door_height = 300;
+        int door_width = 200;
+        int door_x = 100;
+        int door_y = 200;
+
+        int window_height = 200;
+        int window_width = 200;
+        int window_x = 500;
+        int window_y = 200;
+
+        //images
+        DrawTexture (texture, door_x, door_y, WHITE);
+
         //Level Text
-        DrawText("Walmart FNAF", text_x, text_y, 20, WHITE);
+        DrawText("Battery Life -", text_x, text_y, 20, WHITE);
         DrawText("E to Close Window", 500, 550, 20, WHITE);
         DrawText("Q to Close Door", 100, 550, 20, WHITE);
         //Shapes
-        DrawRectangleLines(100,200, 200, 300, PINK);
-        DrawRectangleLines(500, 200, 200, 200, BLUE);
+        DrawRectangleLines(100,200, door_width, door_height, PINK);
+        DrawRectangleLines(500, 200, window_width, window_height, BLUE);
         //battery life bar
         DrawRectangleLines(250, 100, 500, 20, RED);
         DrawRectangle(250, 100, battery_life / 2, 20, RED);
         //door
         if (IsKeyDown(KEY_Q)&& battery_life > 0) {
             battery_life-= 1;
-            DrawRectangle(100, 200, 200, 300, PINK);
+            DrawRectangle(door_x, door_y, door_width, door_height, PINK);
         }
         else if (IsKeyReleased(KEY_Q)) {
-            DrawRectangleLines(100, 200, 200, 300, PINK);
+            DrawRectangleLines(door_x, door_y, door_width, door_height, PINK);
         }
         //Window
         if (IsKeyDown(KEY_E)&& battery_life > 0) {
             battery_life -= 1;
-            DrawRectangle(500, 200, 200, 200, BLUE);
+            DrawRectangle(window_x, window_y, window_width, window_height, BLUE);
         }
         else if (IsKeyReleased(KEY_E)) {
-            DrawRectangleLines(500, 200, 200, 200, BLUE);
+            DrawRectangleLines(window_x, window_y, window_width, window_height, BLUE);
         }
-
+        
         //get the current boss
         /*const BossState& currentBoss = Bosses::ActiveBoss(game);
         int boss_size = 30 * boss_scale;
