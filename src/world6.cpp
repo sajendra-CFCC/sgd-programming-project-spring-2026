@@ -52,41 +52,38 @@ namespace World6 {
         int text_y = 100;
         //Level Text
         DrawText("Walmart FNAF", text_x, text_y, 20, WHITE);
-        DrawText("E to Close Window", 550, 500, 20, WHITE);
-        DrawText("Q to Close Door", 50, 500, 20, WHITE);
+        DrawText("E to Close Window", 500, 550, 20, WHITE);
+        DrawText("Q to Close Door", 100, 550, 20, WHITE);
         //Shapes
-        DrawRectangleLines(100,200, 100, 200, PINK);
-        DrawRectangleLines(550, 200, 100, 100, BLUE);
-        
-        DrawCircle(150,450,15,PINK);
-        DrawCircle(600, 450, 15, BLUE);
-        
+        DrawRectangleLines(100,200, 200, 300, PINK);
+        DrawRectangleLines(500, 200, 200, 200, BLUE);
+        //battery life bar
         DrawRectangleLines(250, 100, 500, 20, RED);
         DrawRectangle(250, 100, battery_life / 2, 20, RED);
         //door
         if (IsKeyDown(KEY_Q)&& battery_life > 0) {
             battery_life-= 1;
-            DrawRectangle(100, 200, 100, 200, PINK);
+            DrawRectangle(100, 200, 200, 300, PINK);
         }
         else if (IsKeyReleased(KEY_Q)) {
-            DrawRectangleLines(100, 200, 100, 200, PINK);
+            DrawRectangleLines(100, 200, 200, 300, PINK);
         }
         //Window
         if (IsKeyDown(KEY_E)&& battery_life > 0) {
             battery_life -= 1;
-            DrawRectangle(550, 200, 100, 100, BLUE);
+            DrawRectangle(500, 200, 200, 200, BLUE);
         }
         else if (IsKeyReleased(KEY_E)) {
-            DrawRectangleLines(550, 200, 100, 100, BLUE);
+            DrawRectangleLines(500, 200, 200, 200, BLUE);
         }
 
         //get the current boss
-        const BossState& currentBoss = Bosses::ActiveBoss(game);
+        /*const BossState& currentBoss = Bosses::ActiveBoss(game);
         int boss_size = 30 * boss_scale;
 
         Bosses::Draw(currentBoss, boss_x, boss_y, boss_scale);
         Bosses::DrawHealthBar(currentBoss, boss_x - boss_size, boss_y + boss_size, boss_size * 2);
-
+        */
         
     }
 }
