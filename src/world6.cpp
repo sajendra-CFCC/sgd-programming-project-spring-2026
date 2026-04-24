@@ -9,6 +9,8 @@ namespace World6 {
     int boss_y;
     int boss_scale;
 
+    int battery_life;
+
     void Init() {
         //set up anything you need for your game / world here
         world_complete = false;
@@ -17,18 +19,19 @@ namespace World6 {
         boss_x = SCREEN_WIDTH / 2;
         boss_y = SCREEN_HEIGHT / 2;
         boss_scale = 1;
+        battery_life = 1000;
         
     }
 
     WorldUpdateResult Update(GameState& game) {
         game.score++; // just updating score every frame for some reason
-        
+
         //get the current boss
         BossState& currentBoss  = Bosses::ActiveBoss(game);
-        
+
         if (IsKeyDown(KEY_SPACE)) {
             currentBoss.health -= 10;
-            
+
         }
 
 
@@ -37,14 +40,12 @@ namespace World6 {
             if (!moreBosses)
                 world_complete = true;
         }
-       
 
         if (world_complete)
             return WORLD_COMPLETED;
         else
             return WORLD_IN_PROGRESS;
     }
-
     void Draw(const GameState& game) {
         //do the drawing for your world here
         int text_x = 100;
