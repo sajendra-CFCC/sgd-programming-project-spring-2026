@@ -57,8 +57,12 @@ namespace World6 {
         //Shapes
         DrawRectangleLines(100,200, 100, 200, PINK);
         DrawRectangleLines(550, 200, 100, 100, BLUE);
+        
         DrawCircle(150,450,15,PINK);
         DrawCircle(600, 450, 15, BLUE);
+        
+        DrawRectangleLines(250, 100, 500, 20, RED);
+        DrawRectangle(250, 100, battery_life / 2, 20, RED);
         //door
         if (IsKeyDown(KEY_Q)&& battery_life > 0) {
             battery_life-= 1;
