@@ -26,7 +26,7 @@ namespace World6 {
         //get the current boss
         BossState& currentBoss  = Bosses::ActiveBoss(game);
         
-        if (IsKeyPressed(KEY_SPACE)) {
+        if (IsKeyDown(KEY_SPACE)) {
             currentBoss.health -= 10;
             
         }
@@ -49,7 +49,31 @@ namespace World6 {
         //do the drawing for your world here
         int text_x = 100;
         int text_y = 100;
-        DrawText("Meowmeow meow meow meow kitty boss", text_x, text_y, 20, WHITE);
+        //Level Text
+        DrawText("Walmart FNAF", text_x, text_y, 20, WHITE);
+        DrawText("E to Close Window", 550, 500, 20, WHITE);
+        DrawText("Q to Close Door", 50, 500, 20, WHITE);
+        //Shapes
+        DrawRectangleLines(100,200, 100, 200, PINK);
+        DrawRectangleLines(550, 200, 100, 100, BLUE);
+        DrawCircle(150,450,15,PINK);
+        DrawCircle(600, 450, 15, BLUE);
+        //door
+        if (IsKeyDown(KEY_Q)&& battery_life > 0) {
+            battery_life-= 1;
+            DrawRectangle(100, 200, 100, 200, PINK);
+        }
+        else if (IsKeyReleased(KEY_Q)) {
+            DrawRectangleLines(100, 200, 100, 200, PINK);
+        }
+        //Window
+        if (IsKeyDown(KEY_E)&& battery_life > 0) {
+            battery_life -= 1;
+            DrawRectangle(550, 200, 100, 100, BLUE);
+        }
+        else if (IsKeyReleased(KEY_E)) {
+            DrawRectangleLines(550, 200, 100, 100, BLUE);
+        }
 
         //get the current boss
         const BossState& currentBoss = Bosses::ActiveBoss(game);
