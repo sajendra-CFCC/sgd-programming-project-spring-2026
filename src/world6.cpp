@@ -20,6 +20,7 @@ namespace World6 {
         boss_y = SCREEN_HEIGHT / 2;
         boss_scale = 1;
         battery_life = 1000;
+
         
     }
 
@@ -50,6 +51,7 @@ namespace World6 {
         //do the drawing for your world here
         int text_x = 100;
         int text_y = 100;
+
         //Level Text
         DrawText("Walmart FNAF", text_x, text_y, 20, WHITE);
         DrawText("E to Close Window", 500, 550, 20, WHITE);
