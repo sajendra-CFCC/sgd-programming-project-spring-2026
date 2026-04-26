@@ -47,6 +47,8 @@ int main() {
     GameState gameState; //check defualt values in shared.h
     Bosses::InitAll(gameState);
 
+    ChangeDirectory( GetApplicationDirectory() );//assumption we make for assets
+
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Mini Boss Dungeon Game Collection");
     SetExitKey(KEY_NULL); //disable default ESC behavior
     SetTargetFPS(60);
@@ -157,37 +159,37 @@ void UpdateCorrectWorld(GameMode &gm, GameState &gs) {
                 WorldTimerUpdate(gs, gm);
             break;
         case GAME_MODE_WORLD_1:
-            if (World1::Update(gs) == WORLD_COMPLETED)
+            if (World1::Update(gs) == WORLD_COMPLETED || pressedESC)
                 gm = GAME_MODE_OVERWORLD;
             else
                 WorldTimerUpdate(gs, gm);
             break;
         case GAME_MODE_WORLD_2:
-            if (World2::Update(gs) == WORLD_COMPLETED)
+            if (World2::Update(gs) == WORLD_COMPLETED || pressedESC)
                 gm = GAME_MODE_OVERWORLD;
             else
                 WorldTimerUpdate(gs, gm);
             break;
         case GAME_MODE_WORLD_3:
-            if (World3::Update(gs) == WORLD_COMPLETED)
+            if (World3::Update(gs) == WORLD_COMPLETED || pressedESC)
                 gm = GAME_MODE_OVERWORLD;
             else
                 WorldTimerUpdate(gs, gm);
             break;
         case GAME_MODE_WORLD_4:
-            if (World4::Update(gs) == WORLD_COMPLETED)
+            if (World4::Update(gs) == WORLD_COMPLETED || pressedESC)
                 gm = GAME_MODE_OVERWORLD;
             else
                 WorldTimerUpdate(gs, gm);
             break;
         case GAME_MODE_WORLD_5:
-            if (World5::Update(gs) == WORLD_COMPLETED)
+            if (World5::Update(gs) == WORLD_COMPLETED || pressedESC)
                 gm = GAME_MODE_OVERWORLD;
             else
                 WorldTimerUpdate(gs, gm);
             break;
         case GAME_MODE_WORLD_6:
-            if (World6::Update(gs) == WORLD_COMPLETED)
+            if (World6::Update(gs) == WORLD_COMPLETED || pressedESC)
                 gm = GAME_MODE_OVERWORLD;
             else
                 WorldTimerUpdate(gs, gm);
