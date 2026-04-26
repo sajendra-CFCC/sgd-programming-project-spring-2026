@@ -6,25 +6,25 @@
 //return 1 for entering world one
 // etc..
 int UpdateOverworld(GameState &game) {
-    if( IsKeyPressed(KEY_ZERO) ) {
+    if( IsKeyPressed(KEY_ZERO) || IsKeyPressed(KEY_KP_0) ) {
         return 0;
     }
-    if( IsKeyPressed(KEY_ONE) ) {
+    if( IsKeyPressed(KEY_ONE) || IsKeyPressed(KEY_KP_1) ) {
         return 1;
     }
-    if( IsKeyPressed(KEY_TWO) ) {
+    if( IsKeyPressed(KEY_TWO) || IsKeyPressed(KEY_KP_2) ) {
         return 2;
     }
-    if( IsKeyPressed(KEY_THREE) ) {
+    if( IsKeyPressed(KEY_THREE) || IsKeyPressed(KEY_KP_3) ) {
         return 3;
     }
-    if (IsKeyPressed(KEY_FOUR)) {
+    if (IsKeyPressed(KEY_FOUR) || IsKeyPressed(KEY_KP_4) ) {
         return 4;
     }
-    if (IsKeyPressed(KEY_FIVE)) {
+    if (IsKeyPressed(KEY_FIVE) || IsKeyPressed(KEY_KP_5) ) {
         return 5;
     }
-    if (IsKeyPressed(KEY_SIX)) {
+    if ( IsKeyPressed(KEY_SIX) || IsKeyPressed(KEY_KP_6) ) {
         return 6;
     }
     return -1; //stay on the MENU

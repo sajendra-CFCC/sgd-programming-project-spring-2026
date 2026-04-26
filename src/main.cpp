@@ -23,12 +23,12 @@
 enum GameMode {
     GAME_MODE_OVERWORLD = -1,
     GAME_MODE_WORLD_0 = 0,
-    GAME_MODE_WORLD_1 = 1,
-    GAME_MODE_WORLD_2 = 2,
+    GAME_MODE_WORLD_1,
+    GAME_MODE_WORLD_2,
     GAME_MODE_WORLD_3,
     GAME_MODE_WORLD_4,
-    GAME_MODE_WORLD_5 = 5,
-    GAME_MODE_WORLD_6 = 6,
+    GAME_MODE_WORLD_5,
+    GAME_MODE_WORLD_6,
     GAME_MODE_GAME_OVER,
     GAME_MODE_WIN_SCREEN
 };
@@ -36,33 +36,36 @@ enum GameMode {
 void InitCorrectWorld(GameMode gm);
 void UpdateCorrectWorld(GameMode &gm, GameState &gs);
 void DrawCorrectWorld(GameMode gm, GameState& gs);
+
+//helper functions
 void DrawWorldOverlay(GameState& gs);
+void WorldTimerUpdate(GameState& gs, GameMode& gm);
 
 
 int main() {
-	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Mini Boss Dungeon Game Collection");
-    SetTargetFPS(60);
-
     GameMode currentGameMode = GAME_MODE_OVERWORLD;
     GameState gameState; //check defualt values in shared.h
     Bosses::InitAll(gameState);
 
-    while ( !WindowShouldClose() ) {
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Mini Boss Dungeon Game Collection");
+    SetExitKey(KEY_NULL); //disable default ESC behavior
+    SetTargetFPS(60);
+    
+    while ( !WindowShouldClose() ) { //start main loop
         // UPDATING & INITIALIZING NEXT WORLD IF NEEDED
         UpdateCorrectWorld(currentGameMode, gameState);
         
         //DRAWING
         BeginDrawing();
         //BEGIN DRAWING
-            ClearBackground(BG_COLOR);
-           
+            ClearBackground(BG_COLOR);         
             DrawCorrectWorld(currentGameMode, gameState);
                         
             // Global UI Overlay
             DrawText(TextFormat("Score: %d", gameState.score), 10, 10, 20, PINK);
             DrawText(TextFormat("HP: %i", gameState.health), 10, 40, 20, RED);
             //Overlay only when inside worlds
-            if (currentGameMode >= 0 && currentGameMode <= 5)
+            if (currentGameMode >= 0)
                 DrawWorldOverlay(gameState); //shows time remaining.. boss health?
         //END DRAWING
         EndDrawing();
@@ -136,22 +139,19 @@ void DrawCorrectWorld(GameMode gm, GameState& gs) {
     }
 }
 
-void WorldTimerUpdate(GameState& gs, GameMode& gm) {
-    gs.worldTimeRemaining -= GetFrameTime();
-    if (gs.worldTimeRemaining <= 0)
-        gm = GAME_MODE_OVERWORLD;
-
-}
 
 void UpdateCorrectWorld(GameMode &gm, GameState &gs) {
+    bool pressedESC = IsKeyPressed(KEY_ESCAPE);
+    
     switch (gm) {
         case GAME_MODE_OVERWORLD:
             gm = (GameMode) UpdateOverworld(gs);
             InitCorrectWorld(gm);
             gs.worldTimeRemaining = SECONDS_PER_LEVEL; //set up initial timer for each level
+            if (pressedESC) exit(0);
             break;
         case GAME_MODE_WORLD_0:
-            if (World0::Update(gs) == WORLD_COMPLETED)
+            if (World0::Update(gs) == WORLD_COMPLETED || pressedESC)
                 gm = GAME_MODE_OVERWORLD; //this should go to win screen when we have one
             else
                 WorldTimerUpdate(gs, gm);
@@ -196,4 +196,10 @@ void UpdateCorrectWorld(GameMode &gm, GameState &gs) {
             //
             break;
     }
+}
+
+void WorldTimerUpdate(GameState& gs, GameMode& gm) {
+    gs.worldTimeRemaining -= GetFrameTime();
+    if (gs.worldTimeRemaining <= 0)
+        gm = GAME_MODE_OVERWORLD;
 }
