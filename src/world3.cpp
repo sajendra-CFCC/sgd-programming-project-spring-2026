@@ -2,7 +2,7 @@
 #include "bosses.h"
 #include <iostream>
 #include <external/stb_rect_pack.h>
-#pragma once 
+
 
 namespace World3 {
     bool world_complete;
