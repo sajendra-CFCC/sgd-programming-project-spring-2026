@@ -17,7 +17,8 @@ namespace World6 {
 
     int window_height;
     int window_width;
-    int size;
+    float size;
+    int texturesize;
 
     Texture2D texture;
 
@@ -30,13 +31,9 @@ namespace World6 {
         boss_y = SCREEN_HEIGHT / 2;
         boss_scale = 1;
         battery_life = 1000;
-        size = 100;
- 
-
-        Image image = LoadImage("assets/images/blackcat.jpg");     // Loads to RAM
-        ImageResize(&image, size, size);                      // Optional manipulation
-        texture = LoadTextureFromImage(image);    // Transfers to GPU VRAM
-        UnloadImage(image);
+        
+        texturesize = 100;
+        size = .1;
 
  
     }
@@ -47,29 +44,37 @@ namespace World6 {
         //get the current boss
         BossState& currentBoss  = Bosses::ActiveBoss(game);
 
+
         if (IsKeyDown(KEY_SPACE)) {
             currentBoss.health -= 10;
 
         }
 
-
+        //boss health
         if (currentBoss.health <= 0) {
             bool moreBosses = Bosses::AdvanceToNext(game);
             if (!moreBosses)
                 world_complete = true;
         }
-
+       
+        //world complete
         if (world_complete)
             return WORLD_COMPLETED;
         else
             return WORLD_IN_PROGRESS;
 
-        while (size < 300) {
-            size += 1;
-        }
+       
     }
     void Draw(const GameState& game) {
-        //do the drawing for your world here
+        //drawing image
+        Image image = LoadImage("assets/images/blackcat.jpg");     // Loads to RAM
+        texture = LoadTextureFromImage(image);    // Transfers to GPU VRAM
+        UnloadImage(image);
+        Vector2 CatPosition = { 100 , 200 };
+
+        DrawTextureEx(texture, CatPosition, 0, size, RAYWHITE);
+      
+        //positions
         int text_x = 100;
         int text_y = 100;
 
@@ -88,11 +93,11 @@ namespace World6 {
 
         int window_cat_x;
         int windo_cat_y;
-
+        size += .001;
 
 
         //images
-        DrawTexture (texture, door_cat_x, door_cat_y, WHITE);
+        //DrawTexture (texture, door_cat_x, door_cat_y, WHITE);
 
         //Level Text
         DrawText("Battery Life -", text_x, text_y, 20, WHITE);
@@ -110,6 +115,7 @@ namespace World6 {
         //door
         if (IsKeyDown(KEY_Q)&& battery_life > 0) {
             battery_life-= 1;
+            size = .1;
             DrawRectangle(door_x, door_y, door_width, door_height, PINK);
         }
         else if (IsKeyReleased(KEY_Q)) {
