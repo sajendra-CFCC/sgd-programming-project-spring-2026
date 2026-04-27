@@ -22,8 +22,8 @@ namespace World1 {
         world_complete = false;
         spawn_rand = false;
         draw_spot = true;
-        text_x = 100;
-        text_y = 100;
+        text_x = 145;
+        text_y = 550;
         circ_x = SCREEN_WIDTH/2;
         circ_y = SCREEN_HEIGHT/2;
         boss_x = SCREEN_WIDTH / 2;
@@ -39,7 +39,7 @@ namespace World1 {
 
         BossState& currentBoss = Bosses::ActiveBoss(game);
 
-        if (IsKeyPressed(KEY_SPACE)) {
+        if (IsKeyPressed(KEY_E)) {
             currentBoss.health -= 10;
         }
 
@@ -80,7 +80,7 @@ namespace World1 {
 
     void Draw(const GameState& game) {
                 
-        DrawText("World 1 - Press SPACE to finish", text_x, text_y, 20, WHITE);
+        DrawText("World 1 - Enter the shapes to damage the bosses", text_x, text_y, 20, WHITE);
         DrawCircle(circ_x, circ_y, 10, BLUE);
         if (draw_spot) {
             DrawCircle(rand_numx, rand_numy, 10, RED);
