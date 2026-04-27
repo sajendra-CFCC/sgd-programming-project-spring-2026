@@ -14,6 +14,8 @@ namespace World2 {
     float pSpeed;
     Vector2 pPos;
     Vector2 pSize;
+    Vector2 pAttackRadius;
+    Vector2 pAttackPos;
 
     //Walls
     Vector2 LWallPos;
@@ -47,6 +49,9 @@ namespace World2 {
 
         //Player
         pPos = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
+        pAttackPos.x = pPos.x - 25;
+        pAttackPos.y = pPos.y - 25;
+        pAttackRadius = { 150, 150 };
         pSize = { 100, 100 };
         Rectangle pRad = { 100, 100 };
         pSpeed = 10;
@@ -59,8 +64,8 @@ namespace World2 {
         camera.zoom = 1;
 
         //if ((CheckCollisionRecs(, LWallSize))){
-            onLeftwall = true;
-            pSpeed = 0;
+            //onLeftwall = true;
+            //pSpeed = 0;
     }
         
 
@@ -71,8 +76,9 @@ namespace World2 {
         
     };
     //Boss stats
-    Vector2 eSize = { 100, 100};
-    Vector2 ePos = { 75, 150 };
+    int ePos_x = 75;
+    int ePos_y = 100;
+    int eSize = 1;
 
     //player info
 
@@ -80,28 +86,36 @@ namespace World2 {
         
         game.score++;
 
+        BossState& currentBoss = Bosses::ActiveBoss(game);
 
-        if (IsKeyDown(KEY_W)) pPos.y -= 2.0f * pSpeed;
-        if (IsKeyDown(KEY_A)) pPos.x -= 2.0f * pSpeed;
-        if (IsKeyDown(KEY_S)) pPos.y += 2.0f * pSpeed;
-        if (IsKeyDown(KEY_D)) pPos.x += +2.0f * pSpeed;
+        //CheckCollisionRecs();
+
+        if (currentBoss.health <= 0) {
+            bool moreBosses = Bosses::AdvanceToNext(game);
+            if (!moreBosses)
+                world_complete = true;
+        }
+
+        if (IsKeyDown(KEY_W)) {
+            pPos.y -= 2.0f * pSpeed;
+            pAttackPos.y -= 2 * pSpeed;
+        }
+        if (IsKeyDown(KEY_A)) {
+            pPos.x -= 2.0f * pSpeed;
+            pAttackPos.x -= 2 * pSpeed;
+        }
+        if (IsKeyDown(KEY_S)) {
+            pPos.y += 2.0f * pSpeed;
+            pAttackPos.y += 2 * pSpeed;
+        }
+        if (IsKeyDown(KEY_D)) {
+            pPos.x += +2.0f * pSpeed;
+            pAttackPos.x += 2 * pSpeed;
+        }
 
         //if (IsKeyPressed(KEY_SPACE)) 
 
         camera.target = { pPos.x + pSpeed, pPos.y + pSpeed };
-
-        if (IsKeyPressed(KEY_SPACE)) {
-            world_complete = true;
-        }
-
-        if (IsKeyDown(KEY_LEFT))
-            text_x--;
-        if (IsKeyDown(KEY_RIGHT))
-            text_x++;
-        if (IsKeyDown(KEY_UP))
-            text_y--;
-        if (IsKeyDown(KEY_DOWN))
-            text_y++;
 
         if (world_complete)
             return WORLD_COMPLETED;
@@ -115,10 +129,18 @@ namespace World2 {
 
         DrawRectangleV(LWallPos, LWallSize, GRAY);
 
+        const BossState& currentBoss = Bosses::ActiveBoss(game);
+        int boss_size = 30 * eSize;
+        Rectangle bossHB = Bosses::GetHitbox(currentBoss, ePos_x, ePos_y, eSize);
+        int boss_radius = Bosses::GetHitRadius(currentBoss, eSize);
 
-        DrawRectangleV( ePos, eSize, RED);
+        Bosses::Draw(currentBoss, ePos_x, ePos_y, eSize);
+        Bosses::DrawHealthBar(currentBoss, ePos_x - eSize, ePos_y + eSize, eSize * 2);
+
+        DrawRectangleV(pAttackPos, pAttackRadius,Fade(RED, 0.3f));
         DrawRectangleV(pPos, pSize, GREEN);
 
-        DrawText("Template World - Press SPACE to finish", text_x, text_y, 20, WHITE);
+        DrawRectangleLinesEx(bossHB, 1, RED);
+        //DrawCircleLines(ePos_x, ePos_y, boss_radius, GREEN);
     }
 }
