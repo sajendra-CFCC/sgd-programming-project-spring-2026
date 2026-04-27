@@ -2,6 +2,7 @@
 #include "bosses.h"
 #include <iostream>
 
+
 namespace World6 {
     bool world_complete;
         
@@ -16,6 +17,7 @@ namespace World6 {
 
     int window_height;
     int window_width;
+    int size;
 
     Texture2D texture;
 
@@ -28,9 +30,11 @@ namespace World6 {
         boss_y = SCREEN_HEIGHT / 2;
         boss_scale = 1;
         battery_life = 1000;
+        size = 100;
+ 
 
         Image image = LoadImage("assets/images/blackcat.jpg");     // Loads to RAM
-        ImageResize(&image, 100, 100);                      // Optional manipulation
+        ImageResize(&image, size, size);                      // Optional manipulation
         texture = LoadTextureFromImage(image);    // Transfers to GPU VRAM
         UnloadImage(image);
 
@@ -59,6 +63,10 @@ namespace World6 {
             return WORLD_COMPLETED;
         else
             return WORLD_IN_PROGRESS;
+
+        while (size < 300) {
+            size += 1;
+        }
     }
     void Draw(const GameState& game) {
         //do the drawing for your world here
@@ -77,6 +85,11 @@ namespace World6 {
 
         int door_cat_x = 150;
         int door_cat_y = 250;
+
+        int window_cat_x;
+        int windo_cat_y;
+
+
 
         //images
         DrawTexture (texture, door_cat_x, door_cat_y, WHITE);
