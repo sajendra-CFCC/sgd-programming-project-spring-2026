@@ -11,15 +11,15 @@ namespace Bosses {
 		gs.activeBoss = 0; //first boss active
 	}
 
-	BossState& Bosses::ActiveBoss(GameState& gs) {
+	BossState& ActiveBoss(GameState& gs) {
 		return gs.bosses[gs.activeBoss];
 	}
 
-	const BossState& Bosses::ActiveBoss(const GameState& gs) {
+	const BossState& ActiveBoss(const GameState& gs) {
 		return gs.bosses[gs.activeBoss];
 	}
 
-	bool Bosses::AdvanceToNext(GameState& gs) {
+	bool AdvanceToNext(GameState& gs) {
 		gs.bosses[gs.activeBoss].alive = false;
 		for (int i = gs.activeBoss + 1; i < BOSS_COUNT; i++) {
 			if (gs.bosses[i].alive) {
@@ -30,7 +30,11 @@ namespace Bosses {
 		return false;  // all dead
 	}
 
-	void Bosses::Draw(const BossState& boss, Vector2 pos, float scale) {
+	void Draw(const BossState& boss, float x, float y, float scale) {
+		Draw(boss, { x,y }, scale);
+	}
+
+	void Draw(const BossState& boss, Vector2 pos, float scale) {
 		switch (boss.type) {
 			case BOSS_CREATURE_A:
 				DrawCircle(pos.x, pos.y, 30 * scale, RED);
@@ -51,11 +55,35 @@ namespace Bosses {
 		}
 	}
 
-	void Draw(const BossState& boss, float x, float y, float scale) {
-		Draw(boss, {x,y}, scale);
+	Rectangle GetHitbox(const BossState& boss, Vector2 pos, float scale) {
+		switch (boss.type) {
+			case BOSS_CREATURE_A:
+				return { pos.x - 30 * scale, pos.y - 30 * scale, 60 * scale, 60 * scale };
+			case BOSS_CREATURE_B:
+				return { pos.x - 25 * scale, pos.y - 30 * scale, 50 * scale, 60 * scale };
+			case BOSS_CREATURE_C:
+				return { pos.x - 30 * scale, pos.y - 30 * scale, 60 * scale, 60 * scale };
+			default:
+				return { 0, 0, 0, 0 };
+		}
 	}
 
-	void Bosses::DrawHealthBar(const BossState& boss, Vector2 pos, float width) {
+	Rectangle GetHitbox(const BossState& boss, float x, float y, float scale) 	{
+		return GetHitbox(boss, { x,y }, scale);
+	}
+
+	float GetHitRadius(const BossState& boss, float scale) {
+		switch (boss.type) {
+			case BOSS_CREATURE_A:
+				return 30 * scale;
+			case BOSS_CREATURE_C:
+				return 30 * scale;
+			default:
+				return 25 * scale;
+		}
+	}
+
+	void DrawHealthBar(const BossState& boss, Vector2 pos, float width) {
 		float hp = boss.health;
 		float maxHp = boss.maxHealth;
 		float fill = (hp / maxHp) * width;
@@ -63,6 +91,7 @@ namespace Bosses {
 		DrawRectangle(pos.x, pos.y, fill, 14, RED);
 		DrawRectangleLinesEx({ pos.x, pos.y, width, 14 }, 1, BLACK);
 	}
+
 	void DrawHealthBar(const BossState& boss, float x, float y, float width) {
 		DrawHealthBar(boss, {x,y}, width);
 	}

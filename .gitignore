@@ -415,3 +415,6 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 CMakeUserPresets.json
+
+#sajendra add for web build script
+web_build

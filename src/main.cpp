@@ -12,6 +12,8 @@
 #include "world0.h"
 #include "world1.h"
 #include "world2.h"
+#include "world3.h"
+#include "world4.h"
 #include "world5.h"
 #include "world6.h"
 
@@ -21,12 +23,12 @@
 enum GameMode {
     GAME_MODE_OVERWORLD = -1,
     GAME_MODE_WORLD_0 = 0,
-    GAME_MODE_WORLD_1 = 1,
-    GAME_MODE_WORLD_2 = 2,
+    GAME_MODE_WORLD_1,
+    GAME_MODE_WORLD_2,
     GAME_MODE_WORLD_3,
     GAME_MODE_WORLD_4,
-    GAME_MODE_WORLD_5 = 5,
-    GAME_MODE_WORLD_6 = 6,
+    GAME_MODE_WORLD_5,
+    GAME_MODE_WORLD_6,
     GAME_MODE_GAME_OVER,
     GAME_MODE_WIN_SCREEN
 };
@@ -34,33 +36,38 @@ enum GameMode {
 void InitCorrectWorld(GameMode gm);
 void UpdateCorrectWorld(GameMode &gm, GameState &gs);
 void DrawCorrectWorld(GameMode gm, GameState& gs);
+
+//helper functions
 void DrawWorldOverlay(GameState& gs);
+void WorldTimerUpdate(GameState& gs, GameMode& gm);
 
 
 int main() {
-	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Mini Boss Dungeon Game Collection");
-    SetTargetFPS(60);
-
     GameMode currentGameMode = GAME_MODE_OVERWORLD;
     GameState gameState; //check defualt values in shared.h
     Bosses::InitAll(gameState);
 
-    while ( !WindowShouldClose() ) {
+    ChangeDirectory( GetApplicationDirectory() );//assumption we make for assets
+
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Mini Boss Dungeon Game Collection");
+    SetExitKey(KEY_NULL); //disable default ESC behavior
+    SetTargetFPS(60);
+    
+    while ( !WindowShouldClose() ) { //start main loop
         // UPDATING & INITIALIZING NEXT WORLD IF NEEDED
         UpdateCorrectWorld(currentGameMode, gameState);
         
         //DRAWING
         BeginDrawing();
         //BEGIN DRAWING
-            ClearBackground(BG_COLOR);
-           
+            ClearBackground(BG_COLOR);         
             DrawCorrectWorld(currentGameMode, gameState);
                         
             // Global UI Overlay
             DrawText(TextFormat("Score: %d", gameState.score), 10, 10, 20, PINK);
             DrawText(TextFormat("HP: %i", gameState.health), 10, 40, 20, RED);
             //Overlay only when inside worlds
-            if (currentGameMode >= 0 && currentGameMode <= 5)
+            if (currentGameMode >= 0)
                 DrawWorldOverlay(gameState); //shows time remaining.. boss health?
         //END DRAWING
         EndDrawing();
@@ -86,10 +93,10 @@ void InitCorrectWorld(GameMode gm) {
             World2::Init();
             break;
         case GAME_MODE_WORLD_3:
-            //World3::Init();
+            World3::Init();
             break;
         case GAME_MODE_WORLD_4:
-            //World4::Init();
+            World4::Init();
             break;
         case GAME_MODE_WORLD_5:
             World5::Init();
@@ -109,16 +116,16 @@ void DrawCorrectWorld(GameMode gm, GameState& gs) {
             World0::Draw(gs);
             break;
         case GAME_MODE_WORLD_1:
-            World1::Draw();
+            World1::Draw(gs);
             break;
         case GAME_MODE_WORLD_2:
-            World2::Draw();
+            World2::Draw(gs);
             break;
         case GAME_MODE_WORLD_3:
-            //World3::Draw();
+            World3::Draw(gs);
             break;
         case GAME_MODE_WORLD_4:
-            //World4::Draw();
+            World4::Draw(gs);
             break;
         case GAME_MODE_WORLD_5:
             World5::Draw();
@@ -134,58 +141,55 @@ void DrawCorrectWorld(GameMode gm, GameState& gs) {
     }
 }
 
-void WorldTimerUpdate(GameState& gs, GameMode& gm) {
-    gs.worldTimeRemaining -= GetFrameTime();
-    if (gs.worldTimeRemaining <= 0)
-        gm = GAME_MODE_OVERWORLD;
-
-}
 
 void UpdateCorrectWorld(GameMode &gm, GameState &gs) {
+    bool pressedESC = IsKeyPressed(KEY_ESCAPE);
+    
     switch (gm) {
         case GAME_MODE_OVERWORLD:
             gm = (GameMode) UpdateOverworld(gs);
             InitCorrectWorld(gm);
             gs.worldTimeRemaining = SECONDS_PER_LEVEL; //set up initial timer for each level
+            if (pressedESC) exit(0);
             break;
         case GAME_MODE_WORLD_0:
-            if (World0::Update(gs) == WORLD_COMPLETED)
+            if (World0::Update(gs) == WORLD_COMPLETED || pressedESC)
                 gm = GAME_MODE_OVERWORLD; //this should go to win screen when we have one
             else
                 WorldTimerUpdate(gs, gm);
             break;
         case GAME_MODE_WORLD_1:
-            if (World1::Update(gs) == WORLD_COMPLETED)
+            if (World1::Update(gs) == WORLD_COMPLETED || pressedESC)
                 gm = GAME_MODE_OVERWORLD;
             else
                 WorldTimerUpdate(gs, gm);
             break;
         case GAME_MODE_WORLD_2:
-            if (World2::Update(gs) == WORLD_COMPLETED)
+            if (World2::Update(gs) == WORLD_COMPLETED || pressedESC)
                 gm = GAME_MODE_OVERWORLD;
             else
                 WorldTimerUpdate(gs, gm);
             break;
         case GAME_MODE_WORLD_3:
-            /*if (World3::Update(gs) == WORLD_COMPLETED)
+            if (World3::Update(gs) == WORLD_COMPLETED || pressedESC)
                 gm = GAME_MODE_OVERWORLD;
             else
-                WorldTimerUpdate(gs, gm);*/
+                WorldTimerUpdate(gs, gm);
             break;
         case GAME_MODE_WORLD_4:
-            /*if (World4::Update(gs) == WORLD_COMPLETED)
+            if (World4::Update(gs) == WORLD_COMPLETED || pressedESC)
                 gm = GAME_MODE_OVERWORLD;
             else
-                WorldTimerUpdate(gs, gm);*/
+                WorldTimerUpdate(gs, gm);
             break;
         case GAME_MODE_WORLD_5:
-            if (World5::Update(gs) == WORLD_COMPLETED)
+            if (World5::Update(gs) == WORLD_COMPLETED || pressedESC)
                 gm = GAME_MODE_OVERWORLD;
             else
                 WorldTimerUpdate(gs, gm);
             break;
         case GAME_MODE_WORLD_6:
-            if (World6::Update(gs) == WORLD_COMPLETED)
+            if (World6::Update(gs) == WORLD_COMPLETED || pressedESC)
                 gm = GAME_MODE_OVERWORLD;
             else
                 WorldTimerUpdate(gs, gm);
@@ -194,4 +198,10 @@ void UpdateCorrectWorld(GameMode &gm, GameState &gs) {
             //
             break;
     }
+}
+
+void WorldTimerUpdate(GameState& gs, GameMode& gm) {
+    gs.worldTimeRemaining -= GetFrameTime();
+    if (gs.worldTimeRemaining <= 0)
+        gm = GAME_MODE_OVERWORLD;
 }

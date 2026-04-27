@@ -54,9 +54,15 @@ namespace World0 {
         //get the current boss
         const BossState& currentBoss = Bosses::ActiveBoss(game);
         int boss_size = 30 * boss_scale;
+        Rectangle bossHB = Bosses::GetHitbox(currentBoss, boss_x, boss_y, boss_scale);
+        int boss_radius = Bosses::GetHitRadius(currentBoss, boss_scale);
 
         Bosses::Draw(currentBoss, boss_x, boss_y, boss_scale);
         Bosses::DrawHealthBar(currentBoss, boss_x - boss_size, boss_y + boss_size, boss_size * 2);
+
+        //visualize hitbox for testing
+        DrawRectangleLinesEx(bossHB, 1, RED);
+        DrawCircleLines(boss_x, boss_y, boss_radius, GREEN);
 
         
     }
