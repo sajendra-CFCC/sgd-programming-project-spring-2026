@@ -84,7 +84,7 @@ namespace World1 {
 
     void Draw(const GameState& game) {
                 
-        DrawText("World 1 - Enter the shapes to damage the bosses", text_x, text_y, 20, WHITE);
+        DrawText("World 1 - Enter the circle to damage the bosses", text_x, text_y, 20, WHITE);
         DrawCircleV(circ_pos, 10, BLUE);
         if (draw_spot) {
             DrawCircleV(rand_pos, 20, RED);
