@@ -45,28 +45,19 @@ namespace World6 {
         BossState& currentBoss  = Bosses::ActiveBoss(game);
 
 
-
-       
-        /*while (size < 300) {
-            size += 1;
-        }
-        */
-
         if (IsKeyDown(KEY_SPACE)) {
             currentBoss.health -= 10;
 
         }
 
-
+        //boss health
         if (currentBoss.health <= 0) {
             bool moreBosses = Bosses::AdvanceToNext(game);
             if (!moreBosses)
                 world_complete = true;
         }
-        
-        
-    
-
+       
+        //world complete
         if (world_complete)
             return WORLD_COMPLETED;
         else
@@ -75,7 +66,7 @@ namespace World6 {
        
     }
     void Draw(const GameState& game) {
-    
+        //drawing image
         Image image = LoadImage("assets/images/blackcat.jpg");     // Loads to RAM
         texture = LoadTextureFromImage(image);    // Transfers to GPU VRAM
         UnloadImage(image);

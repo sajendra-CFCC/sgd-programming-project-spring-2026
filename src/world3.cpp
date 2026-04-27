@@ -2,7 +2,6 @@
 #include "bosses.h"
 #include <iostream>
 #include <external/stb_rect_pack.h>
-#include <algorithm> // for std::min/std::max
 
 
 namespace World3 {
@@ -12,7 +11,7 @@ namespace World3 {
     int boss_scale;
     int player_x;
     int player_y;
-    int player_scale;
+    
     //Music bgm;
 
     const int player_width = 100;
@@ -20,9 +19,10 @@ namespace World3 {
 
     
     // movement parameters
-    const int playerSpeed = 1; // pixels per frame
+    const int playerSpeed = 5; // pixels per frame
 
     //ball variables and paramters
+    const int initialBallSpeed = 3;
     const int ballRadius = 10;
     Vector2 ballPosition;
     Vector2 ballSpeed;
@@ -42,14 +42,14 @@ namespace World3 {
         // initial player placement (center-ish)
         player_x = 100;
         player_y = SCREEN_HEIGHT - 100;
-        player_scale = 1;
+        
 
         //inital ball
         ballPosition.x = player_x;
         ballPosition.y = player_y;
 
-        ballSpeed.x = playerSpeed;
-        ballSpeed.y = 100;
+        ballSpeed.x = initialBallSpeed;
+        ballSpeed.y = -initialBallSpeed;
     }
 
     WorldUpdateResult Update(GameState& game) {
@@ -73,11 +73,39 @@ namespace World3 {
         //    player_y += playerSpeed;
        // }
 
-        // clamp player to screen bounds (keep whole square visible)
-        int player_size = 100 * player_scale;
-        int half = player_size / 2;
-        player_x = std::max(half, std::min(player_x, SCREEN_WIDTH - half));
-        player_y = std::max(half, std::min(player_y, SCREEN_HEIGHT - half));
+        //update position ball
+        ballPosition.x += ballSpeed.x;
+        ballPosition.y += ballSpeed.y;
+
+        //check bounds
+        if (ballPosition.y <= 0)
+        {
+            ballSpeed.y *= -1;
+        }
+
+        if (ballPosition.x <= 0) 
+        {
+            ballSpeed.x *= -1;
+        }
+
+        if (ballPosition.y >= 600)
+        {
+            ballSpeed.y *= -1;
+        }
+
+        if (ballPosition.x >= 800)
+        {
+            ballSpeed.x *= -1;
+        }
+        
+
+        //Ball and Rectangle Collision Setup
+        Rectangle playerRect = { player_x, player_y, player_width, player_height };
+        if (CheckCollisionCircleRec(ballPosition, ballRadius, playerRect)) {
+            std::cout << "COLLIDE\n";
+        }
+
+
 
         //get the current boss
         BossState& currentBoss  = Bosses::ActiveBoss(game);
