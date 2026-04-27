@@ -2,6 +2,7 @@
 #include "bosses.h"
 #include <iostream>
 
+
 namespace World4 {
     bool world_complete;
         
@@ -33,18 +34,36 @@ namespace World4 {
 
         //get the current boss
         BossState& currentBoss  = Bosses::ActiveBoss(game);
+
+
+        //Bullet stuff
+        struct bullet {
+            Vector2 Bullet_Possition ;
+            Vector2 Bullet_Velocity;
+            float radius;
+            
+        };
         
         if (IsKeyPressed(KEY_SPACE)) {
+            bullet b;
+            b.Bullet_Possition = playerPosition;
+            float speed = 500.0f;
+            b.Bullet_Velocity = { speed , 0 };
+            b.radius = 5.0;
+            DrawCircle(playerPosition.x, playerPosition.y, 50, RED); 
             currentBoss.health -= 10;
-            
+
         }
+
+        
+
 
        //Player Movement
         
-        if (IsKeyDown(KEY_RIGHT)) playerPosition.x += 3.0f;
-        if (IsKeyDown(KEY_LEFT)) playerPosition.x -= 3.0f;
-        if (IsKeyDown(KEY_UP)) playerPosition.y -= 4.0f;
-        if (IsKeyDown(KEY_DOWN)) playerPosition.y += 3.0f;
+        if (IsKeyDown(KEY_RIGHT)) playerPosition.x += 6.0f;
+        if (IsKeyDown(KEY_LEFT)) playerPosition.x -= 6.0f;
+        if (IsKeyDown(KEY_UP)) playerPosition.y -= 8.0f;
+        if (IsKeyDown(KEY_DOWN)) playerPosition.y += 6.0f;
         if (currentBoss.health <= 0) {
         if (IsKeyDown(KEY_LEFT)) playerRotation -= 5;
         if (IsKeyDown(KEY_RIGHT)) playerRotation += 5;
