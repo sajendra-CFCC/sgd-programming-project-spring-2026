@@ -12,7 +12,7 @@ namespace World3 {
     int boss_scale;
     int player_x;
     int player_y;
-    int player_scale;
+    
     //Music bgm;
 
     const int player_width = 100;
@@ -20,7 +20,7 @@ namespace World3 {
 
     
     // movement parameters
-    const int playerSpeed = 1; // pixels per frame
+    const int playerSpeed = 5; // pixels per frame
 
     //ball variables and paramters
     const int ballRadius = 10;
@@ -42,14 +42,14 @@ namespace World3 {
         // initial player placement (center-ish)
         player_x = 100;
         player_y = SCREEN_HEIGHT - 100;
-        player_scale = 1;
+        
 
         //inital ball
         ballPosition.x = player_x;
         ballPosition.y = player_y;
 
-        ballSpeed.x = playerSpeed;
-        ballSpeed.y = 100;
+        ballSpeed.x = 1;
+        ballSpeed.y = -1;
     }
 
     WorldUpdateResult Update(GameState& game) {
@@ -73,11 +73,15 @@ namespace World3 {
         //    player_y += playerSpeed;
        // }
 
-        // clamp player to screen bounds (keep whole square visible)
-        int player_size = 100 * player_scale;
-        int half = player_size / 2;
-        player_x = std::max(half, std::min(player_x, SCREEN_WIDTH - half));
-        player_y = std::max(half, std::min(player_y, SCREEN_HEIGHT - half));
+        //update position ball
+        ballPosition.x += ballSpeed.x;
+        ballPosition.y += ballSpeed.y;
+        
+
+        //Ball and Rectangle Collision Setup
+        //CheckCollisionCircleRec()
+
+
 
         //get the current boss
         BossState& currentBoss  = Bosses::ActiveBoss(game);
