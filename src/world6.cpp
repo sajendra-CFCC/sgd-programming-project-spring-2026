@@ -29,7 +29,7 @@ namespace World6 {
         boss_scale = 1;
         battery_life = 1000;
 
-        Image image = LoadImage("assets/images/kittysprite.png");     // Loads to RAM
+        Image image = LoadImage("assets/images/blackcat.jpg");     // Loads to RAM
         ImageResize(&image, 100, 100);                      // Optional manipulation
         texture = LoadTextureFromImage(image);    // Transfers to GPU VRAM
         UnloadImage(image);
@@ -75,13 +75,16 @@ namespace World6 {
         int window_x = 500;
         int window_y = 200;
 
+        int door_cat_x = 150;
+        int door_cat_y = 250;
+
         //images
-        DrawTexture (texture, door_x, door_y, WHITE);
+        DrawTexture (texture, door_cat_x, door_cat_y, WHITE);
 
         //Level Text
         DrawText("Battery Life -", text_x, text_y, 20, WHITE);
-        DrawText("E to Close Window", 500, 550, 20, WHITE);
-        DrawText("Q to Close Door", 100, 550, 20, WHITE);
+        DrawText("E to Close Window", window_x, 550, 20, WHITE);
+        DrawText("Q to Close Door", door_x, 550, 20, WHITE);
         
         //Shapes
         DrawRectangleLines(100,200, door_width, door_height, PINK);
@@ -108,6 +111,7 @@ namespace World6 {
             DrawRectangleLines(window_x, window_y, window_width, window_height, BLUE);
         }
         
+
         //get the current boss
         /*const BossState& currentBoss = Bosses::ActiveBoss(game);
         int boss_size = 30 * boss_scale;

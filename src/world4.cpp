@@ -7,8 +7,9 @@ namespace World4 {
         
 
     Vector2 playerPosition = { 400, 300 };
+    Vector2 playerSpeed = { 100.0f, 100.0f };
     int playerSize = 20;
-    
+    int playerRotation = 0;
     int boss_x;
     int boss_y;
     int boss_scale;
@@ -38,8 +39,24 @@ namespace World4 {
             
         }
 
-
+       //Player Movement
+        
+        if (IsKeyDown(KEY_RIGHT)) playerPosition.x += 3.0f;
+        if (IsKeyDown(KEY_LEFT)) playerPosition.x -= 3.0f;
+        if (IsKeyDown(KEY_UP)) playerPosition.y -= 4.0f;
+        if (IsKeyDown(KEY_DOWN)) playerPosition.y += 3.0f;
         if (currentBoss.health <= 0) {
+        if (IsKeyDown(KEY_LEFT)) playerRotation -= 5;
+        if (IsKeyDown(KEY_RIGHT)) playerRotation += 5;
+        
+          
+      
+
+      
+        
+
+
+
             bool moreBosses = Bosses::AdvanceToNext(game);
             if (!moreBosses)
                 world_complete = true;
