@@ -64,8 +64,8 @@ namespace World2 {
         camera.zoom = 1;
 
         //if ((CheckCollisionRecs(, LWallSize))){
-            onLeftwall = true;
-            pSpeed = 0;
+            //onLeftwall = true;
+            //pSpeed = 0;
     }
         
 
@@ -87,6 +87,8 @@ namespace World2 {
         game.score++;
 
         BossState& currentBoss = Bosses::ActiveBoss(game);
+
+        //CheckCollisionRecs();
 
         if (currentBoss.health <= 0) {
             bool moreBosses = Bosses::AdvanceToNext(game);
@@ -137,5 +139,8 @@ namespace World2 {
 
         DrawRectangleV(pAttackPos, pAttackRadius,Fade(RED, 0.3f));
         DrawRectangleV(pPos, pSize, GREEN);
+
+        DrawRectangleLinesEx(bossHB, 1, RED);
+        //DrawCircleLines(ePos_x, ePos_y, boss_radius, GREEN);
     }
 }
