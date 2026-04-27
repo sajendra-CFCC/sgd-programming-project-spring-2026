@@ -14,6 +14,8 @@ namespace World2 {
     float pSpeed;
     Vector2 pPos;
     Vector2 pSize;
+    Vector2 pAttackRadius;
+    Vector2 pAttackPos;
 
     //Walls
     Vector2 LWallPos;
@@ -47,6 +49,9 @@ namespace World2 {
 
         //Player
         pPos = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
+        pAttackPos.x = pPos.x - 25;
+        pAttackPos.y = pPos.y - 25;
+        pAttackRadius = { 150, 150 };
         pSize = { 100, 100 };
         Rectangle pRad = { 100, 100 };
         pSpeed = 10;
@@ -80,11 +85,22 @@ namespace World2 {
         
         game.score++;
 
-
-        if (IsKeyDown(KEY_W)) pPos.y -= 2.0f * pSpeed;
-        if (IsKeyDown(KEY_A)) pPos.x -= 2.0f * pSpeed;
-        if (IsKeyDown(KEY_S)) pPos.y += 2.0f * pSpeed;
-        if (IsKeyDown(KEY_D)) pPos.x += +2.0f * pSpeed;
+        if (IsKeyDown(KEY_W)) {
+            pPos.y -= 2.0f * pSpeed;
+            pAttackPos.y -= 2 * pSpeed;
+        }
+        if (IsKeyDown(KEY_A)) {
+            pPos.x -= 2.0f * pSpeed;
+            pAttackPos.x -= 2 * pSpeed;
+        }
+        if (IsKeyDown(KEY_S)) {
+            pPos.y += 2.0f * pSpeed;
+            pAttackPos.y += 2 * pSpeed;
+        }
+        if (IsKeyDown(KEY_D)) {
+            pPos.x += +2.0f * pSpeed;
+            pAttackPos.x += 2 * pSpeed;
+        }
 
         //if (IsKeyPressed(KEY_SPACE)) 
 
@@ -117,7 +133,9 @@ namespace World2 {
 
 
         DrawRectangleV( ePos, eSize, RED);
+        DrawRectangleV(pAttackPos, pAttackRadius,Fade(RED, 0.3f));
         DrawRectangleV(pPos, pSize, GREEN);
+        
 
         DrawText("Template World - Press SPACE to finish", text_x, text_y, 20, WHITE);
     }
