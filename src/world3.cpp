@@ -48,8 +48,8 @@ namespace World3 {
         ballPosition.x = player_x;
         ballPosition.y = player_y;
 
-        ballSpeed.x = 10;
-        ballSpeed.y = -10;
+        ballSpeed.x = playerSpeed;
+        ballSpeed.y = 100;
     }
 
     WorldUpdateResult Update(GameState& game) {
@@ -66,12 +66,12 @@ namespace World3 {
         if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) {
             player_x -= playerSpeed;
         }
-        if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) {
-            player_y -= playerSpeed;
-        }
-        if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) {
-            player_y += playerSpeed;
-        }
+        //if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) {
+          //  player_y -= playerSpeed;
+        //}
+       // if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) {
+        //    player_y += playerSpeed;
+       // }
 
         // clamp player to screen bounds (keep whole square visible)
         int player_size = 100 * player_scale;
