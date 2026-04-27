@@ -61,6 +61,7 @@ namespace World1 {
         }
         if (bull_rand1) {
             bullet_1.x = std::rand() % 801 + 0;
+            game.health -= 10;
             bull_rand1 = false;
         }
 
