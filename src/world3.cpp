@@ -14,7 +14,7 @@ namespace World3 {
     int player_y;
     int player_scale;
 
-        
+
     Music bgm;
 
     void Init() {
@@ -86,10 +86,10 @@ namespace World3 {
         DrawRectangle(player_x - player_size / 2, player_y - player_size / 2, player_size, player_size, BLUE);
 
         // show simple instructions and coords
-        DrawText("Move: Arrow keys or WASD", 10, 10, 20, LIGHTGRAY);
+        //DrawText("Move: Arrow keys or WASD", 10, 10, 20, LIGHTGRAY);
         char buf[64];
-        sprintf(buf, "Player: (%d, %d)", player_x, player_y);
-        DrawText(buf, 10, 34, 20, LIGHTGRAY);
+       // sprintf(buf, "Player: (%d, %d)", player_x, player_y);
+        //DrawText(buf, 10, 34, 20, LIGHTGRAY);
 
         // get the current boss and draw it
         const BossState& currentBoss = Bosses::ActiveBoss(game);
