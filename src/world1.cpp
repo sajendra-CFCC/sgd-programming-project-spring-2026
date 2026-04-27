@@ -8,20 +8,21 @@ namespace World1 {
     bool world_complete;
     bool spawn_rand;
     bool draw_spot;
+    bool bull_rand1;
     int text_x;
     int text_y;
     int boss_x;
     int boss_y;
     int boss_scale;
-    bool caught_spot;
     Vector2 circ_pos;
     Vector2 rand_pos;
+    Rectangle bullet_1;
 
     void Init() {
         world_complete = false;
         spawn_rand = false;
         draw_spot = true;
-        caught_spot = false;
+        bull_rand1 = false;
         text_x = 145;
         text_y = 550;
         boss_x = SCREEN_WIDTH / 2;
@@ -32,6 +33,10 @@ namespace World1 {
         rand_pos.y = SCREEN_HEIGHT / 2 + 200;
         circ_pos.x = SCREEN_WIDTH / 2;
         circ_pos.y = SCREEN_HEIGHT / 2;
+        bullet_1.x = 350;
+        bullet_1.y = 20;
+        bullet_1.width = 25;
+        bullet_1.height = 25;
     }
 
     WorldUpdateResult Update(GameState& game) {
@@ -53,6 +58,10 @@ namespace World1 {
             rand_pos.x = std::rand() % 801 + 0;
             rand_pos.y = std::rand() % 401 + 200;
             spawn_rand = false;
+        }
+        if (bull_rand1) {
+            bullet_1.x = std::rand() % 801 + 0;
+            bull_rand1 = false;
         }
 
         if (IsKeyDown(KEY_LEFT)) {
@@ -86,11 +95,15 @@ namespace World1 {
                 
         DrawText("World 1 - Enter the circle to damage the bosses", text_x, text_y, 20, WHITE);
         DrawCircleV(circ_pos, 10, BLUE);
+        DrawRectangleRec(bullet_1, ORANGE);
         if (draw_spot) {
             DrawCircleV(rand_pos, 20, RED);
         }
         if (CheckCollisionCircles(circ_pos, 10, rand_pos, 20)) {
             spawn_rand = true;
+        }
+        if (CheckCollisionCircleRec(circ_pos, 10, bullet_1)) {
+            bull_rand1 = true;
         }
         //get the current boss
         const BossState& currentBoss = Bosses::ActiveBoss(game);
