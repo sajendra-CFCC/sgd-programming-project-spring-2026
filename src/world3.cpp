@@ -76,10 +76,31 @@ namespace World3 {
         //update position ball
         ballPosition.x += ballSpeed.x;
         ballPosition.y += ballSpeed.y;
+
+        //check bounds
+        if (ballPosition.y <= 0)
+        {
+            ballSpeed.y *= -1;
+        }
+
+        if (ballPosition.x <= 0) 
+        {
+            ballSpeed.x *= -1;
+        }
+
+        if (ballPosition.y >= 600)
+        {
+            ballSpeed.y *= -1;
+        }
+
+        if (ballPosition.x >= 800)
+        {
+            ballSpeed.x *= -1;
+        }
         
 
         //Ball and Rectangle Collision Setup
-        //CheckCollisionCircleRec()
+        //CheckCollisionCircleRec(ballPosition.x,ballRadius, )
 
 
 
