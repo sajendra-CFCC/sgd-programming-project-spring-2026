@@ -2,7 +2,6 @@
 #include "bosses.h"
 #include <iostream>
 #include <external/stb_rect_pack.h>
-#include <algorithm> // for std::min/std::max
 
 
 namespace World3 {
@@ -23,6 +22,7 @@ namespace World3 {
     const int playerSpeed = 5; // pixels per frame
 
     //ball variables and paramters
+    const int initialBallSpeed = 3;
     const int ballRadius = 10;
     Vector2 ballPosition;
     Vector2 ballSpeed;
@@ -48,8 +48,8 @@ namespace World3 {
         ballPosition.x = player_x;
         ballPosition.y = player_y;
 
-        ballSpeed.x = 1;
-        ballSpeed.y = -1;
+        ballSpeed.x = initialBallSpeed;
+        ballSpeed.y = -initialBallSpeed;
     }
 
     WorldUpdateResult Update(GameState& game) {
@@ -100,7 +100,10 @@ namespace World3 {
         
 
         //Ball and Rectangle Collision Setup
-        //CheckCollisionCircleRec(ballPosition.x,ballRadius, )
+        Rectangle playerRect = { player_x, player_y, player_width, player_height };
+        if (CheckCollisionCircleRec(ballPosition, ballRadius, playerRect)) {
+            std::cout << "COLLIDE\n";
+        }
 
 
 
