@@ -63,8 +63,9 @@ namespace World6 {
             if (!moreBosses)
                 world_complete = true;
         }
-
-            size += .001;
+        
+        
+    
 
         if (world_complete)
             return WORLD_COMPLETED;
@@ -101,7 +102,7 @@ namespace World6 {
 
         int window_cat_x;
         int windo_cat_y;
-
+        size += .001;
 
 
         //images
@@ -123,6 +124,7 @@ namespace World6 {
         //door
         if (IsKeyDown(KEY_Q)&& battery_life > 0) {
             battery_life-= 1;
+            size = .1;
             DrawRectangle(door_x, door_y, door_width, door_height, PINK);
         }
         else if (IsKeyReleased(KEY_Q)) {
