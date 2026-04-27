@@ -76,14 +76,22 @@ namespace World2 {
         
     };
     //Boss stats
-    Vector2 eSize = { 100, 100};
     Vector2 ePos = { 75, 150 };
+    float eSize = 1;
 
     //player info
 
     WorldUpdateResult Update(GameState& game) {
         
         game.score++;
+
+        BossState& currentBoss = Bosses::ActiveBoss(game);
+
+        if (currentBoss.health <= 0) {
+            bool moreBosses = Bosses::AdvanceToNext(game);
+            if (!moreBosses)
+                world_complete = true;
+        }
 
         if (IsKeyDown(KEY_W)) {
             pPos.y -= 2.0f * pSpeed;
@@ -131,8 +139,14 @@ namespace World2 {
 
         DrawRectangleV(LWallPos, LWallSize, GRAY);
 
+        const BossState& currentBoss = Bosses::ActiveBoss(game);
+        int boss_size = 30 * eSize;
+        Rectangle bossHB = Bosses::GetHitbox(currentBoss, ePos.x, ePos.y, eSize);
+        int boss_radius = Bosses::GetHitRadius(currentBoss, eSize);
 
-        DrawRectangleV( ePos, eSize, RED);
+        Bosses::Draw(currentBoss, ePos.x, ePos.y, eSize);
+        Bosses::DrawHealthBar(currentBoss, ePos.x - eSize, ePos.y + eSize, eSize * 2);
+
         DrawRectangleV(pAttackPos, pAttackRadius,Fade(RED, 0.3f));
         DrawRectangleV(pPos, pSize, GREEN);
         
