@@ -51,7 +51,7 @@ namespace World1 {
 
         if (spawn_rand) {
             rand_pos.x = std::rand() % 801 + 0;
-            rand_pos.y = std::rand() % 601 + 0;
+            rand_pos.y = std::rand() % 401 + 200;
             spawn_rand = false;
         }
 
