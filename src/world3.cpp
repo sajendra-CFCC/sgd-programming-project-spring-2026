@@ -103,6 +103,8 @@ namespace World3 {
         Rectangle playerRect = { player_x, player_y, player_width, player_height };
         if (CheckCollisionCircleRec(ballPosition, ballRadius, playerRect)) {
             std::cout << "COLLIDE\n";
+            ballSpeed.y *= -1;
+            ballSpeed.x *= -0.95;
         }
 
 
