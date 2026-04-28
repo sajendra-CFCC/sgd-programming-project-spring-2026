@@ -1,9 +1,15 @@
 #include "world5.h"
+#include "bosses.h"
 // for whatever reason main.cpp has an error on the #include "raygui.h" on my system but it works fine anyway. Thank you VSCode, very cool!
 namespace World5 {
     bool world_complete = false;
     int PlayerX = 400;
     int PlayerY = 300;
+    Vector2 MouseLoc = {
+        0,
+        0
+    };
+    Texture2D TestDirTexture = LoadTexture("assets/TestDir.png");
 
     void Init() {
         world_complete = false;
@@ -18,24 +24,28 @@ namespace World5 {
             world_complete = true;
         }
 
-        if (IsKeyDown(KEY_LEFT))
-            PlayerX--;
-        if (IsKeyDown(KEY_RIGHT))
-            PlayerX++;
-        if (IsKeyDown(KEY_UP))
-            PlayerY--;
-        if (IsKeyDown(KEY_DOWN))
-            PlayerY++;
+        BossState& currentBoss = Bosses::ActiveBoss(game);
 
-        if (world_complete)
+        if (currentBoss.health <= 0) {
+            bool moreBosses = Bosses::AdvanceToNext(game);
+            if (!moreBosses) {
+                world_complete = true;
+            }
+        }
+
+        if (world_complete) {
             return WORLD_COMPLETED;
-        else
+        } else {
             return WORLD_IN_PROGRESS;
+        }
     }
 
     void Draw() {
-        DrawText(TextFormat("Press ESC to finish / Press ARROWS to move"), 320, 10, 20, WHITE);
-        DrawText(TextFormat("Survive to gain SCORE"), 564, 40, 20, WHITE);
-        DrawCircle(PlayerX, PlayerY, 20, BLUE);
+        DrawText(TextFormat("Press ESC to finish / Use mouse to move"), 369, 40, 20, WHITE);
+        DrawText(TextFormat("Survive to gain SCORE"), 564, 70, 20, WHITE);
+        MouseLoc = GetMousePosition(); //why
+        DrawRectangleV({MouseLoc.x - 10, MouseLoc.y - 10}, {20, 20}, RED);
+        DrawCircleV(MouseLoc, 20, BLUE);
+        DrawTextureV(TestDirTexture, {0,0}, WHITE);
     }
 }
