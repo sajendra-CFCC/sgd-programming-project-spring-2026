@@ -45,6 +45,7 @@ namespace World2 {
     float wallSlideGravity;
     int jumpCount;
     int maxJumps;
+    float pushSpeed;
     bool isWallSliding;
     
    /* bool started = false;
@@ -106,6 +107,7 @@ namespace World2 {
         gravity = 0.5f;
         jumpForce = 15.0f;
         wallPushForce = 663.0f;
+        pushSpeed = 10;
         wallTime = 2.0f;
         stickTime = 3.0f;
         wallSlideGravity = 10.0f;
@@ -215,12 +217,12 @@ namespace World2 {
 
         if (touchingLeft && IsKeyPressed(KEY_SPACE))
         {
-            pVel.y = jumpForce;
+            pVel.y = jumpForce += GetFrameTime();
             pVel.x = wallPushForce;
         }
         else if (touchingRight && IsKeyPressed(KEY_SPACE))
         {
-            pVel.y = jumpForce;
+            pVel.y = jumpForce += GetFrameTime();
             pVel.x = -wallPushForce;
         }
         else
