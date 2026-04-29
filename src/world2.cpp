@@ -82,7 +82,7 @@ namespace World2 {
         pVel = { 0, 0 };
         pAttackPos.x = pPos.x - 35;
         pAttackPos.y = pPos.y - 35;
-        pAttackRadius = { 100, 100 };
+        pAttackRadius = { 225, 225 };
         pRadiusVis = 0.0f;
         pSize = { 100, 100 };
         pRad = { 100, 100 };
@@ -291,7 +291,7 @@ namespace World2 {
         Bosses::Draw(currentBoss, ePos_x, ePos_y, eSize);
         Bosses::DrawHealthBar(currentBoss, ePos_x - eSize, ePos_y + eSize, eSize * 2);
 
-        DrawRectangleV(pAttackPos, pAttackRadius,Fade(RED, pRadiusVis));
+        DrawRectangleV(pAttackPos, pAttackRadius, Fade(RED, pRadiusVis));
        // DrawRectangleV(pPos, pSize, GREEN);
 
         DrawRectangleLinesEx(bossHB, 1, RED);
