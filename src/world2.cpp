@@ -90,9 +90,9 @@ namespace World2 {
 
         //Jumping logic
         gravity = 0.5f;
-        jumpForce = -10.0f;
-        wallPushForce = 50.0f;
-        wallTime = 20.0f;
+        jumpForce = -15.0f;
+        wallPushForce = 663.0f;
+        wallTime = -5.0f;
         stickTime = 3.0f;
         wallSlideGravity = 10.0f;
         isWallSliding = false;
@@ -101,12 +101,11 @@ namespace World2 {
         //walljumpY = -8.0f;
 
         //Wall and floor shapes
-        lWall = { 0 , 0, 40, 400};
-        rWall = { 790, 100, 40, 400 };
-        floor = { 100, 440, 700, 40 };
+        lWall = { 0 , -450, 40, 1000};
+        rWall = { 790, -450, 40, 1000 };
+        floor = { 0, 440, 800, 40 };
 
-        touchingLeft = CheckCollisionRecs(pRec, lWall);
-        touchingRight = CheckCollisionRecs(pRec, rWall);
+
         //Rectangle LWallSize = { 100, 5000 };
 
 
@@ -139,6 +138,9 @@ namespace World2 {
         camera.target.y = pPos.y ;
         game.score++;
         pVel.y += gravity;
+
+        touchingLeft = CheckCollisionRecs(pRec, lWall);
+        touchingRight = CheckCollisionRecs(pRec, rWall);
 
         //Adding velocity to position
         pPos.x += pVel.x;
@@ -203,8 +205,36 @@ namespace World2 {
         }
         */
 
+
+
+        if (touchingLeft || touchingRight)
+        {
+            pSpeed = 0;
+            gravity = 0.6;
+            DrawText("Touching Wall", 100, 100, 20, WHITE);
+        }
+
+        if (touchingLeft && IsKeyPressed(KEY_SPACE))
+        {
+            pVel.y = jumpForce;
+            pVel.x = wallPushForce;
+        }
+        else if (touchingRight && IsKeyPressed(KEY_SPACE))
+        {
+            pVel.y = jumpForce;
+            pVel.x = -wallPushForce;
+        }
+        else
+        {
+            isWallSliding = false;
+            wallTime = 0;
+        }
+
+
+
         bool onFloor = CheckCollisionRecs(pRec, floor);
         if (onFloor) {
+            pSpeed = 10;
             pVel.y = 0;
             pPos.y = floor.y - pRec.height;
             pAttackPos.y = floor.y - pRec.height - 35;
@@ -241,30 +271,6 @@ namespace World2 {
 
             }
         }
-        
-        if (touchingLeft || touchingRight)
-        {
-            DrawText("Touching Wall", 100, 100, 20, WHITE);
-        }
-
-        if (touchingLeft && IsKeyPressed(KEY_SPACE))
-        {
-            pVel.y = jumpForce;
-            pVel.x = wallPushForce;
-        }
-        else if (touchingRight && IsKeyPressed(KEY_SPACE))
-        {
-            pVel.y = jumpForce;
-            pVel.x = -wallPushForce;
-        }
-        else
-        {
-            isWallSliding = false;
-            wallTime = 0;
-        }
-
-
-
 
 
         if (world_complete)
