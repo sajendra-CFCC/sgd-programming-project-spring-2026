@@ -55,6 +55,8 @@ namespace World3 {
         ballPosition.y = 10;
         ballSpeed.x = 0;
         ballSpeed.y = -3;
+
+        std::cout << "Random num: " << GetRandomValue(1, 100) << std::endl;
     }
 
     WorldUpdateResult Update(GameState& game) {
@@ -121,9 +123,7 @@ namespace World3 {
         if (CheckCollisionCircleRec(ballPosition, ballRadius, BossBox)) {
             std::cout << "HIT!\n";
             currentBoss.health -= 10;
-
             ballPosition = { 10, 10 };
-            ballSpeed = { initialBallSpeed, initialBallSpeed };
         }
 
         if (currentBoss.health <= 0) {
