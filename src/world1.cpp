@@ -46,6 +46,7 @@ namespace World1 {
 
         bullet_1.y++;
         bullet_1.y++;
+        bullet_1.y++;
 
         if (bullet_1.y >= 590) {
             bullet_1.x = std::rand() % 801 + 0;
