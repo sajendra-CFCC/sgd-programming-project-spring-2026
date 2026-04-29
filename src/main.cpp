@@ -40,7 +40,7 @@ void DrawCorrectWorld(GameMode gm, GameState& gs);
 //helper functions
 void DrawWorldOverlay(GameState& gs);
 void WorldTimerUpdate(GameState& gs, GameMode& gm);
-void ChangeMusicTrack(Music& currentTrack, const Music& newTrack);
+void ChangeMusicTrack(Music& currentTrack, const Music& newTrack, bool startPlaying);
 
 
 int main() {
@@ -168,11 +168,10 @@ void UpdateCorrectWorld(GameMode &gm, GameState &gs) {
             ResumeMusicStream(gs.currentTrack);
         else
             PauseMusicStream(gs.currentTrack);
-
-
     }
     
-    if (pressedESC) ChangeMusicTrack(gs.currentTrack, gs.menuTrack); //a little hack to catch case of escape pressed and switch music back
+    if (pressedESC) ChangeMusicTrack(gs.currentTrack, gs.menuTrack, gs.musicPlaying); //a little hack to catch case of escape pressed and switch music back
+    
 
     //game mode specific updates and switching game modes
     switch (gm) {
@@ -183,7 +182,7 @@ void UpdateCorrectWorld(GameMode &gm, GameState &gs) {
             InitCorrectWorld(gm);
             if (gm >= GAME_MODE_WORLD_0) { //switching from overworld to game world
                 gs.worldTimeRemaining = SECONDS_PER_LEVEL; //set up initial timer for each level
-                ChangeMusicTrack(gs.currentTrack, gs.worldTrack);
+                ChangeMusicTrack(gs.currentTrack, gs.worldTrack, gs.musicPlaying);
             }
             break;
         case GAME_MODE_WORLD_0:
@@ -238,12 +237,14 @@ void WorldTimerUpdate(GameState& gs, GameMode& gm) {
     gs.worldTimeRemaining -= GetFrameTime();
     if (gs.worldTimeRemaining <= 0) {
         gm = GAME_MODE_OVERWORLD;
-        ChangeMusicTrack(gs.currentTrack, gs.menuTrack);
+        ChangeMusicTrack(gs.currentTrack, gs.menuTrack, gs.musicPlaying);
     }
 }
 
-void ChangeMusicTrack(Music& currentTrack, const Music &newTrack) {
+void ChangeMusicTrack(Music& currentTrack, const Music &newTrack, bool startPlaying) {
     StopMusicStream(currentTrack);
     currentTrack = newTrack;
     PlayMusicStream(currentTrack);
+    if (!startPlaying)
+        PauseMusicStream(currentTrack);
 }
