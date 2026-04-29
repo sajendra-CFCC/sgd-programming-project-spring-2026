@@ -111,7 +111,7 @@ namespace World3 {
         if (CheckCollisionCircleRec(ballPosition, ballRadius, playerRect)) {
             std::cout << "COLLIDE\n";
             ballSpeed.y *= -1;
-            ballSpeed.x *= -0.95;
+            ballSpeed.x = GetRandomValue(-5, 5);
         }
 
 
