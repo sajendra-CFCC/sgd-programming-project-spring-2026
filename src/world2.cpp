@@ -74,9 +74,9 @@ namespace World2 {
         //wallJumpX = 10.0f;
         //walljumpY = -8.0f;
 
+        //Wall and floor shapes
         Rectangle lWall = { 75, 100, 40, 400 };
         Rectangle rWall = { 220, 100, 40, 400 };
-
         Rectangle floor = { 100, 440, 700, 40 };
 
         bool touchingLeft = CheckCollisionRecs(pRec, lWall);
@@ -145,7 +145,7 @@ namespace World2 {
             pPos.x += +2.0f * pSpeed;
             pAttackPos.x += 2 * pSpeed;
         }
-        */
+   
         //if (IsKeyPressed(KEY_SPACE)) 
         if (IsKeyDown(KEY_A)) pPos.x -= pSpeed;
         else if (IsKeyDown(KEY_D)) pPos.x += pSpeed;
@@ -170,7 +170,7 @@ namespace World2 {
         }
         */
 
-        //PLACEHOLDER
+        //Adding velocity to 
 
 
 
