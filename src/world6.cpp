@@ -72,7 +72,7 @@ namespace World6 {
         Image image = LoadImage("assets/images/blackcat.jpg");     // Loads to RAM
         texture = LoadTextureFromImage(image);    // Transfers to GPU VRAM
         UnloadImage(image);
-        Vector2 CatPosition = { 90 , 200 };
+        Vector2 CatPosition = { 80 , 250 };
 
         DrawTextureEx(texture, CatPosition, 0, size*2, RAYWHITE);
       
