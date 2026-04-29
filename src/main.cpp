@@ -40,6 +40,7 @@ void DrawCorrectWorld(GameMode gm, GameState& gs);
 //helper functions
 void DrawWorldOverlay(GameState& gs);
 void WorldTimerUpdate(GameState& gs, GameMode& gm);
+void ChangeMusicTrack(Music& currentTrack, const Music& newTrack);
 
 
 int main() {
@@ -118,6 +119,7 @@ void InitCorrectWorld(GameMode gm) {
             World6::Init();
             break;
     }
+
 }
 
 void DrawCorrectWorld(GameMode gm, GameState& gs) {
@@ -157,7 +159,8 @@ void DrawCorrectWorld(GameMode gm, GameState& gs) {
 
 void UpdateCorrectWorld(GameMode &gm, GameState &gs) {
     //some key press stuff that is handled the same no matter game mode    
-    bool pressedESC = IsKeyPressed(KEY_ESCAPE);
+    bool pressedESC = IsKeyPressed(KEY_ESCAPE); 
+    
     //mute / unmute music
     if (IsKeyPressed(KEY_M)) {
         gs.musicPlaying = !gs.musicPlaying; //flip values on every key press
@@ -165,15 +168,23 @@ void UpdateCorrectWorld(GameMode &gm, GameState &gs) {
             ResumeMusicStream(gs.currentTrack);
         else
             PauseMusicStream(gs.currentTrack);
+
+
     }
     
+    if (pressedESC) ChangeMusicTrack(gs.currentTrack, gs.menuTrack); //a little hack to catch case of escape pressed and switch music back
+
     //game mode specific updates and switching game modes
     switch (gm) {
         case GAME_MODE_OVERWORLD:
-            gm = (GameMode) UpdateOverworld(gs);
-            InitCorrectWorld(gm);
-            gs.worldTimeRemaining = SECONDS_PER_LEVEL; //set up initial timer for each level
             if (pressedESC) exit(0);
+
+            gm = (GameMode) UpdateOverworld(gs); //hack, should clean up
+            InitCorrectWorld(gm);
+            if (gm >= GAME_MODE_WORLD_0) { //switching from overworld to game world
+                gs.worldTimeRemaining = SECONDS_PER_LEVEL; //set up initial timer for each level
+                ChangeMusicTrack(gs.currentTrack, gs.worldTrack);
+            }
             break;
         case GAME_MODE_WORLD_0:
             if (World0::Update(gs) == WORLD_COMPLETED || pressedESC)
@@ -225,6 +236,14 @@ void UpdateCorrectWorld(GameMode &gm, GameState &gs) {
 
 void WorldTimerUpdate(GameState& gs, GameMode& gm) {
     gs.worldTimeRemaining -= GetFrameTime();
-    if (gs.worldTimeRemaining <= 0)
+    if (gs.worldTimeRemaining <= 0) {
         gm = GAME_MODE_OVERWORLD;
+        ChangeMusicTrack(gs.currentTrack, gs.menuTrack);
+    }
+}
+
+void ChangeMusicTrack(Music& currentTrack, const Music &newTrack) {
+    StopMusicStream(currentTrack);
+    currentTrack = newTrack;
+    PlayMusicStream(currentTrack);
 }
