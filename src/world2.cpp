@@ -19,6 +19,8 @@ namespace World2 {
     Vector2 pAttackPos;
     Vector2 pVel;
 
+    Rectangle pRad;
+
     //Walls
     Vector2 LWallPos;
     Vector2 LWallSize;
@@ -63,30 +65,30 @@ namespace World2 {
         text_x = 100;
         text_y = 100;
 
+        //Camera
+        camera.offset = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
+        camera.rotation = 0;
+        camera.zoom = 1;
+
         //Player
-        Vector2 pPos = { 120, 200 };
+        pPos = { 120, 200 };
         pVel = { 0, 0 };
-        Rectangle pRec = { pPos.x, pPos.y, 30, 30 };
+        pRec = { pPos.x, pPos.y, 30, 30 };
         pSpeed = 10;
         pVel = { 0, 0 };
-        pAttackPos.x = pPos.x - 25;
-        pAttackPos.y = pPos.y - 25;
-        pAttackRadius = { 150, 150 };
-        pSize = { 100, 100 };
-        Rectangle pRad = { 100, 100 };
-
-        pPos.x += pVel.x;
-        pPos.y += pVel.y;
-        pRec.x = pPos.x;
-        pRec.y = pPos.y;
+       // pAttackPos.x = pPos.x - 25;
+       // pAttackPos.y = pPos.y - 25;
+       // pAttackRadius = { 150, 150 };
+       // pSize = { 100, 100 };
+       // pRad = { 100, 100 };
 
         //wallJumpX = 10.0f;
         //walljumpY = -8.0f;
 
         //Wall and floor shapes
-        Rectangle lWall = { 75, 100, 40, 400 };
-        Rectangle rWall = { 220, 100, 40, 400 };
-        Rectangle floor = { 100, 440, 700, 40 };
+        lWall = { 75, 100, 40, 400 };
+        rWall = { 220, 100, 40, 400 };
+        floor = { 100, 440, 700, 40 };
 
         bool touchingLeft = CheckCollisionRecs(pRec, lWall);
         bool touchingRight = CheckCollisionRecs(pRec, rWall);
@@ -101,20 +103,14 @@ namespace World2 {
         isWallSliding = false;
 
 
-        camera.offset = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
-        camera.rotation = 0;
-        camera.zoom = 1;
+
 
         //if ((CheckCollisionRecs(, LWallSize))){
             //onLeftwall = true;
             //pSpeed = 0;
 
 
-        //Adding velocity to position
-        pPos.x += pVel.x;
-        pPos.y += pVel.y;
-        pRec.x = pPos.x;
-        pRec.y = pPos.y;
+
     }
         
 
@@ -132,9 +128,16 @@ namespace World2 {
     //player info
 
     WorldUpdateResult Update(GameState& game) {
-        
+        camera.target = { pPos.x + pSpeed, pPos.y + pSpeed };
+
         game.score++;
         pVel.y += gravity;
+
+        //Adding velocity to position
+        pPos.x += pVel.x;
+        pPos.y += pVel.y;
+        pRec.x = pPos.x;
+        pRec.y = pPos.y;
 
         BossState& currentBoss = Bosses::ActiveBoss(game);
 
@@ -146,6 +149,8 @@ namespace World2 {
                 world_complete = true;
         }
 
+
+        //MOVEMENT
         /*if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
             pPos.y -= 2.0f * pSpeed;
             pAttackPos.y -= 2 * pSpeed;
@@ -162,13 +167,9 @@ namespace World2 {
             pPos.x += +2.0f * pSpeed;
             pAttackPos.x += 2 * pSpeed;
         }
-   
-        //if (IsKeyPressed(KEY_SPACE)) 
-        if (IsKeyDown(KEY_A)) pPos.x -= pSpeed;
-        else if (IsKeyDown(KEY_D)) pPos.x += pSpeed;
         else pVel.x = 0;
 
-        camera.target = { pPos.x + pSpeed, pPos.y + pSpeed };
+        
 
 
        /* bool onFloor = CheckCollisionRecs(pRec, floor);
