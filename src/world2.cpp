@@ -282,7 +282,7 @@ namespace World2 {
         Bosses::Draw(currentBoss, ePos_x, ePos_y, eSize);
         Bosses::DrawHealthBar(currentBoss, ePos_x - eSize, ePos_y + eSize, eSize * 2);
 
-        DrawRectangleV(pAttackPos, pAttackRadius,Fade(RED, 0.3f));
+        DrawRectangleV(pAttackPos, pAttackRadius,Fade(RED, 0.0f));
        // DrawRectangleV(pPos, pSize, GREEN);
 
         DrawRectangleLinesEx(bossHB, 1, RED);
