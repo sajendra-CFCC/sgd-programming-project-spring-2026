@@ -14,6 +14,13 @@ namespace World4 {
     int boss_x;
     int boss_y;
     int boss_scale;
+    static int shootMissle = 0;
+    Vector2 bulletPos = { 0,0 };
+    bool bulletActive = false;
+
+   
+    
+
 
     void Init() {
         //set up anything you need for your game / world here
@@ -68,7 +75,12 @@ namespace World4 {
         if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) playerRotation -= 5;
         if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) playerRotation += 5;
         
-          
+        if (IsKeyDown(KEY_SPACE)) shootMissle = 1;
+
+        
+
+
+
       
 
       
