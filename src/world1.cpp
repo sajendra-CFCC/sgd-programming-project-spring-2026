@@ -44,6 +44,14 @@ namespace World1 {
 
         BossState& currentBoss = Bosses::ActiveBoss(game);
 
+        bullet_1.y++;
+        bullet_1.y++;
+
+        if (bullet_1.y >= 590) {
+            bullet_1.x = std::rand() % 801 + 0;
+            bullet_1.y = 20;
+        }
+
         if (spawn_rand) {
             currentBoss.health -= 50;
         }
