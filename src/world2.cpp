@@ -16,7 +16,7 @@ namespace World2 {
     Vector2 pSize;
     Vector2 pAttackRadius;
     Vector2 pAttackPos;
-
+    Vector2 pVel;
     //Walls
     Vector2 LWallPos;
     Vector2 LWallSize;
@@ -25,7 +25,15 @@ namespace World2 {
 
 
     //Jump logic
-    bool started = false;
+    float gravity;
+    float jumpForce;
+    float wallPushForce;
+    float wallTime;
+    float stickTime;
+    float wallSlideGravity;
+    bool isWallSliding;
+    
+   /* bool started = false;
     bool onLeftwall;
     bool onRightwall;
     float wallJumpX;
@@ -34,7 +42,7 @@ namespace World2 {
     float gravity;
     bool canJump;
     float jumpSpeed;
-    
+    */
 
     Camera2D camera = { 0 };
 
@@ -48,16 +56,40 @@ namespace World2 {
         Rectangle LWallSize = { 100, 5000 };
 
         //Player
-        pPos = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
+        Vector2 pPos = { 120, 200 };
+        Rectangle pRec = { pPos.x, pPos.y, 30, 30 };
         pAttackPos.x = pPos.x - 25;
         pAttackPos.y = pPos.y - 25;
         pAttackRadius = { 150, 150 };
         pSize = { 100, 100 };
         Rectangle pRad = { 100, 100 };
         pSpeed = 10;
-        wallJumpX = 10.0f;
-        walljumpY = -8.0f;
+        pVel = { 0, 0 };
+
+        pPos.x += pVel.x;
+        pPos.y += pVel.y;
+        pRec.x = pPos.x;
+        pRec.y = pPos.y;
+
+        //wallJumpX = 10.0f;
+        //walljumpY = -8.0f;
+
+        //Wall and floor shapes
+        Rectangle lWall = { 75, 100, 40, 400 };
+        Rectangle rWall = { 220, 100, 40, 400 };
+        Rectangle floor = { 100, 440, 700, 40 };
+
+        bool touchingLeft = CheckCollisionRecs(pRec, lWall);
+        bool touchingRight = CheckCollisionRecs(pRec, rWall);
+
         gravity = 1.0f;
+        jumpForce = -10.0f;
+        wallPushForce = 50.0f;
+        wallTime = 20.0f;
+        stickTime = 3.0f;
+        wallSlideGravity = 10.0f;
+        isWallSliding = false;
+
 
         camera.offset = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
         camera.rotation = 0;
@@ -85,6 +117,7 @@ namespace World2 {
     WorldUpdateResult Update(GameState& game) {
         
         game.score++;
+        pVel.y += gravity;
 
         BossState& currentBoss = Bosses::ActiveBoss(game);
 
@@ -96,26 +129,52 @@ namespace World2 {
                 world_complete = true;
         }
 
-        if (IsKeyDown(KEY_W)) {
+        if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
             pPos.y -= 2.0f * pSpeed;
             pAttackPos.y -= 2 * pSpeed;
         }
-        if (IsKeyDown(KEY_A)) {
+        if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) {
             pPos.x -= 2.0f * pSpeed;
             pAttackPos.x -= 2 * pSpeed;
         }
-        if (IsKeyDown(KEY_S)) {
+        if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) {
             pPos.y += 2.0f * pSpeed;
             pAttackPos.y += 2 * pSpeed;
         }
-        if (IsKeyDown(KEY_D)) {
+        if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
             pPos.x += +2.0f * pSpeed;
             pAttackPos.x += 2 * pSpeed;
         }
-
+   
         //if (IsKeyPressed(KEY_SPACE)) 
+        if (IsKeyDown(KEY_A)) pPos.x -= pSpeed;
+        else if (IsKeyDown(KEY_D)) pPos.x += pSpeed;
+        else pVel.x = 0;
 
         camera.target = { pPos.x + pSpeed, pPos.y + pSpeed };
+
+
+       /* bool onFloor = CheckCollisionRecs(pRec, floor);
+        if (onFloor) {
+            pVel.y = 0;
+            pPos.y = floor.y - pRec.height;
+
+            //Jumping on floor
+            if (IsKeyPressed(KEY_SPACE)) {
+                pVel.y = jumpForce;
+            }
+        }
+        else {
+            // Only apply gravity if NOT on the floor
+            pVel.y += gravity;
+        }
+        */
+
+        //Adding velocity to 
+
+
+
+
 
         if (world_complete)
             return WORLD_COMPLETED;
@@ -142,5 +201,6 @@ namespace World2 {
 
         DrawRectangleLinesEx(bossHB, 1, RED);
         //DrawCircleLines(ePos_x, ePos_y, boss_radius, GREEN);
+        EndMode2D();
     }
 }

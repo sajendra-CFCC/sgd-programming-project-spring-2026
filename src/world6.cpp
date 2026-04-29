@@ -45,27 +45,19 @@ namespace World6 {
         BossState& currentBoss  = Bosses::ActiveBoss(game);
 
 
-
-       
-        /*while (size < 300) {
-            size += 1;
-        }
-        */
-
         if (IsKeyDown(KEY_SPACE)) {
             currentBoss.health -= 10;
 
         }
 
-
+        //boss health
         if (currentBoss.health <= 0) {
             bool moreBosses = Bosses::AdvanceToNext(game);
             if (!moreBosses)
                 world_complete = true;
         }
-
-            size += .001;
-
+       
+        //world complete
         if (world_complete)
             return WORLD_COMPLETED;
         else
@@ -74,7 +66,7 @@ namespace World6 {
        
     }
     void Draw(const GameState& game) {
-    
+        //drawing image
         Image image = LoadImage("assets/images/blackcat.jpg");     // Loads to RAM
         texture = LoadTextureFromImage(image);    // Transfers to GPU VRAM
         UnloadImage(image);
@@ -101,7 +93,7 @@ namespace World6 {
 
         int window_cat_x;
         int windo_cat_y;
-
+        size += .001;
 
 
         //images
@@ -123,6 +115,7 @@ namespace World6 {
         //door
         if (IsKeyDown(KEY_Q)&& battery_life > 0) {
             battery_life-= 1;
+            size = .1;
             DrawRectangle(door_x, door_y, door_width, door_height, PINK);
         }
         else if (IsKeyReleased(KEY_Q)) {
