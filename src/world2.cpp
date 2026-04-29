@@ -19,6 +19,7 @@ namespace World2 {
     Vector2 pSize;
     Vector2 pAttackRadius;
     Vector2 pAttackPos;
+    float pRadiusVis;
     Vector2 pVel;
 
     Rectangle pRad;
@@ -81,6 +82,7 @@ namespace World2 {
         pAttackPos.x = pPos.x - 35;
         pAttackPos.y = pPos.y - 35;
         pAttackRadius = { 100, 100 };
+        pRadiusVis = 0.0f;
         pSize = { 100, 100 };
         pRad = { 100, 100 };
 
@@ -125,8 +127,8 @@ namespace World2 {
         
     };
     //Boss stats
-    int ePos_x = 75;
-    int ePos_y = 100;
+    int ePos_x = 300;
+    int ePos_y = 350;
     int eSize = 1;
 
     //player info
@@ -174,6 +176,11 @@ namespace World2 {
             pAttackPos.x += 2 * pSpeed;
         }
         else pVel.x = 0;
+
+        if (IsMouseButtonPressed) {
+            pRadiusVis = 0.3f;
+        }
+        else pRadiusVis = 0.0f;
 
         
 
