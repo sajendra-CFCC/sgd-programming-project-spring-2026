@@ -68,19 +68,20 @@ namespace World2 {
         text_y = 100;
 
         //Camera
-        camera.offset = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
+        camera.offset = { (float)GetScreenWidth() / 2 - 420, (float)GetScreenHeight() / 2 };
+        //camera.target = { pPos.x + pSpeed, pPos.y + pSpeed };
         camera.rotation = 0;
         camera.zoom = 1;
 
         //Player
-        pPos = { 120, 200 };
+        pPos = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
         pVel = { 0, 0 };
-        pRec = { pPos.x, pPos.y, 30, 30 };
+        pRec = { pPos.x, pPos.y, 150, 150 };
         pSpeed = 10;
         pVel = { 0, 0 };
         pAttackPos.x = pPos.x - 25;
         pAttackPos.y = pPos.y - 25;
-        pAttackRadius = { 100, 100 };
+        pAttackRadius = { 150, 150 };
         pSize = { 100, 100 };
         pRad = { 100, 100 };
 
@@ -98,12 +99,12 @@ namespace World2 {
         //walljumpY = -8.0f;
 
         //Wall and floor shapes
-        lWall = { 75, 100, 40, 400 };
-        rWall = { 220, 100, 40, 400 };
+        lWall = { 0 , 0, 40, 400};
+        rWall = { 790, 100, 40, 400 };
         floor = { 100, 440, 700, 40 };
 
-        bool touchingLeft = CheckCollisionRecs(pRec, lWall);
-        bool touchingRight = CheckCollisionRecs(pRec, rWall);
+        touchingLeft = CheckCollisionRecs(pRec, lWall);
+        touchingRight = CheckCollisionRecs(pRec, rWall);
         //Rectangle LWallSize = { 100, 5000 };
 
 
@@ -132,8 +133,8 @@ namespace World2 {
     //player info
 
     WorldUpdateResult Update(GameState& game) {
-        camera.target = { pPos.x + pSpeed, pPos.y + pSpeed };
-
+      //  camera.target = { pPos.x + pSpeed, pPos.y + pSpeed };
+        camera.target.y = pPos.y ;
         game.score++;
         pVel.y += gravity;
 
@@ -269,9 +270,9 @@ namespace World2 {
         BeginMode2D(camera);
 
         //DrawRectangleV(LWallPos, LWallSize, GRAY);
+        DrawRectangleRec(pRec, GREEN);
         DrawRectangleRec(lWall, BLUE);
         DrawRectangleRec(rWall, BLUE);
-        DrawRectangleRec(pRec, GREEN);
         DrawRectangleRec(floor, BLUE);
 
         const BossState& currentBoss = Bosses::ActiveBoss(game);
