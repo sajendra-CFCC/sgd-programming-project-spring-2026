@@ -69,19 +69,20 @@ namespace World2 {
         text_y = 100;
 
         //Camera
-        camera.offset = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
+        camera.offset = { (float)GetScreenWidth() / 2 - 420, (float)GetScreenHeight() / 2 };
+        //camera.target = { pPos.x + pSpeed, pPos.y + pSpeed };
         camera.rotation = 0;
         camera.zoom = 1;
 
         //Player
-        pPos = { 120, 200 };
+        pPos = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
         pVel = { 0, 0 };
-        pRec = { pPos.x, pPos.y, 30, 30 };
+        pRec = { pPos.x, pPos.y, 150, 150 };
         pSpeed = 10;
         pVel = { 0, 0 };
         pAttackPos.x = pPos.x - 35;
         pAttackPos.y = pPos.y - 35;
-        pAttackRadius = { 100, 100 };
+        pAttackRadius = { 225, 225 };
         pRadiusVis = 0.0f;
         pSize = { 100, 100 };
         pRad = { 100, 100 };
@@ -89,9 +90,9 @@ namespace World2 {
 
         //Jumping logic
         gravity = 0.5f;
-        jumpForce = -10.0f;
-        wallPushForce = 50.0f;
-        wallTime = 20.0f;
+        jumpForce = -15.0f;
+        wallPushForce = 663.0f;
+        wallTime = -5.0f;
         stickTime = 3.0f;
         wallSlideGravity = 10.0f;
         isWallSliding = false;
@@ -100,12 +101,11 @@ namespace World2 {
         //walljumpY = -8.0f;
 
         //Wall and floor shapes
-        lWall = { 75, 100, 40, 400 };
-        rWall = { 220, 100, 40, 400 };
-        floor = { 100, 440, 700, 40 };
+        lWall = { 0 , -450, 40, 1000};
+        rWall = { 790, -450, 40, 1000 };
+        floor = { 0, 440, 800, 40 };
 
-        bool touchingLeft = CheckCollisionRecs(pRec, lWall);
-        bool touchingRight = CheckCollisionRecs(pRec, rWall);
+
         //Rectangle LWallSize = { 100, 5000 };
 
 
@@ -134,10 +134,13 @@ namespace World2 {
     //player info
 
     WorldUpdateResult Update(GameState& game) {
-        camera.target = { pPos.x + pSpeed, pPos.y + pSpeed };
-
+      //  camera.target = { pPos.x + pSpeed, pPos.y + pSpeed };
+        camera.target.y = pPos.y ;
         game.score++;
         pVel.y += gravity;
+
+        touchingLeft = CheckCollisionRecs(pRec, lWall);
+        touchingRight = CheckCollisionRecs(pRec, rWall);
 
         //Adding velocity to position
         pPos.x += pVel.x;
@@ -202,8 +205,36 @@ namespace World2 {
         }
         */
 
+
+
+        if (touchingLeft || touchingRight)
+        {
+            pSpeed = 0;
+            gravity = 0.6;
+            DrawText("Touching Wall", 100, 100, 20, WHITE);
+        }
+
+        if (touchingLeft && IsKeyPressed(KEY_SPACE))
+        {
+            pVel.y = jumpForce;
+            pVel.x = wallPushForce;
+        }
+        else if (touchingRight && IsKeyPressed(KEY_SPACE))
+        {
+            pVel.y = jumpForce;
+            pVel.x = -wallPushForce;
+        }
+        else
+        {
+            isWallSliding = false;
+            wallTime = 0;
+        }
+
+
+
         bool onFloor = CheckCollisionRecs(pRec, floor);
         if (onFloor) {
+            pSpeed = 10;
             pVel.y = 0;
             pPos.y = floor.y - pRec.height;
             pAttackPos.y = floor.y - pRec.height - 35;
@@ -240,30 +271,6 @@ namespace World2 {
 
             }
         }
-        
-        if (touchingLeft || touchingRight)
-        {
-            DrawText("Touching Wall", 100, 100, 20, WHITE);
-        }
-
-        if (touchingLeft && IsKeyPressed(KEY_SPACE))
-        {
-            pVel.y = jumpForce;
-            pVel.x = wallPushForce;
-        }
-        else if (touchingRight && IsKeyPressed(KEY_SPACE))
-        {
-            pVel.y = jumpForce;
-            pVel.x = -wallPushForce;
-        }
-        else
-        {
-            isWallSliding = false;
-            wallTime = 0;
-        }
-
-
-
 
 
         if (world_complete)
@@ -277,9 +284,9 @@ namespace World2 {
         BeginMode2D(camera);
 
         //DrawRectangleV(LWallPos, LWallSize, GRAY);
+        DrawRectangleRec(pRec, GREEN);
         DrawRectangleRec(lWall, BLUE);
         DrawRectangleRec(rWall, BLUE);
-        DrawRectangleRec(pRec, GREEN);
         DrawRectangleRec(floor, BLUE);
 
         const BossState& currentBoss = Bosses::ActiveBoss(game);
@@ -290,7 +297,7 @@ namespace World2 {
         Bosses::Draw(currentBoss, ePos_x, ePos_y, eSize);
         Bosses::DrawHealthBar(currentBoss, ePos_x - eSize, ePos_y + eSize, eSize * 2);
 
-        DrawRectangleV(pAttackPos, pAttackRadius,Fade(RED, pRadiusVis));
+        DrawRectangleV(pAttackPos, pAttackRadius, Fade(RED, pRadiusVis));
        // DrawRectangleV(pPos, pSize, GREEN);
 
         DrawRectangleLinesEx(bossHB, 1, RED);
