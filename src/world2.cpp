@@ -142,5 +142,6 @@ namespace World2 {
 
         DrawRectangleLinesEx(bossHB, 1, RED);
         //DrawCircleLines(ePos_x, ePos_y, boss_radius, GREEN);
+        EndMode2D();
     }
 }
