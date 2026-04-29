@@ -96,19 +96,19 @@ namespace World2 {
                 world_complete = true;
         }
 
-        if (IsKeyDown(KEY_W)) {
+        if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
             pPos.y -= 2.0f * pSpeed;
             pAttackPos.y -= 2 * pSpeed;
         }
-        if (IsKeyDown(KEY_A)) {
+        if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) {
             pPos.x -= 2.0f * pSpeed;
             pAttackPos.x -= 2 * pSpeed;
         }
-        if (IsKeyDown(KEY_S)) {
+        if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) {
             pPos.y += 2.0f * pSpeed;
             pAttackPos.y += 2 * pSpeed;
         }
-        if (IsKeyDown(KEY_D)) {
+        if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
             pPos.x += +2.0f * pSpeed;
             pAttackPos.x += 2 * pSpeed;
         }

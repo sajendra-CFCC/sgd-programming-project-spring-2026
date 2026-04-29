@@ -60,13 +60,13 @@ namespace World4 {
 
        //Player Movement
         
-        if (IsKeyDown(KEY_RIGHT)) playerPosition.x += 6.0f;
-        if (IsKeyDown(KEY_LEFT)) playerPosition.x -= 6.0f;
-        if (IsKeyDown(KEY_UP)) playerPosition.y -= 8.0f;
-        if (IsKeyDown(KEY_DOWN)) playerPosition.y += 6.0f;
+        if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) playerPosition.x += 6.0f;
+        if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) playerPosition.x -= 6.0f;
+        if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) playerPosition.y -= 8.0f;
+        if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) playerPosition.y += 6.0f;
         if (currentBoss.health <= 0) {
-        if (IsKeyDown(KEY_LEFT)) playerRotation -= 5;
-        if (IsKeyDown(KEY_RIGHT)) playerRotation += 5;
+        if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) playerRotation -= 5;
+        if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) playerRotation += 5;
         
           
       
