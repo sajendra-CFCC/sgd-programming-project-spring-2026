@@ -289,6 +289,9 @@ namespace World2 {
         DrawRectangleRec(rWall, BLUE);
         DrawRectangleRec(floor, BLUE);
 
+        DrawText("Hit space while on a wall to wall jump!", (float)GetScreenWidth() / 2 - 10, (float)GetScreenHeight() / 2, 20, WHITE);
+        DrawText("Move Left and right when on the floor!", (float)GetScreenWidth() / 2 - 10, (float)GetScreenHeight() / 2 - 20, 20, WHITE);
+
         const BossState& currentBoss = Bosses::ActiveBoss(game);
         int boss_size = 30 * eSize;
         Rectangle bossHB = Bosses::GetHitbox(currentBoss, ePos_x, ePos_y, eSize);
