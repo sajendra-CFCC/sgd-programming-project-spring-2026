@@ -8,24 +8,42 @@ namespace World2 {
     int text_x = 100;
     int text_y = 100;
 
+    Camera2D camera = { 0 };
+
     //player
     
 
     float pSpeed;
     Vector2 pPos;
+    Rectangle pRec;
     Vector2 pSize;
     Vector2 pAttackRadius;
     Vector2 pAttackPos;
+    Vector2 pVel;
+
+    Rectangle pRad;
 
     //Walls
     Vector2 LWallPos;
     Vector2 LWallSize;
     Vector2 RWallPos;
     Vector2 RWallSize;
+    Rectangle lWall;
+    Rectangle rWall;
 
+    bool touchingLeft;
+    bool touchingRight;
 
     //Jump logic
-    bool started = false;
+    float gravity;
+    float jumpForce;
+    float wallPushForce;
+    float wallTime;
+    float stickTime;
+    float wallSlideGravity;
+    bool isWallSliding;
+    
+   /* bool started = false;
     bool onLeftwall;
     bool onRightwall;
     float wallJumpX;
@@ -34,9 +52,14 @@ namespace World2 {
     float gravity;
     bool canJump;
     float jumpSpeed;
-    
+    */
 
-    Camera2D camera = { 0 };
+    Rectangle floor;
+
+
+
+
+
 
 
     void Init() {
@@ -44,28 +67,54 @@ namespace World2 {
         text_x = 100;
         text_y = 100;
 
-        LWallPos = { 0, 255 };
-        Rectangle LWallSize = { 100, 5000 };
-
-        //Player
-        pPos = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
-        pAttackPos.x = pPos.x - 25;
-        pAttackPos.y = pPos.y - 25;
-        pAttackRadius = { 150, 150 };
-        pSize = { 100, 100 };
-        Rectangle pRad = { 100, 100 };
-        pSpeed = 10;
-        wallJumpX = 10.0f;
-        walljumpY = -8.0f;
-        gravity = 1.0f;
-
+        //Camera
         camera.offset = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
         camera.rotation = 0;
         camera.zoom = 1;
 
+        //Player
+        pPos = { 120, 200 };
+        pVel = { 0, 0 };
+        pRec = { pPos.x, pPos.y, 30, 30 };
+        pSpeed = 10;
+        pVel = { 0, 0 };
+        pAttackPos.x = pPos.x - 35;
+        pAttackPos.y = pPos.y - 35;
+        pAttackRadius = { 100, 100 };
+        pSize = { 100, 100 };
+        pRad = { 100, 100 };
+
+
+        //Jumping logic
+        gravity = 0.5f;
+        jumpForce = -10.0f;
+        wallPushForce = 50.0f;
+        wallTime = 20.0f;
+        stickTime = 3.0f;
+        wallSlideGravity = 10.0f;
+        isWallSliding = false;
+
+        //wallJumpX = 10.0f;
+        //walljumpY = -8.0f;
+
+        //Wall and floor shapes
+        lWall = { 75, 100, 40, 400 };
+        rWall = { 220, 100, 40, 400 };
+        floor = { 100, 440, 700, 40 };
+
+        bool touchingLeft = CheckCollisionRecs(pRec, lWall);
+        bool touchingRight = CheckCollisionRecs(pRec, rWall);
+        //Rectangle LWallSize = { 100, 5000 };
+
+
+
+
         //if ((CheckCollisionRecs(, LWallSize))){
             //onLeftwall = true;
             //pSpeed = 0;
+
+
+
     }
         
 
@@ -83,8 +132,18 @@ namespace World2 {
     //player info
 
     WorldUpdateResult Update(GameState& game) {
-        
+        camera.target = { pPos.x + pSpeed, pPos.y + pSpeed };
+
         game.score++;
+        pVel.y += gravity;
+
+        //Adding velocity to position
+        pPos.x += pVel.x;
+        pPos.y += pVel.y;
+        pAttackPos.x += pVel.x;
+        pAttackPos.y += pVel.y;
+        pRec.x = pPos.x;
+        pRec.y = pPos.y;
 
         BossState& currentBoss = Bosses::ActiveBoss(game);
 
@@ -96,26 +155,108 @@ namespace World2 {
                 world_complete = true;
         }
 
-        if (IsKeyDown(KEY_W)) {
+
+        //MOVEMENT
+        /*if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
             pPos.y -= 2.0f * pSpeed;
             pAttackPos.y -= 2 * pSpeed;
-        }
-        if (IsKeyDown(KEY_A)) {
+        }*/
+        if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) {
             pPos.x -= 2.0f * pSpeed;
             pAttackPos.x -= 2 * pSpeed;
         }
-        if (IsKeyDown(KEY_S)) {
+        /*if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) {
             pPos.y += 2.0f * pSpeed;
             pAttackPos.y += 2 * pSpeed;
-        }
-        if (IsKeyDown(KEY_D)) {
+        }*/
+        if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
             pPos.x += +2.0f * pSpeed;
             pAttackPos.x += 2 * pSpeed;
         }
+        else pVel.x = 0;
 
-        //if (IsKeyPressed(KEY_SPACE)) 
+        
 
-        camera.target = { pPos.x + pSpeed, pPos.y + pSpeed };
+
+       /* bool onFloor = CheckCollisionRecs(pRec, floor);
+        if (onFloor) {
+            pVel.y = 0;
+            pPos.y = floor.y - pRec.height;
+
+            //Jumping on floor
+            if (IsKeyPressed(KEY_SPACE)) {
+                pVel.y = jumpForce;
+            }
+        }
+        else {
+            // Only apply gravity if NOT on the floor
+            pVel.y += gravity;
+        }
+        */
+
+        bool onFloor = CheckCollisionRecs(pRec, floor);
+        if (onFloor) {
+            pVel.y = 0;
+            pPos.y = floor.y - pRec.height;
+            pAttackPos.y = floor.y - pRec.height - 35;
+            DrawText("On Floor", 100, 100, 20, WHITE);
+
+            //Jumping on floor
+            if (IsKeyPressed(KEY_SPACE)) {
+                pVel.y = jumpForce;
+            }
+        }
+        else {
+            // Only apply gravity if NOT on the floor
+            pVel.y += gravity;
+        }
+
+
+        if (touchingLeft || touchingRight && !onFloor)
+        {
+            isWallSliding = true;
+        }
+
+        if (isWallSliding == true)
+        {
+            wallTime += GetFrameTime();
+
+            if (wallTime < stickTime)
+            {
+                isWallSliding = false;
+            }
+            else
+            {
+                isWallSliding = true;
+                pVel.y = wallSlideGravity;
+
+            }
+        }
+        
+        if (touchingLeft || touchingRight)
+        {
+            DrawText("Touching Wall", 100, 100, 20, WHITE);
+        }
+
+        if (touchingLeft && IsKeyPressed(KEY_SPACE))
+        {
+            pVel.y = jumpForce;
+            pVel.x = wallPushForce;
+        }
+        else if (touchingRight && IsKeyPressed(KEY_SPACE))
+        {
+            pVel.y = jumpForce;
+            pVel.x = -wallPushForce;
+        }
+        else
+        {
+            isWallSliding = false;
+            wallTime = 0;
+        }
+
+
+
+
 
         if (world_complete)
             return WORLD_COMPLETED;
@@ -127,7 +268,11 @@ namespace World2 {
         //Camera Start
         BeginMode2D(camera);
 
-        DrawRectangleV(LWallPos, LWallSize, GRAY);
+        //DrawRectangleV(LWallPos, LWallSize, GRAY);
+        DrawRectangleRec(lWall, BLUE);
+        DrawRectangleRec(rWall, BLUE);
+        DrawRectangleRec(pRec, GREEN);
+        DrawRectangleRec(floor, BLUE);
 
         const BossState& currentBoss = Bosses::ActiveBoss(game);
         int boss_size = 30 * eSize;
@@ -138,9 +283,10 @@ namespace World2 {
         Bosses::DrawHealthBar(currentBoss, ePos_x - eSize, ePos_y + eSize, eSize * 2);
 
         DrawRectangleV(pAttackPos, pAttackRadius,Fade(RED, 0.3f));
-        DrawRectangleV(pPos, pSize, GREEN);
+       // DrawRectangleV(pPos, pSize, GREEN);
 
         DrawRectangleLinesEx(bossHB, 1, RED);
         //DrawCircleLines(ePos_x, ePos_y, boss_radius, GREEN);
+        EndMode2D();
     }
 }

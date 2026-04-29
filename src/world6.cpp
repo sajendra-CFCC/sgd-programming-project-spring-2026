@@ -8,7 +8,7 @@ namespace World6 {
         
     int boss_x;
     int boss_y;
-    int boss_scale;
+    float boss_scale;
 
     int battery_life;
 
@@ -34,7 +34,6 @@ namespace World6 {
         
         texturesize = 100;
         size = .1;
-
  
     }
 
@@ -66,13 +65,16 @@ namespace World6 {
        
     }
     void Draw(const GameState& game) {
+
+     
+
         //drawing image
         Image image = LoadImage("assets/images/blackcat.jpg");     // Loads to RAM
         texture = LoadTextureFromImage(image);    // Transfers to GPU VRAM
         UnloadImage(image);
-        Vector2 CatPosition = { 100 , 200 };
+        Vector2 CatPosition = { 90 , 200 };
 
-        DrawTextureEx(texture, CatPosition, 0, size, RAYWHITE);
+        DrawTextureEx(texture, CatPosition, 0, size*2, RAYWHITE);
       
         //positions
         int text_x = 100;
@@ -93,11 +95,11 @@ namespace World6 {
 
         int window_cat_x;
         int windo_cat_y;
+        size += .0001;
 
+        boss_x = 200;
+        boss_y = 350; 
 
-
-        //images
-        //DrawTexture (texture, door_cat_x, door_cat_y, WHITE);
 
         //Level Text
         DrawText("Battery Life -", text_x, text_y, 20, WHITE);
@@ -115,6 +117,7 @@ namespace World6 {
         //door
         if (IsKeyDown(KEY_Q)&& battery_life > 0) {
             battery_life-= 1;
+            size = .1;
             DrawRectangle(door_x, door_y, door_width, door_height, PINK);
         }
         else if (IsKeyReleased(KEY_Q)) {
@@ -127,16 +130,19 @@ namespace World6 {
         }
         else if (IsKeyReleased(KEY_E)) {
             DrawRectangleLines(window_x, window_y, window_width, window_height, BLUE);
-        }
-        
 
+        }
         //get the current boss
-        /*const BossState& currentBoss = Bosses::ActiveBoss(game);
-        int boss_size = 30 * boss_scale;
+        const BossState& currentBoss = Bosses::ActiveBoss(game);
+        float boss_size = size * 20;
+        boss_scale = boss_size;
 
         Bosses::Draw(currentBoss, boss_x, boss_y, boss_scale);
-        Bosses::DrawHealthBar(currentBoss, boss_x - boss_size, boss_y + boss_size, boss_size * 2);
-        */
-        
+        Bosses::DrawHealthBar(currentBoss, boss_x - boss_size, boss_y + boss_size, boss_size *2);
+        //visualize hitbox for testing
+        Rectangle bossHB = Bosses::GetHitbox(currentBoss, boss_x, boss_y, boss_scale);
+        int boss_radius = Bosses::GetHitRadius(currentBoss, boss_scale);
+        DrawRectangleLinesEx(bossHB, 1, RED);
+        DrawCircleLines(boss_x, boss_y, boss_radius, GREEN);
     }
 }
