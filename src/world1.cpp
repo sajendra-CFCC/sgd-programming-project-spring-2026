@@ -16,7 +16,9 @@ namespace World1 {
     int boss_scale;
     Vector2 circ_pos;
     Vector2 rand_pos;
-    Rectangle bullet_1;
+    
+    const int numBullets = 5;
+    Rectangle bullets[numBullets] = {0};
 
     void Init() {
         world_complete = false;
@@ -33,10 +35,14 @@ namespace World1 {
         rand_pos.y = SCREEN_HEIGHT / 2 + 200;
         circ_pos.x = SCREEN_WIDTH / 2;
         circ_pos.y = SCREEN_HEIGHT / 2;
-        bullet_1.x = 350;
-        bullet_1.y = 20;
-        bullet_1.width = 25;
-        bullet_1.height = 25;
+
+        for (int i = 0; i < numBullets; i++) {
+            bullets[i].x = i * SCREEN_WIDTH / numBullets;
+            bullets[i].y = 20;
+            bullets[i].width = 25;
+            bullets[i].height = 25;
+        }
+
     }
 
     WorldUpdateResult Update(GameState& game) {
@@ -44,14 +50,16 @@ namespace World1 {
 
         BossState& currentBoss = Bosses::ActiveBoss(game);
 
-        bullet_1.y++;
-        bullet_1.y++;
-        bullet_1.y++;
-
-        if (bullet_1.y >= 590) {
-            bullet_1.x = std::rand() % 801 + 0;
-            bullet_1.y = 20;
+        
+        for (int i = 0; i < numBullets; i++) {
+            bullets[i].y += 3;
+            if (bullets[i].y >= 590) {
+                bullets[i].x = std::rand() % 801 + 0;
+                bullets[i].y = 20;
+            }
         }
+
+        
 
         if (spawn_rand) {
             currentBoss.health -= 50;
@@ -69,7 +77,7 @@ namespace World1 {
             spawn_rand = false;
         }
         if (bull_rand1) {
-            bullet_1.x = std::rand() % 801 + 0;
+            bullets[0].x = std::rand() % 801 + 0;
             game.health -= 10;
             bull_rand1 = false;
         }
@@ -104,16 +112,24 @@ namespace World1 {
     void Draw(const GameState& game) {
                 
         DrawText("World 1 - Enter the circle to damage the bosses", text_x, text_y, 20, WHITE);
+        //draw player
         DrawCircleV(circ_pos, 10, BLUE);
-        DrawRectangleRec(bullet_1, ORANGE);
+        
+        //draw bullets
+        for (int i = 0; i < numBullets; i++) {
+            DrawRectangleRec(bullets[i], ORANGE);
+        }
+        
         if (draw_spot) {
             DrawCircleV(rand_pos, 20, RED);
         }
         if (CheckCollisionCircles(circ_pos, 10, rand_pos, 20)) {
             spawn_rand = true;
         }
-        if (CheckCollisionCircleRec(circ_pos, 10, bullet_1)) {
-            bull_rand1 = true;
+        for (int i = 0; i < numBullets; i++) {
+            if (CheckCollisionCircleRec(circ_pos, 10, bullets[i])) {
+                bull_rand1 = true;
+            }
         }
         //get the current boss
         const BossState& currentBoss = Bosses::ActiveBoss(game);
