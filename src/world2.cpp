@@ -42,6 +42,8 @@ namespace World2 {
     float wallTime;
     float stickTime;
     float wallSlideGravity;
+    int jumpCount;
+    int maxJumps;
     bool isWallSliding;
     
    /* bool started = false;
@@ -90,11 +92,13 @@ namespace World2 {
 
         //Jumping logic
         gravity = 0.5f;
-        jumpForce = -15.0f;
+        jumpForce = 15.0f;
         wallPushForce = 663.0f;
-        wallTime = -5.0f;
+        wallTime = 2.0f;
         stickTime = 3.0f;
         wallSlideGravity = 10.0f;
+        jumpCount = 2;
+        int maxJumps = 2;
         isWallSliding = false;
 
         //wallJumpX = 10.0f;
@@ -189,32 +193,13 @@ namespace World2 {
         else pRadiusVis = -0.0f;
         
 
-        
-
-
-       /* bool onFloor = CheckCollisionRecs(pRec, floor);
-        if (onFloor) {
-            pVel.y = 0;
-            pPos.y = floor.y - pRec.height;
-
-            //Jumping on floor
-            if (IsKeyPressed(KEY_SPACE)) {
-                pVel.y = jumpForce;
-            }
-        }
-        else {
-            // Only apply gravity if NOT on the floor
-            pVel.y += gravity;
-        }
-        */
-
 
 
         if (touchingLeft || touchingRight)
         {
             pSpeed = 0;
             gravity = 0.6;
-            DrawText("Touching Wall", 100, 100, 20, WHITE);
+            DrawText("Touching Wall", 100, 80, 20, WHITE);
         }
 
         if (touchingLeft && IsKeyPressed(KEY_SPACE))
@@ -275,6 +260,20 @@ namespace World2 {
             }
         }
 
+        if (IsKeyPressed(KEY_SPACE))
+        {
+            if (onFloor || touchingLeft || touchingRight)
+            {
+                pVel.y = -jumpForce;
+                onFloor = false;
+                jumpCount = 1;
+            }
+            else if (jumpCount < maxJumps)
+            {
+                pVel.y = -jumpForce;
+                jumpCount++;
+            }
+        }
 
         if (world_complete)
             return WORLD_COMPLETED;
