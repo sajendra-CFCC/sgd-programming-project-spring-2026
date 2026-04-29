@@ -48,12 +48,21 @@ int main() {
     Bosses::InitAll(gameState);
 
     ChangeDirectory( GetApplicationDirectory() );//assumption we make for assets
+    InitAudioDevice();
+    gameState.menuTrack = LoadMusicStream("assets/music/dystopia.mp3");
+    gameState.worldTrack = LoadMusicStream("assets/music/active_camo.mp3");
+    gameState.currentTrack = gameState.menuTrack;
+    PlayMusicStream(gameState.currentTrack);
+    PauseMusicStream(gameState.currentTrack);
+    gameState.musicPlaying = false;
+
 
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Mini Boss Dungeon Game Collection");
     SetExitKey(KEY_NULL); //disable default ESC behavior
     SetTargetFPS(60);
     
     while ( !WindowShouldClose() ) { //start main loop
+        UpdateMusicStream(gameState.currentTrack);
         // UPDATING & INITIALIZING NEXT WORLD IF NEEDED
         UpdateCorrectWorld(currentGameMode, gameState);
         
@@ -66,6 +75,7 @@ int main() {
             // Global UI Overlay
             DrawText(TextFormat("Score: %d", gameState.score), 10, 10, 20, PINK);
             DrawText(TextFormat("HP: %i", gameState.health), 10, 40, 20, RED);
+            DrawText("Toggle Music: M", 10, SCREEN_HEIGHT - 30, 20, ORANGE);
             //Overlay only when inside worlds
             if (currentGameMode >= 0)
                 DrawWorldOverlay(gameState); //shows time remaining.. boss health?
@@ -73,6 +83,9 @@ int main() {
         EndDrawing();
     }// end main window loop
 
+    UnloadMusicStream(gameState.menuTrack);
+    UnloadMusicStream(gameState.worldTrack);
+    CloseAudioDevice();
     CloseWindow();
     return 0;
 }
@@ -143,8 +156,18 @@ void DrawCorrectWorld(GameMode gm, GameState& gs) {
 
 
 void UpdateCorrectWorld(GameMode &gm, GameState &gs) {
+    //some key press stuff that is handled the same no matter game mode    
     bool pressedESC = IsKeyPressed(KEY_ESCAPE);
+    //mute / unmute music
+    if (IsKeyPressed(KEY_M)) {
+        gs.musicPlaying = !gs.musicPlaying; //flip values on every key press
+        if (gs.musicPlaying)
+            ResumeMusicStream(gs.currentTrack);
+        else
+            PauseMusicStream(gs.currentTrack);
+    }
     
+    //game mode specific updates and switching game modes
     switch (gm) {
         case GAME_MODE_OVERWORLD:
             gm = (GameMode) UpdateOverworld(gs);

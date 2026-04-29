@@ -39,6 +39,12 @@ struct GameState {
     //don't think we are using these
     Vector2 position = {0, 0}; //hub world position? consistent position?
     bool isAlive = true; //implement game over? reset?
+
+    bool musicPlaying = false;
+    Music menuTrack = { 0 };
+    Music worldTrack = { 0 };
+    Music currentTrack = { 0 };
+
 };
 
 enum WorldUpdateResult {

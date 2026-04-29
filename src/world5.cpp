@@ -9,12 +9,16 @@ namespace World5 {
         0,
         0
     };
-    Texture2D TestDirTexture = LoadTexture("assets/TestDir.png");
+    
+    //if you put file paths here it might break for assets.. main has to do work first
+    Texture2D TestDirTexture;
 
     void Init() {
         world_complete = false;
         PlayerX = 400;
         PlayerY = 300;
+        //use init to set the value, or we might not be in right directory
+        Texture2D TestDirTexture = LoadTexture("assets/images/TestDir.png");
     }
 
     WorldUpdateResult Update(GameState& game) {
