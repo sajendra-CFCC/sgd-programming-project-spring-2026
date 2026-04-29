@@ -100,7 +100,7 @@ namespace World3 {
         
 
         //Ball and Rectangle Collision Setup
-        Rectangle playerRect = { player_x, player_y, player_width, player_height };
+        Rectangle playerRect = { (float)player_x, (float)player_y, player_width, player_height };
         if (CheckCollisionCircleRec(ballPosition, ballRadius, playerRect)) {
             std::cout << "COLLIDE\n";
             ballSpeed.y *= -1;
