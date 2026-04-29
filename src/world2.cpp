@@ -76,11 +76,21 @@ namespace World2 {
         pRec = { pPos.x, pPos.y, 30, 30 };
         pSpeed = 10;
         pVel = { 0, 0 };
-       // pAttackPos.x = pPos.x - 25;
-       // pAttackPos.y = pPos.y - 25;
-       // pAttackRadius = { 150, 150 };
-       // pSize = { 100, 100 };
-       // pRad = { 100, 100 };
+        pAttackPos.x = pPos.x - 25;
+        pAttackPos.y = pPos.y - 25;
+        pAttackRadius = { 150, 150 };
+        pSize = { 100, 100 };
+        pRad = { 100, 100 };
+
+
+        //Jumping logic
+        gravity = 0.5f;
+        jumpForce = -10.0f;
+        wallPushForce = 50.0f;
+        wallTime = 20.0f;
+        stickTime = 3.0f;
+        wallSlideGravity = 10.0f;
+        isWallSliding = false;
 
         //wallJumpX = 10.0f;
         //walljumpY = -8.0f;
@@ -93,14 +103,6 @@ namespace World2 {
         bool touchingLeft = CheckCollisionRecs(pRec, lWall);
         bool touchingRight = CheckCollisionRecs(pRec, rWall);
         //Rectangle LWallSize = { 100, 5000 };
-
-        gravity = 0.5f;
-        jumpForce = -10.0f;
-        wallPushForce = 50.0f;
-        wallTime = 20.0f;
-        stickTime = 3.0f;
-        wallSlideGravity = 10.0f;
-        isWallSliding = false;
 
 
 
@@ -192,6 +194,7 @@ namespace World2 {
         if (onFloor) {
             pVel.y = 0;
             pPos.y = floor.y - pRec.height;
+            DrawText("On Floor", 100, 100, 20, WHITE);
 
             //Jumping on floor
             if (IsKeyPressed(KEY_SPACE)) {
