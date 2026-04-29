@@ -177,10 +177,11 @@ namespace World2 {
         }
         else pVel.x = 0;
 
-        if (IsMouseButtonPressed) {
+        if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
             pRadiusVis = 0.3f;
         }
-        else pRadiusVis = 0.0f;
+        else pRadiusVis = -0.0f;
+        
 
         
 
@@ -289,7 +290,7 @@ namespace World2 {
         Bosses::Draw(currentBoss, ePos_x, ePos_y, eSize);
         Bosses::DrawHealthBar(currentBoss, ePos_x - eSize, ePos_y + eSize, eSize * 2);
 
-        DrawRectangleV(pAttackPos, pAttackRadius,Fade(RED, 0.0f));
+        DrawRectangleV(pAttackPos, pAttackRadius,Fade(RED, pRadiusVis));
        // DrawRectangleV(pPos, pSize, GREEN);
 
         DrawRectangleLinesEx(bossHB, 1, RED);
