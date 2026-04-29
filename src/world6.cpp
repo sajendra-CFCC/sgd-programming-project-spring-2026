@@ -93,6 +93,8 @@ namespace World6 {
         int door_cat_x = 150;
         int door_cat_y = 250;
 
+        bool DoorCollision = false;
+
         int window_cat_x;
         int windo_cat_y;
         size += .0001;
@@ -109,7 +111,7 @@ namespace World6 {
         //Shapes
         DrawRectangleLines(100, 200, door_width, door_height, PINK);
         DrawRectangleLines(500, 200, window_width, window_height, BLUE);
-        Rectangle doorHB = {door_width, door_height};
+        Rectangle doorHB = {door_x, door_y};
         
         //battery life bar
         DrawRectangleLines(250, 100, 500, 20, RED);
@@ -146,6 +148,9 @@ namespace World6 {
         DrawRectangleLinesEx(bossHB, 1, RED);
        // DrawCircleLines(boss_x, boss_y, boss_radius, GREEN);
 
-        CheckCollisionRecs(bossHB, doorHB);
+        DoorCollision = CheckCollisionRecs(bossHB, doorHB);
+        if (DoorCollision) {
+            printf("collision");
+        }
     }
 }
