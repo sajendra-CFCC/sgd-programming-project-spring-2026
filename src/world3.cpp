@@ -28,6 +28,10 @@ namespace World3 {
     Vector2 ballPosition;
     Vector2 ballSpeed;
 
+    //player circle positions
+    const int CIRC_RADIUS = 200;
+
+
     void Init() {
         //set up anything you need for your game / world here
         world_complete = false;
@@ -69,7 +73,7 @@ namespace World3 {
 
         // continuous input for smooth movement
         if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) {
-            player_x += playerSpeed;
+           player_x += playerSpeed;
             player_rotation++;
         }
         if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) {
@@ -142,6 +146,7 @@ namespace World3 {
     }
 
     void Draw(const GameState& game) {
+        DrawCircleLines(400,300, 275, PURPLE);
         // draw background text
         int text_x = 250;
         int text_y = 100;
