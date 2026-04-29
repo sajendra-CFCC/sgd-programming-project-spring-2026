@@ -65,22 +65,22 @@ namespace World1 {
             bull_rand1 = false;
         }
 
-        if (IsKeyDown(KEY_LEFT)) {
+        if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) {
             circ_pos.x--;
             circ_pos.x--;
             circ_pos.x--;
         }
-        if (IsKeyDown(KEY_RIGHT)) {
+        if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) {
             circ_pos.x++;
             circ_pos.x++;
             circ_pos.x++;
         }
-        if (IsKeyDown(KEY_UP)) {
+        if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) {
             circ_pos.y--;
             circ_pos.y--;
             circ_pos.y--;
         }
-        if (IsKeyDown(KEY_DOWN)) {
+        if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) {
             circ_pos.y++;
             circ_pos.y++;
             circ_pos.y++;
