@@ -78,8 +78,8 @@ namespace World2 {
         pRec = { pPos.x, pPos.y, 30, 30 };
         pSpeed = 10;
         pVel = { 0, 0 };
-        pAttackPos.x = pPos.x - 10;
-        pAttackPos.y = pPos.y - 10;
+        pAttackPos.x = pPos.x - 25;
+        pAttackPos.y = pPos.y - 25;
         pAttackRadius = { 100, 100 };
         pSize = { 100, 100 };
         pRad = { 100, 100 };
@@ -198,7 +198,7 @@ namespace World2 {
         if (onFloor) {
             pVel.y = 0;
             pPos.y = floor.y - pRec.height;
-            pAttackPos.y = floor.y - pRec.height;
+            pAttackPos.y = floor.y - pRec.height - 25;
             DrawText("On Floor", 100, 100, 20, WHITE);
 
             //Jumping on floor
