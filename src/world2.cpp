@@ -8,6 +8,8 @@ namespace World2 {
     int text_x = 100;
     int text_y = 100;
 
+    Camera2D camera = { 0 };
+
     //player
     
 
@@ -57,7 +59,7 @@ namespace World2 {
 
 
 
-    Camera2D camera = { 0 };
+
 
 
     void Init() {
@@ -207,7 +209,10 @@ namespace World2 {
         }
 
 
-        if (touchingLeft || touchingRight && !onFloor) isWallSliding = true;
+        if (touchingLeft || touchingRight && !onFloor)
+        {
+            isWallSliding = true;
+        }
 
         if (isWallSliding == true)
         {
@@ -223,6 +228,11 @@ namespace World2 {
                 pVel.y = wallSlideGravity;
 
             }
+        }
+        
+        if (touchingLeft || touchingRight)
+        {
+            DrawText("Touching Wall", 100, 100, 20, WHITE);
         }
 
         if (touchingLeft && IsKeyPressed(KEY_SPACE))
