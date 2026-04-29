@@ -8,7 +8,7 @@ namespace World6 {
         
     int boss_x;
     int boss_y;
-    int boss_scale;
+    float boss_scale;
 
     int battery_life;
 
@@ -34,7 +34,6 @@ namespace World6 {
         
         texturesize = 100;
         size = .1;
-
  
     }
 
@@ -66,14 +65,17 @@ namespace World6 {
        
     }
     void Draw(const GameState& game) {
+
+
+
         //drawing image
         Image image = LoadImage("assets/images/blackcat.jpg");     // Loads to RAM
         texture = LoadTextureFromImage(image);    // Transfers to GPU VRAM
         UnloadImage(image);
-        Vector2 CatPosition = { 100 , 200 };
+        Vector2 CatPosition = { 100 , 250 };
 
-        DrawTextureEx(texture, CatPosition, 0, size, RAYWHITE);
-      
+        DrawTextureEx(texture, CatPosition, 0, size * 2, RAYWHITE);
+
         //positions
         int text_x = 100;
         int text_y = 100;
@@ -91,22 +93,25 @@ namespace World6 {
         int door_cat_x = 150;
         int door_cat_y = 250;
 
+        bool DoorCollision = false;
+
         int window_cat_x;
         int windo_cat_y;
-        size += .001;
+        size += .0001;
 
+        boss_x = 200;
+        boss_y = 350;
 
-        //images
-        //DrawTexture (texture, door_cat_x, door_cat_y, WHITE);
 
         //Level Text
         DrawText("Battery Life -", text_x, text_y, 20, WHITE);
         DrawText("E to Close Window", window_x, 550, 20, WHITE);
         DrawText("Q to Close Door", door_x, 550, 20, WHITE);
-        
+
         //Shapes
-        DrawRectangleLines(100,200, door_width, door_height, PINK);
+        DrawRectangleLines(100, 200, door_width, door_height, PINK);
         DrawRectangleLines(500, 200, window_width, window_height, BLUE);
+        Rectangle doorHB = {door_x, door_y};
         
         //battery life bar
         DrawRectangleLines(250, 100, 500, 20, RED);
@@ -128,16 +133,24 @@ namespace World6 {
         }
         else if (IsKeyReleased(KEY_E)) {
             DrawRectangleLines(window_x, window_y, window_width, window_height, BLUE);
+
         }
-        
-
         //get the current boss
-        /*const BossState& currentBoss = Bosses::ActiveBoss(game);
-        int boss_size = 30 * boss_scale;
+        const BossState& currentBoss = Bosses::ActiveBoss(game);
+        float boss_size = size * 20;
+        boss_scale = boss_size;
 
-        Bosses::Draw(currentBoss, boss_x, boss_y, boss_scale);
-        Bosses::DrawHealthBar(currentBoss, boss_x - boss_size, boss_y + boss_size, boss_size * 2);
-        */
-        
+       // Bosses::Draw(currentBoss, boss_x, boss_y, boss_scale);
+       //Bosses::DrawHealthBar(currentBoss, boss_x - boss_size, boss_y + boss_size, boss_size *2);
+        //visualize hitbox for testing
+        Rectangle bossHB = Bosses::GetHitbox(currentBoss, boss_x, boss_y, boss_scale);
+        int boss_radius = Bosses::GetHitRadius(currentBoss, boss_scale);
+        DrawRectangleLinesEx(bossHB, 1, RED);
+       // DrawCircleLines(boss_x, boss_y, boss_radius, GREEN);
+
+        DoorCollision = CheckCollisionRecs(bossHB, doorHB);
+        if (DoorCollision) {
+            printf("collision");
+        }
     }
 }

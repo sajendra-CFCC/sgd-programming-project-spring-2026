@@ -19,6 +19,7 @@ namespace World2 {
     Vector2 pSize;
     Vector2 pAttackRadius;
     Vector2 pAttackPos;
+    float pRadiusVis;
     Vector2 pVel;
 
     Rectangle pRad;
@@ -79,9 +80,10 @@ namespace World2 {
         pRec = { pPos.x, pPos.y, 150, 150 };
         pSpeed = 10;
         pVel = { 0, 0 };
-        pAttackPos.x = pPos.x - 25;
-        pAttackPos.y = pPos.y - 25;
-        pAttackRadius = { 150, 150 };
+        pAttackPos.x = pPos.x - 35;
+        pAttackPos.y = pPos.y - 35;
+        pAttackRadius = { 100, 100 };
+        pRadiusVis = 0.0f;
         pSize = { 100, 100 };
         pRad = { 100, 100 };
 
@@ -126,8 +128,8 @@ namespace World2 {
         
     };
     //Boss stats
-    int ePos_x = 75;
-    int ePos_y = 100;
+    int ePos_x = 300;
+    int ePos_y = 350;
     int eSize = 1;
 
     //player info
@@ -176,6 +178,12 @@ namespace World2 {
         }
         else pVel.x = 0;
 
+        if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
+            pRadiusVis = 0.3f;
+        }
+        else pRadiusVis = -0.0f;
+        
+
         
 
 
@@ -199,7 +207,7 @@ namespace World2 {
         if (onFloor) {
             pVel.y = 0;
             pPos.y = floor.y - pRec.height;
-            pAttackPos.y = floor.y - pRec.height - 25;
+            pAttackPos.y = floor.y - pRec.height - 35;
             DrawText("On Floor", 100, 100, 20, WHITE);
 
             //Jumping on floor
@@ -283,7 +291,7 @@ namespace World2 {
         Bosses::Draw(currentBoss, ePos_x, ePos_y, eSize);
         Bosses::DrawHealthBar(currentBoss, ePos_x - eSize, ePos_y + eSize, eSize * 2);
 
-        DrawRectangleV(pAttackPos, pAttackRadius,Fade(RED, 0.3f));
+        DrawRectangleV(pAttackPos, pAttackRadius,Fade(RED, pRadiusVis));
        // DrawRectangleV(pPos, pSize, GREEN);
 
         DrawRectangleLinesEx(bossHB, 1, RED);
