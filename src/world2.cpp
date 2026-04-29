@@ -20,6 +20,7 @@ namespace World2 {
     Vector2 pAttackRadius;
     Vector2 pAttackPos;
     float pRadiusVis;
+    Rectangle aRadius;
     Vector2 pVel;
 
     Rectangle pRad;
@@ -59,7 +60,11 @@ namespace World2 {
 
     Rectangle floor;
 
-
+    //Boss stats
+    float ePos_x;
+    float ePos_y;
+    int eSize;
+    Rectangle Boss;
 
 
 
@@ -85,9 +90,16 @@ namespace World2 {
         pAttackPos.x = pPos.x - 35;
         pAttackPos.y = pPos.y - 35;
         pAttackRadius = { 225, 225 };
+        
         pRadiusVis = 0.0f;
         pSize = { 100, 100 };
         pRad = { 100, 100 };
+
+        //Boss
+        ePos_x = 300;
+        ePos_y = 350;
+        eSize = 1;
+        
 
 
         //Jumping logic
@@ -130,12 +142,7 @@ namespace World2 {
     {
         
     };
-    //Boss stats
-    int ePos_x = 300;
-    int ePos_y = 350;
-    int eSize = 1;
-    Rectangle Boss;
-    //Boss{ ePos_x, ePos_y, boss_radius.x, boss_radius.y };
+    
 
     //player info
 
@@ -156,9 +163,17 @@ namespace World2 {
         pRec.x = pPos.x;
         pRec.y = pPos.y;
 
+        Boss = { ePos_x, ePos_y, 40, 40 };
+        aRadius = { pAttackPos.x, pAttackPos.y, 225, 225 };
+
         BossState& currentBoss = Bosses::ActiveBoss(game);
 
-        //CheckCollisionRecs();
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionRecs(aRadius, Boss)) {
+                pRadiusVis = 0.3f;
+                currentBoss.health -= 10;
+        }
+        else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) pRadiusVis = 0.3f;
+        else pRadiusVis = -0.0f;
 
         if (currentBoss.health <= 0) {
             bool moreBosses = Bosses::AdvanceToNext(game);
@@ -186,11 +201,7 @@ namespace World2 {
         }
         else pVel.x = 0;
 
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            pRadiusVis = 0.3f;
-            currentBoss.health -= 10;
-        }
-        else pRadiusVis = -0.0f;
+       
         
 
 
