@@ -130,6 +130,8 @@ namespace World2 {
     int ePos_x = 300;
     int ePos_y = 350;
     int eSize = 1;
+    Rectangle Boss;
+    //Boss{ ePos_x, ePos_y, boss_radius.x, boss_radius.y };
 
     //player info
 
@@ -180,8 +182,9 @@ namespace World2 {
         }
         else pVel.x = 0;
 
-        if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             pRadiusVis = 0.3f;
+            currentBoss.health -= 10;
         }
         else pRadiusVis = -0.0f;
         
@@ -298,7 +301,7 @@ namespace World2 {
         int boss_radius = Bosses::GetHitRadius(currentBoss, eSize);
 
         Bosses::Draw(currentBoss, ePos_x, ePos_y, eSize);
-        Bosses::DrawHealthBar(currentBoss, ePos_x - eSize, ePos_y + eSize, eSize * 2);
+        Bosses::DrawHealthBar(currentBoss, ePos_x - boss_size, ePos_y + boss_size, boss_size * 2);
 
         DrawRectangleV(pAttackPos, pAttackRadius, Fade(RED, pRadiusVis));
        // DrawRectangleV(pPos, pSize, GREEN);
