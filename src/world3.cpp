@@ -11,6 +11,7 @@ namespace World3 {
     int boss_scale;
     int player_x;
     int player_y;
+    int player_rotation;
     
     //Music bgm;
 
@@ -56,7 +57,7 @@ namespace World3 {
         ballSpeed.x = 0;
         ballSpeed.y = -3;
 
-        std::cout << "Random num: " << GetRandomValue(1, 100) << std::endl;
+        player_rotation = 0;
     }
 
     WorldUpdateResult Update(GameState& game) {
@@ -69,9 +70,11 @@ namespace World3 {
         // continuous input for smooth movement
         if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) {
             player_x += playerSpeed;
+            player_rotation++;
         }
         if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) {
             player_x -= playerSpeed;
+            player_rotation--;
         }
         //if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) {
           //  player_y -= playerSpeed;
@@ -144,8 +147,11 @@ namespace World3 {
         int text_y = 100;
         DrawText("Evan and Richie World", text_x, text_y, 25, PURPLE);
 
+        Rectangle playerRect = { (float)player_x, (float)player_y, player_width, player_height };
+        Vector2 rotationOffset = { -boss_x + player_x, -boss_y + player_y };
         // draw player square
         DrawRectangle(player_x, player_y, player_width, player_height, RED);
+        DrawRectanglePro(playerRect, rotationOffset, player_rotation, BLUE);
   
 
         // get the current boss and draw it
