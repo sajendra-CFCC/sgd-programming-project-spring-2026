@@ -50,6 +50,11 @@ namespace World3 {
 
         ballSpeed.x = initialBallSpeed;
         ballSpeed.y = -initialBallSpeed;
+
+        ballPosition.x = boss_x;
+        ballPosition.y = 10;
+        ballSpeed.x = 0;
+        ballSpeed.y = -3;
     }
 
     WorldUpdateResult Update(GameState& game) {
@@ -111,6 +116,15 @@ namespace World3 {
 
         //get the current boss
         BossState& currentBoss  = Bosses::ActiveBoss(game);
+
+        Rectangle BossBox = { (int)boss_x, (int)boss_y, boss_scale };
+        if (CheckCollisionCircleRec(ballPosition, ballRadius, BossBox)) {
+            std::cout << "HIT!\n";
+            currentBoss.health -= 10;
+
+            ballPosition = { 10, 10 };
+            ballSpeed = { initialBallSpeed, initialBallSpeed };
+        }
 
         if (currentBoss.health <= 0) {
             bool moreBosses = Bosses::AdvanceToNext(game);
