@@ -3,22 +3,30 @@
 // for whatever reason main.cpp has an error on the #include "raygui.h" on my system but it works fine anyway. Thank you VSCode, very cool!
 namespace World5 {
     bool world_complete = false;
+    bool Debug = false; // for testing purposes toggle with Q key
+    int WasHitThisFrame = 0;
     int PlayerX = 400;
     int PlayerY = 300;
     Vector2 MouseLoc = {
         0,
         0
     };
+    Vector2 BossPos = {
+        50,
+        500
+    };
+    Rectangle PlayerHitbox = { MouseLoc.x - 10, MouseLoc.y - 10, 20, 20 };
+    Rectangle BossHitbox = { BossPos.x - 15, BossPos.y - 15, 30, 30 };
     
     //if you put file paths here it might break for assets.. main has to do work first
-    Texture2D TestDirTexture;
+    //Texture2D TestDirTexture;
 
     void Init() {
         world_complete = false;
         PlayerX = 400;
         PlayerY = 300;
         //use init to set the value, or we might not be in right directory
-        Texture2D TestDirTexture = LoadTexture("assets/images/TestDir.png");
+        //Texture2D TestDirTexture = LoadTexture("assets/images/TestDir.png");
     }
 
     WorldUpdateResult Update(GameState& game) {
@@ -27,8 +35,22 @@ namespace World5 {
         if (IsKeyPressed(KEY_ESCAPE)) {
             world_complete = true;
         }
+        if (IsKeyPressed(KEY_Q)) {
+            Debug = !Debug;
+        }
+        MouseLoc = GetMousePosition();
+        Rectangle PlayerHitbox = { MouseLoc.x - 10, MouseLoc.y - 10, 20, 20 };
+        if (CheckCollisionRecs(PlayerHitbox, BossHitbox)) {
+            game.health -= 1;
+            if (Debug == true) {
+            int WasHitThisFrame = 1;
+        }
+        }
+        if (game.health <= 0) {
+            world_complete = true;
+        }
 
-        BossState& currentBoss = Bosses::ActiveBoss(game);
+        BossState& currentBoss = Bosses::ActiveBoss(game); // how do I make ts move :sob:
 
         if (currentBoss.health <= 0) {
             bool moreBosses = Bosses::AdvanceToNext(game);
@@ -44,12 +66,23 @@ namespace World5 {
         }
     }
 
-    void Draw() {
+    void Draw( const GameState& game) {
         DrawText(TextFormat("Press ESC to finish / Use mouse to move"), 369, 40, 20, WHITE);
         DrawText(TextFormat("Survive to gain SCORE"), 564, 70, 20, WHITE);
-        MouseLoc = GetMousePosition(); //why
-        DrawRectangleV({MouseLoc.x - 10, MouseLoc.y - 10}, {20, 20}, RED);
+        MouseLoc = GetMousePosition();
         DrawCircleV(MouseLoc, 20, BLUE);
-        DrawTextureV(TestDirTexture, {0,0}, WHITE);
+        Rectangle PlayerHitbox = { MouseLoc.x - 10, MouseLoc.y - 10, 20, 20 };
+        const BossState& currentBoss = Bosses::ActiveBoss(game);
+        Bosses::Draw(currentBoss, BossPos.x, BossPos.y, 1);
+        if (Debug == true) {
+            DrawRectangleRec(PlayerHitbox, WHITE); // hitbox visualization
+            DrawRectangleRec(BossHitbox, WHITE);
+            DrawText(TextFormat("Debug on"), MouseLoc.x - 49, MouseLoc.y + 25, 20, YELLOW);
+            DrawLineV(MouseLoc, BossPos, GREEN); // line from player to boss
+            if (WasHitThisFrame >= 1) {
+                DrawText(TextFormat("Hit Detected"), MouseLoc.x - 55, MouseLoc.y - 30, 20, RED);
+                int WasHitThisFrame = 0;
+            }
+        }
     }
 }
