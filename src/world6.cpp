@@ -13,11 +13,16 @@ namespace World6 {
 
     int battery_life;
 
-    int door_height;
-    int door_width;
+    int door_x = 100;
+    int door_y = 200;
+    int door_height = 300;
+    int door_width = 200;
 
-    int window_height;
-    int window_width;
+    int window_x = 500;
+    int window_y = 200;
+    int window_height = 200;
+    int window_width = 200;
+    
     /*float size;
     int texturesize;
 
@@ -46,6 +51,7 @@ namespace World6 {
     WorldUpdateResult Update(GameState& game) {
         //get the current boss
         BossState& currentBoss = Bosses::ActiveBoss(game);
+        Rectangle bossHB = Bosses::GetHitbox(currentBoss, boss_x, boss_y, boss_scale);
         
         //check for input
         if (IsKeyDown(KEY_SPACE)) {
@@ -59,11 +65,29 @@ namespace World6 {
             door_closed = false;
         }
 
+        if (IsKeyDown(KEY_E) && battery_life > 0) {
+            battery_life -= 1;
+            window_closed = true;
+        } else {
+            window_closed = false;
+
+        }
+
 
         //update state
         game.score++; // just updating score every frame for some reason
         //increase boss scale
         boss_scale *= (1 + boss_grow_rate);
+
+        //Collision stuff
+        //NOTE: there is a mistake here, but you need to check collision logic if you change this
+        //NOTE lets discuss in class
+        Rectangle doorHB = { door_x, door_y };
+        bool DoorCollision = CheckCollisionRecs(bossHB, doorHB);
+        if (DoorCollision) {
+            printf("collision\n");
+        }
+
         
         //boss health
         if (currentBoss.health <= 0) {
@@ -84,6 +108,8 @@ namespace World6 {
     void Draw(const GameState& game) {
         //get the current boss
         const BossState& currentBoss = Bosses::ActiveBoss(game);
+        Rectangle bossHB = Bosses::GetHitbox(currentBoss, boss_x, boss_y, boss_scale);
+        int boss_radius = Bosses::GetHitRadius(currentBoss, boss_scale);
 
         //drawing image
         //Image image = LoadImage("assets/images/blackcat.jpg");     // Loads to RAM
@@ -97,20 +123,11 @@ namespace World6 {
         int text_x = 100;
         int text_y = 100;
 
-        int door_height = 300;
-        int door_width = 200;
-        int door_x = 100;
-        int door_y = 200;
-
-        int window_height = 200;
-        int window_width = 200;
-        int window_x = 500;
-        int window_y = 200;
-
+        
         /*int door_cat_x = 150;
         int door_cat_y = 250;*/
 
-        bool DoorCollision = false;
+        //bool DoorCollision = false;
 
         /*int window_cat_x;
         int windo_cat_y;
@@ -128,9 +145,7 @@ namespace World6 {
         //Shapes
         DrawRectangleLines(100, 200, door_width, door_height, PINK);
         DrawRectangleLines(500, 200, window_width, window_height, BLUE);
-        //NOTE: there is a mistake here, but you need to check collision logic
-        Rectangle doorHB = {door_x, door_y}; 
-        
+                
         //battery life bar
         DrawRectangleLines(250, 100, 500, 20, RED);
         DrawRectangle(250, 100, battery_life / 2, 20, RED);
@@ -138,17 +153,14 @@ namespace World6 {
         //door
         if (door_closed) {
             DrawRectangle(door_x, door_y, door_width, door_height, PINK);
-        }else {
+        } else {
             DrawRectangleLines(door_x, door_y, door_width, door_height, PINK);
         }
         //Window
-        if (IsKeyDown(KEY_E)&& battery_life > 0) {
-            battery_life -= 1;
+        if (window_closed) {
             DrawRectangle(window_x, window_y, window_width, window_height, BLUE);
-        }
-        else if (IsKeyReleased(KEY_E)) {
+        } else {
             DrawRectangleLines(window_x, window_y, window_width, window_height, BLUE);
-
         }
         
         //float boss_size = size * 20;
@@ -156,15 +168,9 @@ namespace World6 {
 
        Bosses::Draw(currentBoss, boss_x, boss_y, boss_scale);
        //Bosses::DrawHealthBar(currentBoss, boss_x - boss_size, boss_y + boss_size, boss_size *2);
-        //visualize hitbox for testing
-        Rectangle bossHB = Bosses::GetHitbox(currentBoss, boss_x, boss_y, boss_scale);
-        int boss_radius = Bosses::GetHitRadius(currentBoss, boss_scale);
-        DrawRectangleLinesEx(bossHB, 1, RED);
+       //visualize hitbox for testing
+       DrawRectangleLinesEx(bossHB, 1, RED);
        // DrawCircleLines(boss_x, boss_y, boss_radius, GREEN);
 
-        DoorCollision = CheckCollisionRecs(bossHB, doorHB);
-        if (DoorCollision) {
-            printf("collision\n");
-        }
     }
 }
