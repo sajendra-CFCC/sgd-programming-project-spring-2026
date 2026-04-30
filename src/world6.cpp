@@ -9,6 +9,7 @@ namespace World6 {
     int boss_x;
     int boss_y;
     float boss_scale;
+    float boss_grow_rate = 0.003;
 
     int battery_life;
 
@@ -17,10 +18,15 @@ namespace World6 {
 
     int window_height;
     int window_width;
-    float size;
+    /*float size;
     int texturesize;
 
-    Texture2D texture;
+    Texture2D texture;*/
+
+    //represents if door and window currently open or closed
+    bool door_closed = false;
+    bool window_closed = false; 
+
 
     void Init() {
         //set up anything you need for your game / world here
@@ -32,23 +38,33 @@ namespace World6 {
         boss_scale = 1;
         battery_life = 1000;
         
-        texturesize = 100;
-        size = .1;
+        /*texturesize = 100;
+        size = .1;*/
  
     }
 
     WorldUpdateResult Update(GameState& game) {
-        game.score++; // just updating score every frame for some reason
-
         //get the current boss
-        BossState& currentBoss  = Bosses::ActiveBoss(game);
-
-
+        BossState& currentBoss = Bosses::ActiveBoss(game);
+        
+        //check for input
         if (IsKeyDown(KEY_SPACE)) {
             currentBoss.health -= 10;
-
         }
 
+        if (IsKeyDown(KEY_Q) && battery_life > 0) {
+            battery_life -= 1;
+            door_closed = true;
+        } else {
+            door_closed = false;
+        }
+
+
+        //update state
+        game.score++; // just updating score every frame for some reason
+        //increase boss scale
+        boss_scale *= (1 + boss_grow_rate);
+        
         //boss health
         if (currentBoss.health <= 0) {
             bool moreBosses = Bosses::AdvanceToNext(game);
@@ -64,17 +80,18 @@ namespace World6 {
 
        
     }
+
     void Draw(const GameState& game) {
-
-
+        //get the current boss
+        const BossState& currentBoss = Bosses::ActiveBoss(game);
 
         //drawing image
-        Image image = LoadImage("assets/images/blackcat.jpg");     // Loads to RAM
-        texture = LoadTextureFromImage(image);    // Transfers to GPU VRAM
-        UnloadImage(image);
-        Vector2 CatPosition = { 100 , 250 };
+        //Image image = LoadImage("assets/images/blackcat.jpg");     // Loads to RAM
+        //texture = LoadTextureFromImage(image);    // Transfers to GPU VRAM
+        //UnloadImage(image);
+        //Vector2 CatPosition = { 100 , 250 };
 
-        DrawTextureEx(texture, CatPosition, 0, size * 2, RAYWHITE);
+        //DrawTextureEx(texture, CatPosition, 0, size * 2, RAYWHITE);
 
         //positions
         int text_x = 100;
@@ -90,14 +107,14 @@ namespace World6 {
         int window_x = 500;
         int window_y = 200;
 
-        int door_cat_x = 150;
-        int door_cat_y = 250;
+        /*int door_cat_x = 150;
+        int door_cat_y = 250;*/
 
         bool DoorCollision = false;
 
-        int window_cat_x;
+        /*int window_cat_x;
         int windo_cat_y;
-        size += .0001;
+        size += .0001;*/
 
         boss_x = 200;
         boss_y = 350;
@@ -111,19 +128,17 @@ namespace World6 {
         //Shapes
         DrawRectangleLines(100, 200, door_width, door_height, PINK);
         DrawRectangleLines(500, 200, window_width, window_height, BLUE);
-        Rectangle doorHB = {door_x, door_y};
+        //NOTE: there is a mistake here, but you need to check collision logic
+        Rectangle doorHB = {door_x, door_y}; 
         
         //battery life bar
         DrawRectangleLines(250, 100, 500, 20, RED);
         DrawRectangle(250, 100, battery_life / 2, 20, RED);
         
         //door
-        if (IsKeyDown(KEY_Q)&& battery_life > 0) {
-            battery_life-= 1;
-            size = .1;
+        if (door_closed) {
             DrawRectangle(door_x, door_y, door_width, door_height, PINK);
-        }
-        else if (IsKeyReleased(KEY_Q)) {
+        }else {
             DrawRectangleLines(door_x, door_y, door_width, door_height, PINK);
         }
         //Window
@@ -135,12 +150,11 @@ namespace World6 {
             DrawRectangleLines(window_x, window_y, window_width, window_height, BLUE);
 
         }
-        //get the current boss
-        const BossState& currentBoss = Bosses::ActiveBoss(game);
-        float boss_size = size * 20;
-        boss_scale = boss_size;
+        
+        //float boss_size = size * 20;
+        //boss_scale = boss_size;
 
-       // Bosses::Draw(currentBoss, boss_x, boss_y, boss_scale);
+       Bosses::Draw(currentBoss, boss_x, boss_y, boss_scale);
        //Bosses::DrawHealthBar(currentBoss, boss_x - boss_size, boss_y + boss_size, boss_size *2);
         //visualize hitbox for testing
         Rectangle bossHB = Bosses::GetHitbox(currentBoss, boss_x, boss_y, boss_scale);
@@ -150,7 +164,7 @@ namespace World6 {
 
         DoorCollision = CheckCollisionRecs(bossHB, doorHB);
         if (DoorCollision) {
-            printf("collision");
+            printf("collision\n");
         }
     }
 }
