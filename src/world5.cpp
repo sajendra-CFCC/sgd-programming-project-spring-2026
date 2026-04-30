@@ -7,6 +7,7 @@ namespace World5 {
     int WasHitThisFrame = 0;
     int PlayerX = 400;
     int PlayerY = 300;
+    float BossAccel = 0.25;
     Vector2 MouseLoc = {
         0,
         0
@@ -30,6 +31,12 @@ namespace World5 {
     }
 
     WorldUpdateResult Update(GameState& game) {
+
+        if (game.health <= 0) {
+            game.health = 100;
+            game.score = 0;
+        }
+
         game.score++;
 
         if (IsKeyPressed(KEY_ESCAPE)) {
@@ -43,7 +50,7 @@ namespace World5 {
         if (CheckCollisionRecs(PlayerHitbox, BossHitbox)) {
             game.health -= 1;
             if (Debug == true) {
-            int WasHitThisFrame = 1;
+            DrawText(TextFormat("Hit Detected"), MouseLoc.x - 55, MouseLoc.y - 30, 20, RED);
         }
         }
         if (game.health <= 0) {
@@ -51,13 +58,6 @@ namespace World5 {
         }
 
         BossState& currentBoss = Bosses::ActiveBoss(game); // how do I make ts move :sob:
-
-        if (currentBoss.health <= 0) {
-            bool moreBosses = Bosses::AdvanceToNext(game);
-            if (!moreBosses) {
-                world_complete = true;
-            }
-        }
 
         if (world_complete) {
             return WORLD_COMPLETED;
@@ -79,10 +79,6 @@ namespace World5 {
             DrawRectangleRec(BossHitbox, WHITE);
             DrawText(TextFormat("Debug on"), MouseLoc.x - 49, MouseLoc.y + 25, 20, YELLOW);
             DrawLineV(MouseLoc, BossPos, GREEN); // line from player to boss
-            if (WasHitThisFrame >= 1) {
-                DrawText(TextFormat("Hit Detected"), MouseLoc.x - 55, MouseLoc.y - 30, 20, RED);
-                int WasHitThisFrame = 0;
-            }
         }
     }
 }
