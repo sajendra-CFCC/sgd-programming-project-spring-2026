@@ -16,9 +16,10 @@ namespace World1 {
     Vector2 circ_pos;
     Vector2 rand_pos;
     
-    const int numBullets = 5;
-    Rectangle bullets[numBullets] = {0};
-    bool bull_rand[numBullets] = { false };
+    const int maxBullets = 15;
+    int numBullets = 5;
+    Rectangle bullets[maxBullets] = {0};
+    bool bull_rand[maxBullets] = { false };
 
     void Init() {
         world_complete = false;
@@ -44,6 +45,13 @@ namespace World1 {
             bull_rand[i] = false;
         }
 
+        for (int i = 0; i < maxBullets; i++) {
+            bullets[i].width = 25;
+            bullets[i].height = 25;
+            bull_rand[i] = false;
+        }
+
+
     }
 
     WorldUpdateResult Update(GameState& game) {
@@ -51,7 +59,18 @@ namespace World1 {
 
         BossState& currentBoss = Bosses::ActiveBoss(game);
 
+        if (currentBoss.type == BOSS_CREATURE_A) {
+            numBullets = 5;
+        }
+
+        if (currentBoss.type == BOSS_CREATURE_B) {
+            numBullets = 10;
+        }
         
+        if (currentBoss.type == BOSS_CREATURE_C) {
+            numBullets = 15;
+        }
+
         for (int i = 0; i < numBullets; i++) {
             bullets[i].y += 3;
             if (bullets[i].y >= 590) {
