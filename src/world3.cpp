@@ -19,7 +19,7 @@ namespace World3 {
     int player_rotation;
     
     
-    const float player_width = 100;
+    const float player_width = 150;
     const float player_height = 25;
 
     
@@ -67,9 +67,9 @@ namespace World3 {
         ballSpeed.x = initialBallSpeed;
         ballSpeed.y = -initialBallSpeed;
 
-        ballPosition.x = boss_x;
-        ballPosition.y = 10;
-        ballSpeed.x = 0;
+        ballPosition.x = 100;
+        ballPosition.y = 100;
+        ballSpeed.x = -2;
         ballSpeed.y = -3;
 
         player_rotation = 0;
@@ -129,11 +129,11 @@ namespace World3 {
 
         //Ball and Rectangle Collision Setup
         Rectangle playerRect = { (float)player_x, (float)player_y, player_width, player_height };
-        if (CheckCollisionCircleRec(ballPosition, ballRadius, playerRect)) {
+       /* if (CheckCollisionCircleRec(ballPosition, ballRadius, playerRect)) {
             std::cout << "COLLIDE\n";
             ballSpeed.y *= -1;
             ballSpeed.x = GetRandomValue(-5, 5);
-        }
+        }*/
 
 
 
@@ -147,6 +147,20 @@ namespace World3 {
             std::cout << "HIT!\n";
             currentBoss.health -= 10;
             ballPosition = { 10, 10 };
+        }
+        if (CheckCollisionCircleLine(ballPosition, ballRadius, collsionLinePoint1, collsionLinePoint2)) {
+            std::cout << "bounce\n";
+            Vector2 bossPos = { boss_x, boss_y };
+            Vector2 directionToBoss = Vector2Subtract(bossPos, ballPosition);
+            /*ballSpeed.x *= 1;
+            ballSpeed.y *= -1;*/
+            /*directionToBoss.x /= 100;
+            directionToBoss.y /= 100;*/
+
+            
+            ballSpeed = Vector2Normalize(directionToBoss);
+            ballSpeed = Vector2Scale(ballSpeed, initialBallSpeed);
+
         }
 
         if (currentBoss.health <= 0) {
@@ -170,7 +184,7 @@ namespace World3 {
 
         
         // draw player square
-        DrawRectangle(player_x, player_y, player_width, player_height, RED);
+       // DrawRectangle(player_x, player_y, player_width, player_height, RED);
         
 
         // get the current boss and draw it
@@ -186,7 +200,7 @@ namespace World3 {
         //testing drawing paddle at rotated location (draw here for z order)
         Rectangle player_rect_on_circle = { player_point_on_circle.x, player_point_on_circle.y,
                                             player_width, player_height };
-        DrawRectangleRec(player_rect_on_circle, BLUE); //just draw a regular rectangle at rotated point
+        //DrawRectangleRec(player_rect_on_circle, BLUE); //just draw a regular rectangle at rotated point
         
         //drawing rectangle rotated.. you specifcy an offset relative to top left corner to rotate rectangle arround
         //here are some possible pivots (relative to rectangel and rectangle size)
@@ -195,12 +209,13 @@ namespace World3 {
         Vector2 pivotBottomRight = { player_width , player_height };
         
         //draw each of these so we can see
-        DrawRectanglePro(player_rect_on_circle, pivotTopLeft, player_rotation, MAGENTA);
+       // DrawRectanglePro(player_rect_on_circle, pivotTopLeft, player_rotation, MAGENTA);
         DrawRectanglePro(player_rect_on_circle, pivotCenter, player_rotation, GREEN);
-        DrawRectanglePro(player_rect_on_circle, pivotBottomRight, player_rotation, PURPLE);
+       // DrawRectanglePro(player_rect_on_circle, pivotBottomRight, player_rotation, PURPLE);
 
         //draw the collision line so we can see it
-        DrawLineV(collsionLinePoint1, collsionLinePoint2, YELLOW);
+        //DrawLineV(collsionLinePoint1, collsionLinePoint2, YELLOW);
+
 
         //testing drawing a point at right radius
         DrawCircleV(PLAYER_START_POINT, 5, WHITE);
