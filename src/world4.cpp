@@ -21,9 +21,9 @@ namespace World4 {
     int boss_x;
     int boss_y;
     int boss_scale;
-    static int shootMissle = 0;
-    Vector2 bulletPos = { 0,0 };
-    bool bulletActive = false;
+    //static int shootMissle = 0;
+    //Vector2 bulletPos = { 0,0 };
+    //bool bulletActive = false;
 
    
     
@@ -33,6 +33,13 @@ namespace World4 {
 
     void Init() {
         //set up anything you need for your game / world here
+       
+        
+        
+        
+        
+        
+        
         world_complete = false;
         playerPosition.x = SCREEN_WIDTH / 2;
         playerPosition.y = SCREEN_HEIGHT - playerSize;
@@ -79,24 +86,24 @@ namespace World4 {
         if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) playerPosition.x -= 6.0f;
         if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) playerPosition.y -= 8.0f;
         if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) playerPosition.y += 6.0f;
-        if (currentBoss.health <= 0) {
         if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) playerRotation -= 5;
         if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) playerRotation += 5;
-        
-        if (IsKeyDown(KEY_SPACE)) shootMissle = 1;
-        bullet b;
+        //if (IsKeyDown(KEY_SPACE)) shootMissle = 1;
+        /*bullet b;*/
 
-        if ((bulletPos.x >= (BOSS_CREATURE_A() - bulletActive)) || (bulletPos.x <= b.radius)) b.Bullet_Velocity.x *= -1.0f;
+        //get the boss hitbox
+        Rectangle bossHB = Bosses::GetHitbox(currentBoss, boss_x, boss_y, boss_scale);
+        if (CheckCollisionCircleRec(b.Bullet_Possition, b.radius, bossHB)) {
+            std::cout << "BOOM!\n";
+        }
 
-       
+
 
       
-
-      
         
 
 
-
+        if (currentBoss.health <= 0) {
             bool moreBosses = Bosses::AdvanceToNext(game);
             if (!moreBosses)
                 world_complete = true;
