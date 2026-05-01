@@ -5,7 +5,7 @@
 
 
 
-namespace World3 {
+namespace World7 {
     //helper function for rotating point about center, will implement later
     Vector2 RotatePointAroundCenter(Vector2 point, float angleDegrees);
 
@@ -24,10 +24,10 @@ namespace World3 {
 
     
     // movement parameters
-    const int playerSpeed = 5; // pixels per frame
+    const int playerSpeed = 8; // pixels per frame
 
     //ball variables and paramters
-    const int initialBallSpeed = 3;
+    const int initialBallSpeed = 6;
     const int ballRadius = 10;
     Vector2 ballPosition;
     Vector2 ballSpeed;
