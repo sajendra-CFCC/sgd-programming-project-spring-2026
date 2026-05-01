@@ -111,7 +111,8 @@ namespace World2 {
         eSize = 1;
 
         //Minions
-        minSpeed = 20;
+        minSpeed = 2.5;
+
         min1 = { 250.0f, 350.0f, 50.0f, 50.0f, };
         min1.rec = { min1.posX, min1.posY, min1.sizeX, min1.sizeY };
         min1.Healthbar = { min1.posX, min1.posY + 60, min1.sizeX, min1.sizeY - 40 };
@@ -211,9 +212,7 @@ namespace World2 {
             min2.isAlive = false;
         }
 
-        //minion movement
-            min1.posX += minSpeed;
-            min2.posX += minSpeed;
+        
 
         //MOVEMENT
         /*if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
