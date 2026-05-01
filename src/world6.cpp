@@ -127,11 +127,14 @@ namespace World6 {
     }
 
     void Draw(const GameState& game) {
+
+        int door_cat_x = 150;
+        int door_cat_y = 300;
         //drawing image
         Image image = LoadImage("assets/images/blackcat.jpg");     // Loads to RAM
         texture = LoadTextureFromImage(image);    // Transfers to GPU VRAM
         UnloadImage(image);
-        Vector2 CatPosition = { 150 , 300 };
+        Vector2 CatPosition = { door_cat_x , door_cat_y };
 
         DrawTextureEx(texture, CatPosition, 0, size * 4, RAYWHITE);
         //get the current boss
@@ -139,14 +142,6 @@ namespace World6 {
         Rectangle bossHB = Bosses::GetHitbox(currentBoss, boss_x, boss_y, boss_scale);
         int boss_radius = Bosses::GetHitRadius(currentBoss, boss_scale);
         Rectangle bossHB2 = Bosses::GetHitbox(currentBoss, boss2_x, boss2_y, boss2_scale);
-
-      
-
-     
-
-        
-        int door_cat_x = 150;
-        int door_cat_y = 250;
 
         int window_cat_x;
         int windo_cat_y;
