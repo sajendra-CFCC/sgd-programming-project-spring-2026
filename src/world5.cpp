@@ -1,5 +1,6 @@
 #include "world5.h"
 #include "bosses.h"
+#include <iostream>
 // for whatever reason main.cpp has an error on the #include "raygui.h" on my system but it works fine anyway. Thank you VSCode, very cool!
 namespace World5 {
     bool world_complete = false;
@@ -7,7 +8,9 @@ namespace World5 {
     int WasHitThisFrame = 0;
     int PlayerX = 400;
     int PlayerY = 300;
+    int FireCD = 120;
     float BossAccel = 0.25;
+    float BossAngletoPlayer = 0.0f;
     Vector2 MouseLoc = {
         0,
         0
@@ -18,6 +21,10 @@ namespace World5 {
     };
     Rectangle PlayerHitbox = { MouseLoc.x - 10, MouseLoc.y - 10, 20, 20 };
     Rectangle BossHitbox = { BossPos.x - 15, BossPos.y - 15, 30, 30 };
+    typedef struct ProjectileBoss {
+        Vector2 Position;
+        Vector2 Speed;
+    } ProjectileBoss;
     
     //if you put file paths here it might break for assets.. main has to do work first
     //Texture2D TestDirTexture;
@@ -29,7 +36,12 @@ namespace World5 {
         //use init to set the value, or we might not be in right directory
         //Texture2D TestDirTexture = LoadTexture("assets/images/TestDir.png");
     }
-
+    void BossFireProj(int count, int delaypershot, int speed) {
+        for (int i = 0; i < count; i++) {
+            std::cout << "Attempted to fire proj" << std::endl;
+            // play shoot audio
+        }
+    }
     WorldUpdateResult Update(GameState& game) {
 
         if (game.health <= 0) {
@@ -56,8 +68,18 @@ namespace World5 {
         if (game.health <= 0) {
             world_complete = true;
         }
+        if (rand() % 3 == 0 && FireCD <= 0) {
+            if (rand() % 1 == 0){
+                BossFireProj(rand() % 6 + 1, rand() % 1, rand() % 3 + 1);
+            } else {
+                BossFireProj(rand() % 3 + 1, rand() % 1, rand() % 3 + 1);
+            }
+            FireCD = rand() % (120 - 40 + 1) + 40;
+        } else {
+            FireCD--;
+        }
 
-        BossState& currentBoss = Bosses::ActiveBoss(game); // how do I make ts move :sob:
+        BossState& currentBoss = Bosses::ActiveBoss(game);
 
         if (world_complete) {
             return WORLD_COMPLETED;
