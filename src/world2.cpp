@@ -19,6 +19,8 @@ namespace World2 {
     Vector2 pSize;
     Vector2 pAttackRadius;
     Vector2 pAttackPos;
+    float pRadiusVis;
+    Rectangle aRadius;
     Vector2 pVel;
 
     Rectangle pRad;
@@ -41,6 +43,9 @@ namespace World2 {
     float wallTime;
     float stickTime;
     float wallSlideGravity;
+    int jumpCount;
+    int maxJumps;
+    float pushSpeed;
     bool isWallSliding;
     
    /* bool started = false;
@@ -56,7 +61,11 @@ namespace World2 {
 
     Rectangle floor;
 
-
+    //Boss stats
+    float ePos_x;
+    float ePos_y;
+    int eSize;
+    Rectangle Boss;
 
 
 
@@ -68,42 +77,53 @@ namespace World2 {
         text_y = 100;
 
         //Camera
-        camera.offset = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
+        camera.offset = { (float)GetScreenWidth() / 2 - 420, (float)GetScreenHeight() / 2 };
+        //camera.target = { pPos.x + pSpeed, pPos.y + pSpeed };
         camera.rotation = 0;
         camera.zoom = 1;
 
         //Player
-        pPos = { 120, 200 };
+        pPos = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
         pVel = { 0, 0 };
-        pRec = { pPos.x, pPos.y, 30, 30 };
+        pRec = { pPos.x, pPos.y, 150, 150 };
         pSpeed = 10;
         pVel = { 0, 0 };
         pAttackPos.x = pPos.x - 35;
         pAttackPos.y = pPos.y - 35;
-        pAttackRadius = { 100, 100 };
+        pAttackRadius = { 225, 225 };
+        
+        pRadiusVis = 0.0f;
         pSize = { 100, 100 };
         pRad = { 100, 100 };
+
+        //Boss
+        ePos_x = 300;
+        ePos_y = 350;
+        eSize = 1;
+        
 
 
         //Jumping logic
         gravity = 0.5f;
-        jumpForce = -10.0f;
-        wallPushForce = 50.0f;
-        wallTime = 20.0f;
+        jumpForce = 15.0f;
+        wallPushForce = 663.0f;
+        pushSpeed = 10;
+        wallTime = 2.0f;
         stickTime = 3.0f;
         wallSlideGravity = 10.0f;
+        jumpCount = 2;
+        int maxJumps = 2;
         isWallSliding = false;
 
         //wallJumpX = 10.0f;
         //walljumpY = -8.0f;
 
         //Wall and floor shapes
-        lWall = { 75, 100, 40, 400 };
-        rWall = { 220, 100, 40, 400 };
-        floor = { 100, 440, 700, 40 };
+        lWall = { 0 , -450, 40, 1000};
+        rWall = { 790, -450, 40, 1000 };
+        floor = { 0, 440, 800, 40 };
 
-        bool touchingLeft = CheckCollisionRecs(pRec, lWall);
-        bool touchingRight = CheckCollisionRecs(pRec, rWall);
+
         //Rectangle LWallSize = { 100, 5000 };
 
 
@@ -124,18 +144,18 @@ namespace World2 {
     {
         
     };
-    //Boss stats
-    int ePos_x = 75;
-    int ePos_y = 100;
-    int eSize = 1;
+    
 
     //player info
 
     WorldUpdateResult Update(GameState& game) {
-        camera.target = { pPos.x + pSpeed, pPos.y + pSpeed };
-
+      //  camera.target = { pPos.x + pSpeed, pPos.y + pSpeed };
+        camera.target.y = pPos.y ;
         game.score++;
         pVel.y += gravity;
+
+        touchingLeft = CheckCollisionRecs(pRec, lWall);
+        touchingRight = CheckCollisionRecs(pRec, rWall);
 
         //Adding velocity to position
         pPos.x += pVel.x;
@@ -145,9 +165,17 @@ namespace World2 {
         pRec.x = pPos.x;
         pRec.y = pPos.y;
 
+        Boss = { ePos_x, ePos_y, 40, 40 };
+        aRadius = { pAttackPos.x, pAttackPos.y, 225, 225 };
+
         BossState& currentBoss = Bosses::ActiveBoss(game);
 
-        //CheckCollisionRecs();
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionRecs(aRadius, Boss)) {
+                pRadiusVis = 0.3f;
+                currentBoss.health -= 10;
+        }
+        else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) pRadiusVis = 0.3f;
+        else pRadiusVis = -0.0f;
 
         if (currentBoss.health <= 0) {
             bool moreBosses = Bosses::AdvanceToNext(game);
@@ -161,7 +189,7 @@ namespace World2 {
             pPos.y -= 2.0f * pSpeed;
             pAttackPos.y -= 2 * pSpeed;
         }*/
-        if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) {
+        if ( !touchingLeft && (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT) ) ) {
             pPos.x -= 2.0f * pSpeed;
             pAttackPos.x -= 2 * pSpeed;
         }
@@ -169,33 +197,45 @@ namespace World2 {
             pPos.y += 2.0f * pSpeed;
             pAttackPos.y += 2 * pSpeed;
         }*/
-        if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
+        if ( !touchingRight && (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT) ) ) {
             pPos.x += +2.0f * pSpeed;
             pAttackPos.x += 2 * pSpeed;
         }
         else pVel.x = 0;
 
+       
         
 
 
-       /* bool onFloor = CheckCollisionRecs(pRec, floor);
-        if (onFloor) {
-            pVel.y = 0;
-            pPos.y = floor.y - pRec.height;
 
-            //Jumping on floor
-            if (IsKeyPressed(KEY_SPACE)) {
-                pVel.y = jumpForce;
-            }
+        if (touchingLeft || touchingRight)
+        {
+            pSpeed = 0;
+            gravity = 0.6;
+            DrawText("Touching Wall", 100, 80, 20, WHITE);
         }
-        else {
-            // Only apply gravity if NOT on the floor
-            pVel.y += gravity;
+
+        if (touchingLeft && IsKeyPressed(KEY_SPACE))
+        {
+            pVel.y = jumpForce += GetFrameTime();
+            pVel.x = wallPushForce;
         }
-        */
+        else if (touchingRight && IsKeyPressed(KEY_SPACE))
+        {
+            pVel.y = jumpForce += GetFrameTime();
+            pVel.x = -wallPushForce;
+        }
+        else
+        {
+            isWallSliding = false;
+            wallTime = 0;
+        }
+
+
 
         bool onFloor = CheckCollisionRecs(pRec, floor);
         if (onFloor) {
+            pSpeed = 10;
             pVel.y = 0;
             pPos.y = floor.y - pRec.height;
             pAttackPos.y = floor.y - pRec.height - 35;
@@ -232,31 +272,21 @@ namespace World2 {
 
             }
         }
-        
-        if (touchingLeft || touchingRight)
+
+        if (IsKeyPressed(KEY_SPACE))
         {
-            DrawText("Touching Wall", 100, 100, 20, WHITE);
+            if (onFloor || touchingLeft || touchingRight)
+            {
+                pVel.y = -jumpForce;
+                onFloor = false;
+                jumpCount = 1;
+            }
+            else if (jumpCount < maxJumps)
+            {
+                pVel.y = -jumpForce;
+                jumpCount++;
+            }
         }
-
-        if (touchingLeft && IsKeyPressed(KEY_SPACE))
-        {
-            pVel.y = jumpForce;
-            pVel.x = wallPushForce;
-        }
-        else if (touchingRight && IsKeyPressed(KEY_SPACE))
-        {
-            pVel.y = jumpForce;
-            pVel.x = -wallPushForce;
-        }
-        else
-        {
-            isWallSliding = false;
-            wallTime = 0;
-        }
-
-
-
-
 
         if (world_complete)
             return WORLD_COMPLETED;
@@ -269,10 +299,13 @@ namespace World2 {
         BeginMode2D(camera);
 
         //DrawRectangleV(LWallPos, LWallSize, GRAY);
+        DrawRectangleRec(pRec, GREEN);
         DrawRectangleRec(lWall, BLUE);
         DrawRectangleRec(rWall, BLUE);
-        DrawRectangleRec(pRec, GREEN);
         DrawRectangleRec(floor, BLUE);
+
+        DrawText("Hit space while on a wall to wall jump!", (float)GetScreenWidth() / 2 - 10, (float)GetScreenHeight() / 2, 20, WHITE);
+        DrawText("Move Left and right when on the floor!", (float)GetScreenWidth() / 2 - 10, (float)GetScreenHeight() / 2 - 20, 20, WHITE);
 
         const BossState& currentBoss = Bosses::ActiveBoss(game);
         int boss_size = 30 * eSize;
@@ -280,9 +313,9 @@ namespace World2 {
         int boss_radius = Bosses::GetHitRadius(currentBoss, eSize);
 
         Bosses::Draw(currentBoss, ePos_x, ePos_y, eSize);
-        Bosses::DrawHealthBar(currentBoss, ePos_x - eSize, ePos_y + eSize, eSize * 2);
+        Bosses::DrawHealthBar(currentBoss, ePos_x - boss_size, ePos_y + boss_size, boss_size * 2);
 
-        DrawRectangleV(pAttackPos, pAttackRadius,Fade(RED, 0.3f));
+        DrawRectangleV(pAttackPos, pAttackRadius, Fade(RED, pRadiusVis));
        // DrawRectangleV(pPos, pSize, GREEN);
 
         DrawRectangleLinesEx(bossHB, 1, RED);

@@ -5,7 +5,14 @@
 
 namespace World4 {
     bool world_complete;
+    //Bullet stuff
+    struct bullet {
+        bool active = false;
+        Vector2 Bullet_Possition = { 0 };
+        Vector2 Bullet_Velocity = { 0 };
+        float radius;
 
+    };
 
     Vector2 playerPosition = { 400, 300 };
     Vector2 playerSpeed = { 100.0f, 100.0f };
@@ -18,7 +25,11 @@ namespace World4 {
     Vector2 bulletPos = { 0,0 };
     bool bulletActive = false;
 
+   
+    
 
+
+    bullet b;
 
     void Init() {
         //set up anything you need for your game / world here
@@ -41,26 +52,25 @@ namespace World4 {
         BossState& currentBoss  = Bosses::ActiveBoss(game);
 
 
-        //Bullet stuff
-        struct bullet {
-            Vector2 Bullet_Possition ;
-            Vector2 Bullet_Velocity;
-            float radius;
-            
-        };
+        
         
         if (IsKeyPressed(KEY_SPACE)) {
-            bullet b;
+            float speed = 5.0f;
             b.Bullet_Possition = playerPosition;
-            float speed = 500.0f;
-            b.Bullet_Velocity = { speed , 0 };
-            b.radius = 5.0;
-            DrawCircle(playerPosition.x, playerPosition.y, 50, RED); 
-            currentBoss.health -= 10;
+            b.Bullet_Velocity = { 0 , -speed };
+            b.radius = 50.0;
+            b.active = true;
+            
+            //currentBoss.health -= 10;
+
 
         }
 
         
+        if (b.active) {
+            b.Bullet_Possition.x += b.Bullet_Velocity.x;
+            b.Bullet_Possition.y += b.Bullet_Velocity.y;
+        }
 
 
        //Player Movement
@@ -103,6 +113,8 @@ namespace World4 {
         //do the drawing for your world here
         
         
+
+
         //DrawTriangle(Vector2 {400,100},Vector2 {300,300},Vector2 {500,300},RED);
         DrawPoly(playerPosition, 3, playerSize, -90, GREEN);
         
@@ -116,6 +128,8 @@ namespace World4 {
 
         Bosses::Draw(currentBoss, boss_x, boss_y, boss_scale);
         Bosses::DrawHealthBar(currentBoss, boss_x - boss_size, boss_y + boss_size, boss_size * 2);
+
+        DrawCircleV(b.Bullet_Possition, b.radius, RED);
 
 
         
