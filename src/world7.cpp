@@ -148,16 +148,9 @@ namespace World7 {
             currentBoss.health -= 10;
             ballPosition = { 10, 10 };
         }
-        if (CheckCollisionCircleLine(ballPosition, ballRadius, collsionLinePoint1, collsionLinePoint2)) {
-            std::cout << "bounce\n";
+        if (CheckCollisionCircleLine(ballPosition, ballRadius, collsionLinePoint1, collsionLinePoint2)){
             Vector2 bossPos = { boss_x, boss_y };
             Vector2 directionToBoss = Vector2Subtract(bossPos, ballPosition);
-            /*ballSpeed.x *= 1;
-            ballSpeed.y *= -1;*/
-            /*directionToBoss.x /= 100;
-            directionToBoss.y /= 100;*/
-
-            
             ballSpeed = Vector2Normalize(directionToBoss);
             ballSpeed = Vector2Scale(ballSpeed, initialBallSpeed);
 
