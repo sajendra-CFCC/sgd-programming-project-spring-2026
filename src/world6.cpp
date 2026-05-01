@@ -32,6 +32,7 @@ namespace World6 {
     int texturesize;
 
     Texture2D texture;
+    Texture2D windowTexture;
 
     //represents if door and window currently open or closed
     bool door_closed = false;
@@ -66,6 +67,7 @@ namespace World6 {
             battery_life -= 1;
             door_closed = true;
             boss_scale = 1;
+            size = 0;
         } else {
             door_closed = false;
         }
@@ -92,6 +94,7 @@ namespace World6 {
             printf("collision\n"); 
             game.health -= 15;
             boss_scale = 1;
+            size = 0;
         }
         else if (DoorCollision == false) {
             boss_scale *= (1 + boss_grow_rate);
@@ -126,15 +129,23 @@ namespace World6 {
 
         int door_cat_x = 125;
         int door_cat_y = 290;
-        int window_cat_x;
-        int window_cat_y;
-        //drawing image
+        int window_cat_x = 550;
+        int window_cat_y = 200;
+        //drawing door cat
         Image image = LoadImage("assets/images/blackcat.jpg");     // Loads to RAM
         texture = LoadTextureFromImage(image);    // Transfers to GPU VRAM
         UnloadImage(image);
         Vector2 CatPosition = { door_cat_x , door_cat_y };
 
         DrawTextureEx(texture, CatPosition, 0, size, RAYWHITE);
+        //drawing window cat
+        Image Windowimage = LoadImage("assets/images/WindowCat.jpg");     // Loads to RAM
+        windowTexture = LoadTextureFromImage(Windowimage);    // Transfers to GPU VRAM
+        UnloadImage(Windowimage);
+        Vector2 CatWindowPosition = { window_cat_x , window_cat_y };
+
+        DrawTextureEx(windowTexture, CatWindowPosition, 0, size, RAYWHITE);
+
         //get the current boss
         const BossState& currentBoss = Bosses::ActiveBoss(game);
         Rectangle bossHB = Bosses::GetHitbox(currentBoss, boss_x, boss_y, boss_scale);
@@ -178,10 +189,10 @@ namespace World6 {
             DrawRectangleLines(window_x, window_y, window_width, window_height, BLUE);
         }
 
-       Bosses::Draw(currentBoss, boss_x, boss_y, boss_scale);
+       //Bosses::Draw(currentBoss, boss_x, boss_y, boss_scale);
        //visualize hitbox for testing
-       DrawRectangleLinesEx(bossHB, 1, RED);
-       DrawRectangleLinesEx(bossHB2, 1, BLUE);
+       //DrawRectangleLinesEx(bossHB, 1, RED);
+       //DrawRectangleLinesEx(bossHB2, 1, BLUE);
        // DrawCircleLines(boss_x, boss_y, boss_radius, GREEN);
 
     }
