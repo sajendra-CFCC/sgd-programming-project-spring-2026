@@ -49,7 +49,7 @@ namespace World6 {
         boss2_x = SCREEN_WIDTH / 2;
         boss_y = SCREEN_HEIGHT / 2;
         boss2_scale = 1;
-        battery_life = 1000;
+        battery_life = 800;
         
         /*texturesize = 100;
         size = .1;*/
@@ -174,7 +174,7 @@ namespace World6 {
         DrawRectangleLines(500, 200, window_width, window_height, BLUE);
                 
         //battery life bar
-        DrawRectangleLines(250, 100, 500, 20, RED);
+        DrawRectangleLines(250, 100, 400, 20, RED);
         DrawRectangle(250, 100, battery_life / 2, 20, RED);
         
         //door
