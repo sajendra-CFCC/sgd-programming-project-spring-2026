@@ -11,7 +11,7 @@ namespace World2 {
     Camera2D camera = { 0 };
 
     //player
-    
+
 
     float pSpeed;
     Vector2 pPos;
@@ -49,16 +49,16 @@ namespace World2 {
     bool isWallSliding;
     float airDrag;
 
-   /* bool started = false;
-    bool onLeftwall;
-    bool onRightwall;
-    float wallJumpX;
-    float walljumpY;
-    float downSlide;
-    float gravity;
-    bool canJump;
-    float jumpSpeed;
-    */
+    /* bool started = false;
+     bool onLeftwall;
+     bool onRightwall;
+     float wallJumpX;
+     float walljumpY;
+     float downSlide;
+     float gravity;
+     bool canJump;
+     float jumpSpeed;
+     */
 
     Rectangle floor;
 
@@ -77,6 +77,7 @@ namespace World2 {
         Rectangle Healthbar;
         bool isAlive;
     };
+
     float minSpeed;
     minion min1;
     minion min2;
@@ -101,7 +102,7 @@ namespace World2 {
         pAttackPos.x = pPos.x - 35;
         pAttackPos.y = pPos.y - 35;
         pAttackRadius = { 225, 225 };
-        
+
         pRadiusVis = 0.0f;
         pSize = { 100, 100 };
         pRad = { 100, 100 };
@@ -123,7 +124,7 @@ namespace World2 {
         min2.rec = { min2.posX, min2.posY, min2.sizeX, min2.sizeY };
         min2.Healthbar = { min2.posX, min2.posY + 60, min2.sizeX, min2.sizeY - 40 };
         min2.isAlive = true;
-        
+
 
 
         //Jumping logic
@@ -143,7 +144,7 @@ namespace World2 {
         //walljumpY = -8.0f;
 
         //Wall and floor shapes
-        lWall = { 0 , -450, 40, 1000};
+        lWall = { 0 , -450, 40, 1000 };
         rWall = { 790, -450, 40, 1000 };
         floor = { 0, 440, 800, 40 };
 
@@ -160,13 +161,11 @@ namespace World2 {
 
 
     }
-    
-
     //player info
 
     WorldUpdateResult Update(GameState& game) {
-      //  camera.target = { pPos.x + pSpeed, pPos.y + pSpeed };
-        camera.target.y = pPos.y ;
+        //  camera.target = { pPos.x + pSpeed, pPos.y + pSpeed };
+        camera.target.y = pPos.y;
         game.score++;
         pVel.y += gravity;
         pVel.x *= (1.0 - airDrag * GetFrameTime());
@@ -202,7 +201,7 @@ namespace World2 {
         pRec.x = pPos.x;
         pRec.y = pPos.y;
 
-        
+
 
         Boss = { ePos_x, ePos_y, 40, 40 };
         aRadius = { pAttackPos.x, pAttackPos.y, 225, 225 };
@@ -235,159 +234,159 @@ namespace World2 {
             min2.isAlive = false;
         }
 
-        
 
-
-
-        
-
-        //MOVEMENT
-        /*if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
-            pPos.y -= 2.0f * pSpeed;
-            pAttackPos.y -= 2 * pSpeed;
-        }*/
-        if ( !touchingLeft && (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT) ) ) {
-            pPos.x -= 2.0f * pSpeed;
-            pAttackPos.x -= 2 * pSpeed;
->>>>>>> 319ff0fad1465a587401d0b2bfc15cdbd347c2ce
-        }
-        else {
-            pVel.x = 0;
-        }
-
-        if (pVel.x < 0) {
-            pVel.x += airDrag;
-        }
-        else {
-            pVel.x = 0;
+        if (pVel.x > 0) {
+            pVel.x -= airDrag;
+            
         }
 
         
 
-
-
-        if (touchingLeft || touchingRight)
-        {
-         
-            gravity = 0.2;
-            airDrag = 0.70;
-            DrawText("Touching Wall", 100, 80, 20, WHITE);
-        }
-
-        if (touchingLeft && IsKeyPressed(KEY_SPACE))
-        {
-            pVel.y = jumpForce += GetFrameTime();
-            pVel.x = wallPushForce;
-        }
-        else if (touchingRight && IsKeyPressed(KEY_SPACE))
-        {
-            pVel.y = jumpForce += GetFrameTime();
-            pVel.x = -wallPushForce;
-        }
-        else
-        {
-            isWallSliding = false;
-            wallTime = 0;
-        }
-
-
-
-        bool onFloor = CheckCollisionRecs(pRec, floor);
-        if (onFloor) {
-            pSpeed = 10;
-            pVel.y = 0;
-            pPos.y = floor.y - pRec.height;
-            pAttackPos.y = floor.y - pRec.height - 35;
-            DrawText("On Floor", 100, 100, 20, WHITE);
-
-            //Jumping on floor
-            if (IsKeyPressed(KEY_SPACE)) {
-                pVel.y = jumpForce;
+            //MOVEMENT
+            /*if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
+                pPos.y -= 2.0f * pSpeed;
+                pAttackPos.y -= 2 * pSpeed;
+            }*/
+            if (!touchingLeft && (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT))) {
+                pPos.x -= 2.0f * pSpeed;
+                pAttackPos.x -= 2 * pSpeed;
             }
-        }
-        else {
-            // Only apply gravity if NOT on the floor
-            pVel.y += gravity;
-        }
+            else {
+                pVel.x = 0;
+            }
+
+            if (pVel.x < 0) {
+                pVel.x += airDrag;
+            }
+            else {
+                pVel.x = 0;
+            }
 
 
-        if (!onFloor && ( touchingLeft || touchingRight ))
-        {
-            isWallSliding = true;
-        }
 
-        if (isWallSliding == true)
-        {
-            wallTime += GetFrameTime();
 
-            if (wallTime < stickTime)
+            if (touchingLeft || touchingRight)
             {
-                isWallSliding = false;
+
+                gravity = 0.2;
+                airDrag = 0.70;
+                DrawText("Touching Wall", 100, 80, 20, WHITE);
+            }
+
+            if (touchingLeft && IsKeyPressed(KEY_SPACE))
+            {
+                pVel.y = jumpForce += GetFrameTime();
+                pVel.x = wallPushForce;
+            }
+            else if (touchingRight && IsKeyPressed(KEY_SPACE))
+            {
+                pVel.y = jumpForce += GetFrameTime();
+                pVel.x = -wallPushForce;
             }
             else
             {
+                isWallSliding = false;
+                wallTime = 0;
+            }
+
+
+
+            bool onFloor = CheckCollisionRecs(pRec, floor);
+            if (onFloor) {
+                pSpeed = 10;
+                pVel.y = 0;
+                pPos.y = floor.y - pRec.height;
+                pAttackPos.y = floor.y - pRec.height - 35;
+                DrawText("On Floor", 100, 100, 20, WHITE);
+
+                //Jumping on floor
+                if (IsKeyPressed(KEY_SPACE)) {
+                    pVel.y = jumpForce;
+                }
+            }
+            else {
+                // Only apply gravity if NOT on the floor
+                pVel.y += gravity;
+            }
+
+
+            if (!onFloor && (touchingLeft || touchingRight))
+            {
                 isWallSliding = true;
-                pVel.y = wallSlideGravity;
-
             }
-        }
 
-        if (IsKeyPressed(KEY_SPACE))
-        {
-            if (onFloor || touchingLeft || touchingRight)
+            if (isWallSliding == true)
             {
-                pVel.y = -jumpForce;
-                onFloor = false;
-                jumpCount = 1;
+                wallTime += GetFrameTime();
+
+                if (wallTime < stickTime)
+                {
+                    isWallSliding = false;
+                }
+                else
+                {
+                    isWallSliding = true;
+                    pVel.y = wallSlideGravity;
+
+                }
             }
-            else if (jumpCount < maxJumps)
+
+            if (IsKeyPressed(KEY_SPACE))
             {
-                pVel.y = -jumpForce;
-                jumpCount++;
+                if (onFloor || touchingLeft || touchingRight)
+                {
+                    pVel.y = -jumpForce;
+                    onFloor = false;
+                    jumpCount = 1;
+                }
+                else if (jumpCount < maxJumps)
+                {
+                    pVel.y = -jumpForce;
+                    jumpCount++;
+                }
             }
+            if (world_complete)
+                return WORLD_COMPLETED;
+            else
+                return WORLD_IN_PROGRESS;
         }
-        if (world_complete)
-            return WORLD_COMPLETED;
-        else
-            return WORLD_IN_PROGRESS;
+
+        void Draw(const GameState& game) {
+            //Camera Start
+            BeginMode2D(camera);
+
+            //DrawRectangleV(LWallPos, LWallSize, GRAY);
+            DrawRectangleRec(pRec, GREEN);
+            DrawRectangleRec(lWall, BLUE);
+            DrawRectangleRec(rWall, BLUE);
+            DrawRectangleRec(floor, BLUE);
+
+            if (min1.isAlive) {
+                DrawRectangleRec(min1.rec, PURPLE);
+                DrawRectangleRec(min1.Healthbar, RED);
+            }
+            if (min2.isAlive) {
+                DrawRectangleRec(min2.rec, PURPLE);
+                DrawRectangleRec(min2.Healthbar, RED);
+            }
+
+
+            DrawText("Hit space while on a wall to wall jump!", (float)GetScreenWidth() / 2 - 10, (float)GetScreenHeight() / 2, 20, WHITE);
+            DrawText("Move Left and right when on the floor!", (float)GetScreenWidth() / 2 - 10, (float)GetScreenHeight() / 2 - 20, 20, WHITE);
+
+            const BossState& currentBoss = Bosses::ActiveBoss(game);
+            int boss_size = 30 * eSize;
+            Rectangle bossHB = Bosses::GetHitbox(currentBoss, ePos_x, ePos_y, eSize);
+            int boss_radius = Bosses::GetHitRadius(currentBoss, eSize);
+
+            Bosses::Draw(currentBoss, ePos_x, ePos_y, eSize);
+            Bosses::DrawHealthBar(currentBoss, ePos_x - boss_size, ePos_y + boss_size, boss_size * 2);
+
+            DrawRectangleV(pAttackPos, pAttackRadius, Fade(RED, pRadiusVis));
+            // DrawRectangleV(pPos, pSize, GREEN);
+
+            DrawRectangleLinesEx(bossHB, 1, RED);
+            //DrawCircleLines(ePos_x, ePos_y, boss_radius, GREEN);
+            EndMode2D();
+        }
     }
-
-    void Draw(const GameState& game) {
-        //Camera Start
-        BeginMode2D(camera);
-
-        //DrawRectangleV(LWallPos, LWallSize, GRAY);
-        DrawRectangleRec(pRec, GREEN);
-        DrawRectangleRec(lWall, BLUE);
-        DrawRectangleRec(rWall, BLUE);
-        DrawRectangleRec(floor, BLUE);
-
-        if (min1.isAlive) {
-            DrawRectangleRec(min1.rec, PURPLE);
-            DrawRectangleRec(min1.Healthbar, RED);
-        }
-        if (min2.isAlive) {
-            DrawRectangleRec(min2.rec, PURPLE);
-            DrawRectangleRec(min2.Healthbar, RED);
-        }
-
-
-        DrawText("Hit space while on a wall to wall jump!", (float)GetScreenWidth() / 2 - 10, (float)GetScreenHeight() / 2, 20, WHITE);
-        DrawText("Move Left and right when on the floor!", (float)GetScreenWidth() / 2 - 10, (float)GetScreenHeight() / 2 - 20, 20, WHITE);
-
-        const BossState& currentBoss = Bosses::ActiveBoss(game);
-        int boss_size = 30 * eSize;
-        Rectangle bossHB = Bosses::GetHitbox(currentBoss, ePos_x, ePos_y, eSize);
-        int boss_radius = Bosses::GetHitRadius(currentBoss, eSize);
-
-        Bosses::Draw(currentBoss, ePos_x, ePos_y, eSize);
-        Bosses::DrawHealthBar(currentBoss, ePos_x - boss_size, ePos_y + boss_size, boss_size * 2);
-
-        DrawRectangleV(pAttackPos, pAttackRadius, Fade(RED, pRadiusVis));
-       // DrawRectangleV(pPos, pSize, GREEN);
-
-        DrawRectangleLinesEx(bossHB, 1, RED);
-        //DrawCircleLines(ePos_x, ePos_y, boss_radius, GREEN);
-        EndMode2D();
-    }
-}
