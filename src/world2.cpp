@@ -189,7 +189,7 @@ namespace World2 {
             pPos.y -= 2.0f * pSpeed;
             pAttackPos.y -= 2 * pSpeed;
         }*/
-        if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) {
+        if ( !touchingLeft && (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT) ) ) {
             pPos.x -= 2.0f * pSpeed;
             pAttackPos.x -= 2 * pSpeed;
         }
@@ -197,7 +197,7 @@ namespace World2 {
             pPos.y += 2.0f * pSpeed;
             pAttackPos.y += 2 * pSpeed;
         }*/
-        if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
+        if ( !touchingRight && (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT) ) ) {
             pPos.x += +2.0f * pSpeed;
             pAttackPos.x += 2 * pSpeed;
         }
