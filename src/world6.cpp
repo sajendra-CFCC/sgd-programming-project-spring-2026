@@ -11,6 +11,11 @@ namespace World6 {
     float boss_scale;
     float boss_grow_rate = 0.003;
 
+    int boss2_x;
+    int boss2_y;
+    float boss2_scale;
+    float boss2_grow_rate = 0.003;
+
     int battery_life;
 
     int door_x = 100;
@@ -38,9 +43,12 @@ namespace World6 {
         world_complete = false;
         
 
-        boss_x = SCREEN_WIDTH / 4;
-        boss_y = SCREEN_HEIGHT / 4;
+        boss_x = SCREEN_WIDTH / 2;
+        boss_y = SCREEN_HEIGHT / 2;
         boss_scale = 1;
+        boss2_x = SCREEN_WIDTH / 2;
+        boss_y = SCREEN_HEIGHT / 2;
+        boss2_scale = 1;
         battery_life = 1000;
         
         /*texturesize = 100;
@@ -52,7 +60,7 @@ namespace World6 {
         //get the current boss
         BossState& currentBoss = Bosses::ActiveBoss(game);
         Rectangle bossHB = Bosses::GetHitbox(currentBoss, boss_x, boss_y, boss_scale);
-        
+        Rectangle bossHB2 = Bosses::GetHitbox(currentBoss, boss2_x, boss2_y, boss2_scale);
         //check for input
         if (IsKeyDown(KEY_SPACE)) {
             currentBoss.health -= 10;
@@ -113,6 +121,7 @@ namespace World6 {
         const BossState& currentBoss = Bosses::ActiveBoss(game);
         Rectangle bossHB = Bosses::GetHitbox(currentBoss, boss_x, boss_y, boss_scale);
         int boss_radius = Bosses::GetHitRadius(currentBoss, boss_scale);
+        Rectangle bossHB2 = Bosses::GetHitbox(currentBoss, boss2_x, boss2_y, boss2_scale);
 
         //drawing image
         //Image image = LoadImage("assets/images/blackcat.jpg");     // Loads to RAM
@@ -138,6 +147,8 @@ namespace World6 {
 
         boss_x = 200;
         boss_y = 350;
+        boss2_x = 400;
+        boss2_y = 550;
 
 
         //Level Text
@@ -171,6 +182,7 @@ namespace World6 {
        //Bosses::DrawHealthBar(currentBoss, boss_x - boss_size, boss_y + boss_size, boss_size *2);
        //visualize hitbox for testing
        DrawRectangleLinesEx(bossHB, 1, RED);
+       DrawRectangleLinesEx(bossHB2, 1, BLUE);
        // DrawCircleLines(boss_x, boss_y, boss_radius, GREEN);
 
     }
