@@ -38,8 +38,8 @@ namespace World6 {
         world_complete = false;
         
 
-        boss_x = SCREEN_WIDTH / 2;
-        boss_y = SCREEN_HEIGHT / 2;
+        boss_x = SCREEN_WIDTH / 4;
+        boss_y = SCREEN_HEIGHT / 4;
         boss_scale = 1;
         battery_life = 1000;
         
@@ -61,6 +61,7 @@ namespace World6 {
         if (IsKeyDown(KEY_Q) && battery_life > 0) {
             battery_life -= 1;
             door_closed = true;
+            boss_scale = 1;
         } else {
             door_closed = false;
         }
@@ -70,22 +71,25 @@ namespace World6 {
             window_closed = true;
         } else {
             window_closed = false;
-
         }
 
 
         //update state
         game.score++; // just updating score every frame for some reason
         //increase boss scale
-        boss_scale *= (1 + boss_grow_rate);
+        //boss_scale *= (1 + boss_grow_rate);
 
         //Collision stuff
         //NOTE: there is a mistake here, but you need to check collision logic if you change this
         //NOTE lets discuss in class
         Rectangle doorHB = { door_x, door_y };
         bool DoorCollision = CheckCollisionRecs(bossHB, doorHB);
-        if (DoorCollision) {
-            printf("collision\n");
+        if (DoorCollision == true) {
+            printf("collision\n"); 
+            game.health = 0;
+        }
+        else if (DoorCollision == false) {
+            boss_scale *= (1 + boss_grow_rate);
         }
 
         
