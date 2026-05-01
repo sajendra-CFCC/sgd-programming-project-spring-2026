@@ -1,10 +1,15 @@
 #include "world3.h"
 #include "bosses.h"
+#include "raymath.h"
 #include <iostream>
-#include <external/stb_rect_pack.h>
+
 
 
 namespace World3 {
+    //helper function for rotating point about center, will implement later
+    Vector2 RotatePointAroundCenter(Vector2 point, float angleDegrees);
+
+
     bool world_complete;
     int boss_x;
     int boss_y;
@@ -13,8 +18,7 @@ namespace World3 {
     int player_y;
     int player_rotation;
     
-    //Music bgm;
-
+    
     const int player_width = 100;
     const int player_height = 25;
 
@@ -28,17 +32,17 @@ namespace World3 {
     Vector2 ballPosition;
     Vector2 ballSpeed;
 
+    const int CENTER_X = SCREEN_WIDTH / 2;
+    const int CENTER_Y = SCREEN_HEIGHT / 2;
     //player circle positions
-    const int CIRC_RADIUS = 200;
-
+    const int CIRC_RADIUS = 275;
+    const Vector2 PLAYER_START_POINT = { CENTER_X, CENTER_Y - CIRC_RADIUS };
+    Vector2 player_point_on_circle;
 
     void Init() {
         //set up anything you need for your game / world here
         world_complete = false;
-        //InitAudioDevice();
-       
-
-
+        
         // initial boss placement
         boss_x = SCREEN_WIDTH / 2;
         boss_y = SCREEN_HEIGHT / 2;
@@ -62,19 +66,14 @@ namespace World3 {
         ballSpeed.y = -3;
 
         player_rotation = 0;
+        player_point_on_circle = RotatePointAroundCenter(PLAYER_START_POINT, player_rotation);
     }
 
     WorldUpdateResult Update(GameState& game) {
-        //game.score++; // just updating score every frame for some reason
-
-        
-        //float dt = GetFrameTime(); // frame time for smooth movement
-        //int move = static_cast<int>(baseSpeed * dt);
-
         // continuous input for smooth movement
         if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) {
            player_x += playerSpeed;
-            player_rotation++;
+           player_rotation++;
         }
         if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) {
             player_x -= playerSpeed;
@@ -111,6 +110,9 @@ namespace World3 {
         {
             ballSpeed.x *= -1;
         }
+
+        //keep paddle position on circle updated
+        player_point_on_circle = RotatePointAroundCenter(PLAYER_START_POINT, player_rotation);
         
 
         //Ball and Rectangle Collision Setup
@@ -126,7 +128,9 @@ namespace World3 {
         //get the current boss
         BossState& currentBoss  = Bosses::ActiveBoss(game);
 
+        //NOTE this is incorrect (Rectangle takes for paramters
         Rectangle BossBox = { (int)boss_x, (int)boss_y, boss_scale };
+        //use the built in get boss hitbox , will return rectangle for you
         if (CheckCollisionCircleRec(ballPosition, ballRadius, BossBox)) {
             std::cout << "HIT!\n";
             currentBoss.health -= 10;
@@ -152,12 +156,10 @@ namespace World3 {
         int text_y = 100;
         DrawText("Evan and Richie World", text_x, text_y, 25, PURPLE);
 
-        Rectangle playerRect = { (float)player_x, (float)player_y, player_width, player_height };
-        Vector2 rotationOffset = { -boss_x + player_x, -boss_y + player_y };
+        
         // draw player square
         DrawRectangle(player_x, player_y, player_width, player_height, RED);
-        DrawRectanglePro(playerRect, rotationOffset, player_rotation, BLUE);
-  
+        
 
         // get the current boss and draw it
         const BossState& currentBoss = Bosses::ActiveBoss(game);
@@ -167,6 +169,42 @@ namespace World3 {
 
         //draw ball
         DrawCircleV(ballPosition, ballRadius, BLUE);
+        
+        
+        //testing drawing paddle at rotated location (draw here for z order)
+        Rectangle player_rect_on_circle = { player_point_on_circle.x, player_point_on_circle.y,
+                                            player_width, player_height };
+        DrawRectangleRec(player_rect_on_circle, BLUE); //just draw a regular rectangle at rotated point
+        
+        //drawing rectangle rotated.. you specifcy an offset relative to top left corner to rotate rectangle arround
+        //here are some possible pivots (relative to rectangel and rectangle size)
+        Vector2 pivotTopLeft     = { 0, 0 };
+        Vector2 pivotCenter      = { player_width / 2, player_height / 2 };
+        Vector2 pivotBottomRight = { player_width , player_height };
+        
+        //draw each of these so we can see
+        DrawRectanglePro(player_rect_on_circle, pivotTopLeft, player_rotation, YELLOW);
+        DrawRectanglePro(player_rect_on_circle, pivotCenter, player_rotation, GREEN);
+        DrawRectanglePro(player_rect_on_circle, pivotBottomRight, player_rotation, PURPLE);
+
+        //testing drawing a point at right radius
+        DrawCircleV(PLAYER_START_POINT, 5, WHITE);
+        DrawCircleV(player_point_on_circle, 5, YELLOW);
+    }
+
+    //rotates given point around center by given angle (degrees) and returns rotated point
+    Vector2 RotatePointAroundCenter(Vector2 point, float angleDegrees) {
+        //rotation function will be around (0,0) (top left corner) by default, so move to center
+        point.x -= CENTER_X;
+        point.y -= CENTER_Y;
+
+        Vector2 rotatedPoint = Vector2Rotate(point, angleDegrees * DEG2RAD); //function expects radians, convert from degrees
+
+        //add back to go to original coordinate system
+        rotatedPoint.x += CENTER_X;
+        rotatedPoint.y += CENTER_Y;
+
+        return rotatedPoint;
     }
 
 }
