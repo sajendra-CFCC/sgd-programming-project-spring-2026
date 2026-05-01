@@ -162,6 +162,11 @@ namespace World3 {
             ballSpeed = Vector2Scale(ballSpeed, initialBallSpeed);
 
         }
+        Vector2 OuterCirc = { 400 , 300 };
+        if (CheckCollisionCircles(OuterCirc, 275, ballPosition, ballRadius)) {
+            ballSpeed.x *= -1;
+            ballSpeed.y *= -1;
+        }
 
         if (currentBoss.health <= 0) {
             bool moreBosses = Bosses::AdvanceToNext(game);

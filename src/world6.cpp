@@ -145,7 +145,7 @@ namespace World6 {
 
         int window_cat_x;
         int windo_cat_y;
-        size += .0001;
+        size += .001;
 
         boss_x = 200;
         boss_y = 350;
@@ -154,7 +154,7 @@ namespace World6 {
 
 
         //Level Text
-           //positions
+        //positions
         int text_x = 100;
         int text_y = 100;
         DrawText("Battery Life -", text_x, text_y, 20, WHITE);
