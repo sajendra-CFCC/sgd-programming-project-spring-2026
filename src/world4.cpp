@@ -61,8 +61,8 @@ namespace World4 {
 
         
         
-        if (IsKeyPressed(KEY_SPACE)) {
-            float speed = 5.0f;
+        if (IsKeyPressed(KEY_SPACE) && b.active == false ) {
+            float speed = 20.0f;
             b.Bullet_Possition = playerPosition;
             b.Bullet_Velocity = { 0 , -speed };
             b.radius = 10.0;
@@ -77,6 +77,9 @@ namespace World4 {
         if (b.active) {
             b.Bullet_Possition.x += b.Bullet_Velocity.x;
             b.Bullet_Possition.y += b.Bullet_Velocity.y;
+            if (b.Bullet_Possition.y < 0) {
+                b.active = false;
+            }
         }
 
 
@@ -93,11 +96,11 @@ namespace World4 {
 
         //get the boss hitbox
         Rectangle bossHB = Bosses::GetHitbox(currentBoss, boss_x, boss_y, boss_scale);
-        if (CheckCollisionCircleRec(b.Bullet_Possition, b.radius, bossHB)) {
+        if( CheckCollisionCircleRec(b.Bullet_Possition, b.radius, bossHB) && b.active ) {
             std::cout << "BOOM!\n";
-            b.Bullet_Velocity.y *= 10;
             b.Bullet_Velocity.x = GetRandomValue(-5, 5);
             currentBoss.health -= 10;
+            b.active = false;
         }
 
 
@@ -138,8 +141,9 @@ namespace World4 {
         Bosses::Draw(currentBoss, boss_x, boss_y, boss_scale);
         Bosses::DrawHealthBar(currentBoss, boss_x - boss_size, boss_y + boss_size, boss_size * 2);
 
-        DrawCircleV(b.Bullet_Possition, b.radius, RED);
-
+        if(b.active) {
+            DrawCircleV(b.Bullet_Possition, b.radius, RED);
+        }
 
         
     }
