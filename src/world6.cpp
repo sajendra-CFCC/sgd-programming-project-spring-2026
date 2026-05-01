@@ -87,9 +87,11 @@ namespace World6 {
         //increase boss scale
         //boss_scale *= (1 + boss_grow_rate);
 
-      
+        //hitboxes
         Rectangle doorHB = { door_x, door_y};
         Rectangle windowHB = { window_x, window_y };
+       
+        //collisions
         bool DoorCollision = CheckCollisionRecs(bossHB, doorHB);
         if (DoorCollision == true) {
             printf("collision\n"); 
@@ -103,7 +105,7 @@ namespace World6 {
         if (DoorCollision == true) {
             printf("collision\n");
             game.health -= 15;
-            boss_scale = 1;
+            boss2_scale = 1;
         }
         else if (DoorCollision == false) {
             boss2_scale *= (1 + boss_grow_rate);
