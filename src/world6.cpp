@@ -103,12 +103,12 @@ namespace World6 {
             boss_scale *= (1 + boss_grow_rate);
         }
         bool WindowCollision = CheckCollisionRecs(bossHB2, windowHB);
-        if (DoorCollision == true) {
+        if (WindowCollision == true) {
             printf("collision\n");
             game.health -= 15;
             boss2_scale = 1;
         }
-        else if (DoorCollision == false) {
+        else if (WindowCollision == false) {
             boss2_scale *= (1 + boss_grow_rate);
         }
         
@@ -143,9 +143,7 @@ namespace World6 {
 
         //DrawTextureEx(texture, CatPosition, 0, size * 2, RAYWHITE);
 
-        //positions
-        int text_x = 100;
-        int text_y = 100;
+     
 
         
         /*int door_cat_x = 150;
@@ -164,6 +162,9 @@ namespace World6 {
 
 
         //Level Text
+           //positions
+        int text_x = 100;
+        int text_y = 100;
         DrawText("Battery Life -", text_x, text_y, 20, WHITE);
         DrawText("E to Close Window", window_x, 550, 20, WHITE);
         DrawText("Q to Close Door", door_x, 550, 20, WHITE);
