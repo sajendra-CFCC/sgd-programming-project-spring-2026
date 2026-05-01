@@ -5,7 +5,7 @@
 
 namespace World4 {
     bool world_complete;
-        
+
 
     Vector2 playerPosition = { 400, 300 };
     Vector2 playerSpeed = { 100.0f, 100.0f };
@@ -18,8 +18,6 @@ namespace World4 {
     Vector2 bulletPos = { 0,0 };
     bool bulletActive = false;
 
-   
-    
 
 
     void Init() {
@@ -76,10 +74,11 @@ namespace World4 {
         if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) playerRotation += 5;
         
         if (IsKeyDown(KEY_SPACE)) shootMissle = 1;
+        bullet b;
 
-        
+        if ((bulletPos.x >= (BOSS_CREATURE_A() - bulletActive)) || (bulletPos.x <= b.radius)) b.Bullet_Velocity.x *= -1.0f;
 
-
+       
 
       
 
