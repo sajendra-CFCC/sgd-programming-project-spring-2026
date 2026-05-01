@@ -67,9 +67,16 @@ namespace World2 {
     int eSize;
     Rectangle Boss;
 
+    struct minion {
+        float posX;
+        float posY;
+        float sizeX;
+        float sizeY;
+        Rectangle rec;
+        Rectangle Healthbar;
+    };
 
-
-
+    minion min1;
 
     void Init() {
         world_complete = false;
@@ -98,8 +105,15 @@ namespace World2 {
 
         //Boss
         ePos_x = 300;
-        ePos_y = 350;
+        ePos_y = -500;
         eSize = 1;
+
+        //Minions
+        min1 = { 
+            250.0f, 350.0f, 50.0f, 50.0f, 
+            {min1.posX, min1.posY, min1.sizeX, min1.sizeY},
+            {min1.posX, min1.posY + 60, min1.sizeX, min1.sizeY - 40}
+        };
         
 
 
@@ -112,7 +126,7 @@ namespace World2 {
         stickTime = 3.0f;
         wallSlideGravity = 10.0f;
         jumpCount = 2;
-        int maxJumps = 2;
+        maxJumps = 2;
         isWallSliding = false;
 
         //wallJumpX = 10.0f;
@@ -136,14 +150,6 @@ namespace World2 {
 
 
     }
-        
-
-    
-
-    struct Minions
-    {
-        
-    };
     
 
     //player info
@@ -252,7 +258,7 @@ namespace World2 {
         }
 
 
-        if (touchingLeft || touchingRight && !onFloor)
+        if (!onFloor && ( touchingLeft || touchingRight ))
         {
             isWallSliding = true;
         }
@@ -303,6 +309,10 @@ namespace World2 {
         DrawRectangleRec(lWall, BLUE);
         DrawRectangleRec(rWall, BLUE);
         DrawRectangleRec(floor, BLUE);
+
+        DrawRectangleRec(min1.rec, PURPLE);
+        DrawRectangleRec(min1.Healthbar, RED);
+
 
         DrawText("Hit space while on a wall to wall jump!", (float)GetScreenWidth() / 2 - 10, (float)GetScreenHeight() / 2, 20, WHITE);
         DrawText("Move Left and right when on the floor!", (float)GetScreenWidth() / 2 - 10, (float)GetScreenHeight() / 2 - 20, 20, WHITE);
