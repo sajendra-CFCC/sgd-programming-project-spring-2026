@@ -50,10 +50,6 @@ namespace World6 {
         boss_y = SCREEN_HEIGHT / 2;
         boss2_scale = 1;
         battery_life = 800;
-        
-        texturesize = 100;
-
- 
     }
 
     WorldUpdateResult Update(GameState& game) {
@@ -128,24 +124,23 @@ namespace World6 {
 
     void Draw(const GameState& game) {
 
-        int door_cat_x = 150;
-        int door_cat_y = 300;
+        int door_cat_x = 125;
+        int door_cat_y = 290;
+        int window_cat_x;
+        int window_cat_y;
         //drawing image
         Image image = LoadImage("assets/images/blackcat.jpg");     // Loads to RAM
         texture = LoadTextureFromImage(image);    // Transfers to GPU VRAM
         UnloadImage(image);
         Vector2 CatPosition = { door_cat_x , door_cat_y };
 
-        DrawTextureEx(texture, CatPosition, 0, size * 4, RAYWHITE);
+        DrawTextureEx(texture, CatPosition, 0, size, RAYWHITE);
         //get the current boss
         const BossState& currentBoss = Bosses::ActiveBoss(game);
         Rectangle bossHB = Bosses::GetHitbox(currentBoss, boss_x, boss_y, boss_scale);
         int boss_radius = Bosses::GetHitRadius(currentBoss, boss_scale);
         Rectangle bossHB2 = Bosses::GetHitbox(currentBoss, boss2_x, boss2_y, boss2_scale);
-
-        int window_cat_x;
-        int windo_cat_y;
-        size += .001;
+        size += .002;
 
         boss_x = 200;
         boss_y = 350;
@@ -184,7 +179,6 @@ namespace World6 {
         }
 
        Bosses::Draw(currentBoss, boss_x, boss_y, boss_scale);
-       //Bosses::DrawHealthBar(currentBoss, boss_x - boss_size, boss_y + boss_size, boss_size *2);
        //visualize hitbox for testing
        DrawRectangleLinesEx(bossHB, 1, RED);
        DrawRectangleLinesEx(bossHB2, 1, BLUE);
