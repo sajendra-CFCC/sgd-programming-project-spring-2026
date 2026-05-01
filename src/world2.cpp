@@ -76,8 +76,8 @@ namespace World2 {
         Rectangle rec;
         Rectangle Healthbar;
         bool isAlive;
+        float minSpeed;
     };
-    float minSpeed;
     minion min1;
     minion min2;
 
@@ -112,17 +112,19 @@ namespace World2 {
         eSize = 1;
 
         //Minions
-        minSpeed = 2.5;
+       
 
         min1 = { 250.0f, 350.0f, 50.0f, 50.0f, };
         min1.rec = { min1.posX, min1.posY, min1.sizeX, min1.sizeY };
         min1.Healthbar = { min1.posX, min1.posY + 60, min1.sizeX, min1.sizeY - 40 };
         min1.isAlive = true;
+        min1.minSpeed = 2.5;
 
         min2 = { 350.0f, 250.0f, 50.0f, 50.0f, };
         min2.rec = { min2.posX, min2.posY, min2.sizeX, min2.sizeY };
         min2.Healthbar = { min2.posX, min2.posY + 60, min2.sizeX, min2.sizeY - 40 };
         min2.isAlive = true;
+        min2.minSpeed = 2.5;
         
 
 
@@ -237,8 +239,14 @@ namespace World2 {
 
         
         //minion movement
-        min1.posX += minSpeed;
-        min2.posX += minSpeed;
+        if (min1.posX >= 750 || min1.posX <= 40) {
+            min1.minSpeed /= -1;
+        }
+        if (min2.posX >= 750 || min2.posX <= 40) {
+            min2.minSpeed /= -1;
+        }
+        min1.posX += min1.minSpeed;
+        min2.posX += min2.minSpeed;
         min1.rec.x = min1.posX;
         min2.rec.x = min2.posX;
         min1.Healthbar.x = min1.posX;
