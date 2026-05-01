@@ -74,6 +74,7 @@ namespace World2 {
         float sizeY;
         Rectangle rec;
         Rectangle Healthbar;
+        bool isAlive;
     };
 
     minion min1;
@@ -112,7 +113,8 @@ namespace World2 {
         min1 = { 
             250.0f, 350.0f, 50.0f, 50.0f, 
             {min1.posX, min1.posY, min1.sizeX, min1.sizeY},
-            {min1.posX, min1.posY + 60, min1.sizeX, min1.sizeY - 40}
+            {min1.posX, min1.posY + 60, min1.sizeX, min1.sizeY - 40},
+            true
         };
         
 
@@ -177,8 +179,8 @@ namespace World2 {
         BossState& currentBoss = Bosses::ActiveBoss(game);
 
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionRecs(aRadius, Boss)) {
-                pRadiusVis = 0.3f;
-                currentBoss.health -= 10;
+            pRadiusVis = 0.3f;
+            currentBoss.health -= 10;
         }
         else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) pRadiusVis = 0.3f;
         else pRadiusVis = -0.0f;
@@ -187,6 +189,14 @@ namespace World2 {
             bool moreBosses = Bosses::AdvanceToNext(game);
             if (!moreBosses)
                 world_complete = true;
+        }
+
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionRecs(aRadius, min1.rec)) {
+            pRadiusVis = 0.3f;
+            min1.Healthbar.width -= 10;
+        }
+        if (min1.Healthbar.width <= 0) {
+            min1.isAlive = false;
         }
 
 
@@ -310,8 +320,10 @@ namespace World2 {
         DrawRectangleRec(rWall, BLUE);
         DrawRectangleRec(floor, BLUE);
 
-        DrawRectangleRec(min1.rec, PURPLE);
-        DrawRectangleRec(min1.Healthbar, RED);
+        if (min1.isAlive) {
+            DrawRectangleRec(min1.rec, PURPLE);
+            DrawRectangleRec(min1.Healthbar, RED);
+        }
 
 
         DrawText("Hit space while on a wall to wall jump!", (float)GetScreenWidth() / 2 - 10, (float)GetScreenHeight() / 2, 20, WHITE);
