@@ -78,6 +78,7 @@ namespace World2 {
     };
 
     minion min1;
+    minion min2;
 
     void Init() {
         world_complete = false;
@@ -114,6 +115,11 @@ namespace World2 {
         min1.rec = { min1.posX, min1.posY, min1.sizeX, min1.sizeY };
         min1.Healthbar = { min1.posX, min1.posY + 60, min1.sizeX, min1.sizeY - 40 };
         min1.isAlive = true;
+
+        min2 = { 350.0f, 250.0f, 50.0f, 50.0f, };
+        min2.rec = { min2.posX, min2.posY, min2.sizeX, min2.sizeY };
+        min2.Healthbar = { min2.posX, min2.posY + 60, min2.sizeX, min2.sizeY - 40 };
+        min2.isAlive = true;
         
 
 
@@ -188,13 +194,18 @@ namespace World2 {
             if (!moreBosses)
                 world_complete = true;
         }
-
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionRecs(aRadius, min1.rec)) {
+        //minion collision and death
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && (CheckCollisionRecs(aRadius, min1.rec) || CheckCollisionRecs(aRadius, min2.rec))) {
             pRadiusVis = 0.3f;
-            min1.Healthbar.width -= 10;
+            if (CheckCollisionRecs(aRadius, min1.rec)) min1.Healthbar.width -= 10;
+            if (CheckCollisionRecs(aRadius, min2.rec)) min2.Healthbar.width -= 10;
         }
+
         if (min1.Healthbar.width <= 0) {
             min1.isAlive = false;
+        }
+        else if (min2.Healthbar.width <= 0) {
+            min2.isAlive = false;
         }
 
 
@@ -321,6 +332,10 @@ namespace World2 {
         if (min1.isAlive) {
             DrawRectangleRec(min1.rec, PURPLE);
             DrawRectangleRec(min1.Healthbar, RED);
+        }
+        if (min2.isAlive) {
+            DrawRectangleRec(min2.rec, PURPLE);
+            DrawRectangleRec(min2.Healthbar, RED);
         }
 
 
