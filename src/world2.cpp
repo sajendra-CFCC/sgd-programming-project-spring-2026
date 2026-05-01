@@ -47,7 +47,8 @@ namespace World2 {
     int maxJumps;
     float pushSpeed;
     bool isWallSliding;
-    
+    float airDrag;
+
    /* bool started = false;
     bool onLeftwall;
     bool onRightwall;
@@ -114,12 +115,13 @@ namespace World2 {
 
         //Jumping logic
         gravity = 0.5f;
-        jumpForce = 15.0f;
-        wallPushForce = 663.0f;
-        pushSpeed = 10;
+        jumpForce = 12.0f;
+        wallPushForce = 300.0f;
+        airDrag = 300.0;
+        pushSpeed = 0.05;
         wallTime = 2.0f;
         stickTime = 3.0f;
-        wallSlideGravity = 10.0f;
+        wallSlideGravity = 50.0f;
         jumpCount = 2;
         maxJumps = 2;
         isWallSliding = false;
@@ -154,9 +156,30 @@ namespace World2 {
         camera.target.y = pPos.y ;
         game.score++;
         pVel.y += gravity;
+        pVel.x *= (1.0 - airDrag * GetFrameTime());
 
         touchingLeft = CheckCollisionRecs(pRec, lWall);
         touchingRight = CheckCollisionRecs(pRec, rWall);
+
+        //MOVEMENT
+        /*if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
+            pPos.y -= 2.0f * pSpeed;
+            pAttackPos.y -= 2 * pSpeed;
+        }*/
+        if ((IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) && !touchingLeft) {
+            pPos.x -= 2.0f * pSpeed;
+            pAttackPos.x -= 2 * pSpeed;
+        }
+
+        /*if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) {
+            pPos.y += 2.0f * pSpeed;
+            pAttackPos.y += 2 * pSpeed;
+        }*/
+        if ((IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) && !touchingRight) {
+            pPos.x += +2.0f * pSpeed;
+            pAttackPos.x += 2 * pSpeed;
+        }
+
 
         //Adding velocity to position
         pPos.x += pVel.x;
@@ -184,26 +207,18 @@ namespace World2 {
                 world_complete = true;
         }
 
-
-        //MOVEMENT
-        /*if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
-            pPos.y -= 2.0f * pSpeed;
-            pAttackPos.y -= 2 * pSpeed;
-        }*/
-        if ( !touchingLeft && (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT) ) ) {
-            pPos.x -= 2.0f * pSpeed;
-            pAttackPos.x -= 2 * pSpeed;
+        if (pVel.x > 0) {
+            pVel.x -= airDrag;
+        }else      {
+            pVel.x = 0;
         }
-        /*if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) {
-            pPos.y += 2.0f * pSpeed;
-            pAttackPos.y += 2 * pSpeed;
-        }*/
-        if ( !touchingRight && (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT) ) ) {
-            pPos.x += +2.0f * pSpeed;
-            pAttackPos.x += 2 * pSpeed;
-        }
-        else pVel.x = 0;
 
+        if (pVel.x < 0) {
+            pVel.x += airDrag;
+        }
+        else {
+            pVel.x = 0;
+        }
        
         
 
@@ -211,8 +226,9 @@ namespace World2 {
 
         if (touchingLeft || touchingRight)
         {
-            pSpeed = 0;
-            gravity = 0.6;
+         
+            gravity = 0.2;
+            airDrag = 0.70;
             DrawText("Touching Wall", 100, 80, 20, WHITE);
         }
 
@@ -288,7 +304,6 @@ namespace World2 {
                 jumpCount++;
             }
         }
-
         if (world_complete)
             return WORLD_COMPLETED;
         else
