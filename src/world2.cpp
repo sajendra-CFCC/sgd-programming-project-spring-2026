@@ -76,7 +76,7 @@ namespace World2 {
         Rectangle Healthbar;
         bool isAlive;
     };
-
+    float minSpeed;
     minion min1;
     minion min2;
 
@@ -111,6 +111,7 @@ namespace World2 {
         eSize = 1;
 
         //Minions
+        minSpeed = 20;
         min1 = { 250.0f, 350.0f, 50.0f, 50.0f, };
         min1.rec = { min1.posX, min1.posY, min1.sizeX, min1.sizeY };
         min1.Healthbar = { min1.posX, min1.posY + 60, min1.sizeX, min1.sizeY - 40 };
@@ -177,6 +178,8 @@ namespace World2 {
         pRec.x = pPos.x;
         pRec.y = pPos.y;
 
+        
+
         Boss = { ePos_x, ePos_y, 40, 40 };
         aRadius = { pAttackPos.x, pAttackPos.y, 225, 225 };
 
@@ -204,10 +207,13 @@ namespace World2 {
         if (min1.Healthbar.width <= 0) {
             min1.isAlive = false;
         }
-        else if (min2.Healthbar.width <= 0) {
+        if (min2.Healthbar.width <= 0) {
             min2.isAlive = false;
         }
 
+        //minion movement
+            min1.posX += minSpeed;
+            min2.posX += minSpeed;
 
         //MOVEMENT
         /*if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
