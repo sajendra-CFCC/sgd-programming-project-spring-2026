@@ -9,7 +9,7 @@ namespace World6 {
     int boss_x;
     int boss_y;
     float boss_scale;
-    float boss_grow_rate = 0.003;
+    float boss_grow_rate = 0.01;
 
     int boss2_x;
     int boss2_y;
