@@ -5,7 +5,7 @@
 
 
 
-namespace World3 {
+namespace World7 {
     //helper function for rotating point about center, will implement later
     Vector2 RotatePointAroundCenter(Vector2 point, float angleDegrees);
 
@@ -24,10 +24,10 @@ namespace World3 {
 
     
     // movement parameters
-    const int playerSpeed = 5; // pixels per frame
+    const int playerSpeed = 8; // pixels per frame
 
     //ball variables and paramters
-    const int initialBallSpeed = 3;
+    const int initialBallSpeed = 6;
     const int ballRadius = 10;
     Vector2 ballPosition;
     Vector2 ballSpeed;
@@ -181,11 +181,11 @@ namespace World3 {
     }
 
     void Draw(const GameState& game) {
-        DrawCircleLines(400,300, 275, PURPLE);
+        DrawCircleLines(400,300, 275, BLACK);
         // draw background text
         int text_x = 250;
         int text_y = 100;
-        DrawText("Evan and Richie World", text_x, text_y, 25, PURPLE);
+        DrawText("Evan and Richie World - EVIL EDITION", text_x, text_y, 25, RED);
 
         
         // draw player square

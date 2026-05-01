@@ -67,9 +67,18 @@ namespace World2 {
     int eSize;
     Rectangle Boss;
 
+    struct minion {
+        float posX;
+        float posY;
+        float sizeX;
+        float sizeY;
+        Rectangle rec;
+        Rectangle Healthbar;
+        bool isAlive;
+    };
 
-
-
+    minion min1;
+    minion min2;
 
     void Init() {
         world_complete = false;
@@ -98,8 +107,19 @@ namespace World2 {
 
         //Boss
         ePos_x = 300;
-        ePos_y = 350;
+        ePos_y = -500;
         eSize = 1;
+
+        //Minions
+        min1 = { 250.0f, 350.0f, 50.0f, 50.0f, };
+        min1.rec = { min1.posX, min1.posY, min1.sizeX, min1.sizeY };
+        min1.Healthbar = { min1.posX, min1.posY + 60, min1.sizeX, min1.sizeY - 40 };
+        min1.isAlive = true;
+
+        min2 = { 350.0f, 250.0f, 50.0f, 50.0f, };
+        min2.rec = { min2.posX, min2.posY, min2.sizeX, min2.sizeY };
+        min2.Healthbar = { min2.posX, min2.posY + 60, min2.sizeX, min2.sizeY - 40 };
+        min2.isAlive = true;
         
 
 
@@ -112,7 +132,7 @@ namespace World2 {
         stickTime = 3.0f;
         wallSlideGravity = 10.0f;
         jumpCount = 2;
-        int maxJumps = 2;
+        maxJumps = 2;
         isWallSliding = false;
 
         //wallJumpX = 10.0f;
@@ -136,14 +156,6 @@ namespace World2 {
 
 
     }
-        
-
-    
-
-    struct Minions
-    {
-        
-    };
     
 
     //player info
@@ -171,8 +183,8 @@ namespace World2 {
         BossState& currentBoss = Bosses::ActiveBoss(game);
 
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionRecs(aRadius, Boss)) {
-                pRadiusVis = 0.3f;
-                currentBoss.health -= 10;
+            pRadiusVis = 0.3f;
+            currentBoss.health -= 10;
         }
         else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) pRadiusVis = 0.3f;
         else pRadiusVis = -0.0f;
@@ -181,6 +193,19 @@ namespace World2 {
             bool moreBosses = Bosses::AdvanceToNext(game);
             if (!moreBosses)
                 world_complete = true;
+        }
+        //minion collision and death
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && (CheckCollisionRecs(aRadius, min1.rec) || CheckCollisionRecs(aRadius, min2.rec))) {
+            pRadiusVis = 0.3f;
+            if (CheckCollisionRecs(aRadius, min1.rec)) min1.Healthbar.width -= 10;
+            if (CheckCollisionRecs(aRadius, min2.rec)) min2.Healthbar.width -= 10;
+        }
+
+        if (min1.Healthbar.width <= 0) {
+            min1.isAlive = false;
+        }
+        else if (min2.Healthbar.width <= 0) {
+            min2.isAlive = false;
         }
 
 
@@ -252,7 +277,7 @@ namespace World2 {
         }
 
 
-        if (touchingLeft || touchingRight && !onFloor)
+        if (!onFloor && ( touchingLeft || touchingRight ))
         {
             isWallSliding = true;
         }
@@ -303,6 +328,16 @@ namespace World2 {
         DrawRectangleRec(lWall, BLUE);
         DrawRectangleRec(rWall, BLUE);
         DrawRectangleRec(floor, BLUE);
+
+        if (min1.isAlive) {
+            DrawRectangleRec(min1.rec, PURPLE);
+            DrawRectangleRec(min1.Healthbar, RED);
+        }
+        if (min2.isAlive) {
+            DrawRectangleRec(min2.rec, PURPLE);
+            DrawRectangleRec(min2.Healthbar, RED);
+        }
+
 
         DrawText("Hit space while on a wall to wall jump!", (float)GetScreenWidth() / 2 - 10, (float)GetScreenHeight() / 2, 20, WHITE);
         DrawText("Move Left and right when on the floor!", (float)GetScreenWidth() / 2 - 10, (float)GetScreenHeight() / 2 - 20, 20, WHITE);
