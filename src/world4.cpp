@@ -84,10 +84,11 @@ namespace World4 {
         if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) playerRotation += 5;
         
         if (IsKeyDown(KEY_SPACE)) shootMissle = 1;
+        bullet b;
 
-        
+        if ((bulletPos.x >= (BOSS_CREATURE_A() - bulletActive)) || (bulletPos.x <= b.radius)) b.Bullet_Velocity.x *= -1.0f;
 
-
+       
 
       
 
