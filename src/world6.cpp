@@ -86,7 +86,8 @@ namespace World6 {
         bool DoorCollision = CheckCollisionRecs(bossHB, doorHB);
         if (DoorCollision == true) {
             printf("collision\n"); 
-            game.health = 0;
+            game.health -= 15;
+            boss_scale = 1;
         }
         else if (DoorCollision == false) {
             boss_scale *= (1 + boss_grow_rate);
