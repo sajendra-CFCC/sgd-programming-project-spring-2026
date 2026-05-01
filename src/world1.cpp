@@ -55,7 +55,6 @@ namespace World1 {
     }
 
     WorldUpdateResult Update(GameState& game) {
-        game.score++;
 
         BossState& currentBoss = Bosses::ActiveBoss(game);
 
@@ -90,12 +89,16 @@ namespace World1 {
 
         if (spawn_rand) {
             currentBoss.health -= 50;
+            game.score = game.score + 50;
         }
 
         if (currentBoss.health <= 0) {
             bool moreBosses = Bosses::AdvanceToNext(game);
-            if (!moreBosses)
+            game.score = game.score + 100;
+            if (!moreBosses) {
                 world_complete = true;
+                game.score = game.score + 100;
+            }    
         }
 
         if (spawn_rand) {

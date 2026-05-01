@@ -228,6 +228,14 @@ namespace World2 {
             if (CheckCollisionRecs(aRadius, min2.rec)) min2.Healthbar.width -= 10;
         }
 
+        if (min1.Healthbar.width <= 0) {
+            min1.isAlive = false;
+        }
+        if (min2.Healthbar.width <= 0) {
+            min2.isAlive = false;
+        }
+
+        
 
 
 

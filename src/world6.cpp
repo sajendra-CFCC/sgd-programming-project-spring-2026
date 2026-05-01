@@ -9,12 +9,12 @@ namespace World6 {
     int boss_x;
     int boss_y;
     float boss_scale;
-    float boss_grow_rate = 0.003;
+    float boss_grow_rate = 0.01;
 
     int boss2_x;
     int boss2_y;
     float boss2_scale;
-    float boss2_grow_rate = 0.003;
+    float boss2_grow_rate = 0.01;
 
     int battery_life;
 
@@ -28,10 +28,12 @@ namespace World6 {
     int window_height = 200;
     int window_width = 200;
     
-    /*float size;
+    float sizeDoor;
+    float sizeWindow;
     int texturesize;
 
-    Texture2D texture;*/
+    Texture2D texture;
+    Texture2D windowTexture;
 
     //represents if door and window currently open or closed
     bool door_closed = false;
@@ -49,11 +51,7 @@ namespace World6 {
         boss2_x = SCREEN_WIDTH / 2;
         boss_y = SCREEN_HEIGHT / 2;
         boss2_scale = 1;
-        battery_life = 1000;
-        
-        /*texturesize = 100;
-        size = .1;*/
- 
+        battery_life = 800;
     }
 
     WorldUpdateResult Update(GameState& game) {
@@ -70,6 +68,7 @@ namespace World6 {
             battery_life -= 1;
             door_closed = true;
             boss_scale = 1;
+            sizeDoor = 0;
         } else {
             door_closed = false;
         }
@@ -78,6 +77,7 @@ namespace World6 {
             battery_life -= 1;
             window_closed = true;
             boss2_scale = 1;
+            sizeWindow = 0;
         } else {
             window_closed = false;
         }
@@ -85,9 +85,7 @@ namespace World6 {
 
         //update state
         game.score++; // just updating score every frame for some reason
-        //increase boss scale
-        //boss_scale *= (1 + boss_grow_rate);
-
+       
         //hitboxes
         Rectangle doorHB = { door_x, door_y};
         Rectangle windowHB = { window_x, window_y };
@@ -98,17 +96,19 @@ namespace World6 {
             printf("collision\n"); 
             game.health -= 15;
             boss_scale = 1;
+            sizeDoor = 0;
         }
         else if (DoorCollision == false) {
             boss_scale *= (1 + boss_grow_rate);
         }
         bool WindowCollision = CheckCollisionRecs(bossHB2, windowHB);
-        if (DoorCollision == true) {
+        if (WindowCollision == true) {
             printf("collision\n");
             game.health -= 15;
             boss2_scale = 1;
+            sizeWindow = 0;
         }
-        else if (DoorCollision == false) {
+        else if (WindowCollision == false) {
             boss2_scale *= (1 + boss_grow_rate);
         }
         
@@ -129,33 +129,33 @@ namespace World6 {
     }
 
     void Draw(const GameState& game) {
+
+        int door_cat_x = 125;
+        int door_cat_y = 290;
+        int window_cat_x = 500;
+        int window_cat_y = 200;
+        //drawing door cat
+        Image image = LoadImage("assets/images/blackcat.jpg");     // Loads to RAM
+        texture = LoadTextureFromImage(image);    // Transfers to GPU VRAM
+        UnloadImage(image);
+        Vector2 CatPosition = { door_cat_x , door_cat_y };
+
+        DrawTextureEx(texture, CatPosition, 0, sizeDoor, RAYWHITE);
+        //drawing window cat
+        Image Windowimage = LoadImage("assets/images/WindowCat.png");     // Loads to RAM
+        windowTexture = LoadTextureFromImage(Windowimage);    // Transfers to GPU VRAM
+        UnloadImage(Windowimage);
+        Vector2 CatWindowPosition = { window_cat_x , window_cat_y };
+
+        DrawTextureEx(windowTexture, CatWindowPosition, 0, sizeWindow, RAYWHITE);
+
         //get the current boss
         const BossState& currentBoss = Bosses::ActiveBoss(game);
         Rectangle bossHB = Bosses::GetHitbox(currentBoss, boss_x, boss_y, boss_scale);
         int boss_radius = Bosses::GetHitRadius(currentBoss, boss_scale);
         Rectangle bossHB2 = Bosses::GetHitbox(currentBoss, boss2_x, boss2_y, boss2_scale);
-
-        //drawing image
-        //Image image = LoadImage("assets/images/blackcat.jpg");     // Loads to RAM
-        //texture = LoadTextureFromImage(image);    // Transfers to GPU VRAM
-        //UnloadImage(image);
-        //Vector2 CatPosition = { 100 , 250 };
-
-        //DrawTextureEx(texture, CatPosition, 0, size * 2, RAYWHITE);
-
-        //positions
-        int text_x = 100;
-        int text_y = 100;
-
-        
-        /*int door_cat_x = 150;
-        int door_cat_y = 250;*/
-
-        //bool DoorCollision = false;
-
-        /*int window_cat_x;
-        int windo_cat_y;
-        size += .0001;*/
+        sizeDoor += .002;
+        sizeWindow += .002;
 
         boss_x = 200;
         boss_y = 350;
@@ -164,6 +164,9 @@ namespace World6 {
 
 
         //Level Text
+        //positions
+        int text_x = 100;
+        int text_y = 100;
         DrawText("Battery Life -", text_x, text_y, 20, WHITE);
         DrawText("E to Close Window", window_x, 550, 20, WHITE);
         DrawText("Q to Close Door", door_x, 550, 20, WHITE);
@@ -173,7 +176,7 @@ namespace World6 {
         DrawRectangleLines(500, 200, window_width, window_height, BLUE);
                 
         //battery life bar
-        DrawRectangleLines(250, 100, 500, 20, RED);
+        DrawRectangleLines(250, 100, 400, 20, RED);
         DrawRectangle(250, 100, battery_life / 2, 20, RED);
         
         //door
@@ -190,11 +193,10 @@ namespace World6 {
             DrawRectangleLines(window_x, window_y, window_width, window_height, BLUE);
         }
 
-       Bosses::Draw(currentBoss, boss_x, boss_y, boss_scale);
-       //Bosses::DrawHealthBar(currentBoss, boss_x - boss_size, boss_y + boss_size, boss_size *2);
+       //Bosses::Draw(currentBoss, boss_x, boss_y, boss_scale);
        //visualize hitbox for testing
-       DrawRectangleLinesEx(bossHB, 1, RED);
-       DrawRectangleLinesEx(bossHB2, 1, BLUE);
+       //DrawRectangleLinesEx(bossHB, 1, RED);
+       //DrawRectangleLinesEx(bossHB2, 1, BLUE);
        // DrawCircleLines(boss_x, boss_y, boss_radius, GREEN);
 
     }

@@ -5,7 +5,7 @@
 
 
 
-namespace World3 {
+namespace World7 {
     //helper function for rotating point about center, will implement later
     Vector2 RotatePointAroundCenter(Vector2 point, float angleDegrees);
 
@@ -24,10 +24,10 @@ namespace World3 {
 
     
     // movement parameters
-    const int playerSpeed = 5; // pixels per frame
+    const int playerSpeed = 8; // pixels per frame
 
     //ball variables and paramters
-    const int initialBallSpeed = 3;
+    const int initialBallSpeed = 6;
     const int ballRadius = 10;
     Vector2 ballPosition;
     Vector2 ballSpeed;
@@ -67,8 +67,8 @@ namespace World3 {
         ballSpeed.x = initialBallSpeed;
         ballSpeed.y = -initialBallSpeed;
 
-        ballPosition.x = 250;
-        ballPosition.y = 150;
+        ballPosition.x = 100;
+        ballPosition.y = 100;
         ballSpeed.x = -2;
         ballSpeed.y = -3;
 
@@ -148,25 +148,18 @@ namespace World3 {
             currentBoss.health -= 10;
             ballPosition = { 10, 10 };
         }
-        if (CheckCollisionCircleLine(ballPosition, ballRadius, collsionLinePoint1, collsionLinePoint2)) {
-            std::cout << "bounce\n";
+        if (CheckCollisionCircleLine(ballPosition, ballRadius, collsionLinePoint1, collsionLinePoint2)){
             Vector2 bossPos = { boss_x, boss_y };
             Vector2 directionToBoss = Vector2Subtract(bossPos, ballPosition);
-            /*ballSpeed.x *= 1;
-            ballSpeed.y *= -1;*/
-            /*directionToBoss.x /= 100;
-            directionToBoss.y /= 100;*/
-
-            
             ballSpeed = Vector2Normalize(directionToBoss);
             ballSpeed = Vector2Scale(ballSpeed, initialBallSpeed);
 
         }
         Vector2 OuterCirc = { 400 , 300 };
-        /*if (CheckCollisionCircles(OuterCirc, 275, ballPosition, ballRadius)) {
+        if (CheckCollisionCircles(OuterCirc, 275, ballPosition, ballRadius)) {
             ballSpeed.x *= -1;
             ballSpeed.y *= -1;
-        }*/
+        }
 
         if (currentBoss.health <= 0) {
             bool moreBosses = Bosses::AdvanceToNext(game);
@@ -181,11 +174,11 @@ namespace World3 {
     }
 
     void Draw(const GameState& game) {
-        DrawCircleLines(400,300, 275, PURPLE);
+        DrawCircleLines(400,300, 275, BLACK);
         // draw background text
         int text_x = 250;
         int text_y = 100;
-        DrawText("Evan and Richie World", text_x, text_y, 25, PURPLE);
+        DrawText("Evan and Richie World - EVIL EDITION", text_x, text_y, 25, RED);
 
         
         // draw player square
