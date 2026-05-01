@@ -209,7 +209,8 @@ namespace World2 {
 
         if (pVel.x > 0) {
             pVel.x -= airDrag;
-        }else      {
+        }
+        else {
             pVel.x = 0;
         }
 
@@ -219,7 +220,7 @@ namespace World2 {
         else {
             pVel.x = 0;
         }
-       
+
         
 
 
