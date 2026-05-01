@@ -65,7 +65,7 @@ namespace World4 {
             float speed = 5.0f;
             b.Bullet_Possition = playerPosition;
             b.Bullet_Velocity = { 0 , -speed };
-            b.radius = 50.0;
+            b.radius = 10.0;
             b.active = true;
             
             //currentBoss.health -= 10;
@@ -95,8 +95,10 @@ namespace World4 {
         Rectangle bossHB = Bosses::GetHitbox(currentBoss, boss_x, boss_y, boss_scale);
         if (CheckCollisionCircleRec(b.Bullet_Possition, b.radius, bossHB)) {
             std::cout << "BOOM!\n";
+            b.Bullet_Velocity.y *= 10;
+            b.Bullet_Velocity.x = GetRandomValue(-5, 5);
+            currentBoss.health -= 10;
         }
-
 
 
       
