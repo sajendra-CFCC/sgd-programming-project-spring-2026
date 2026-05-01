@@ -236,10 +236,14 @@ namespace World2 {
         }
 
         
+        //minion movement
+        min1.posX += minSpeed;
+        min2.posX += minSpeed;
+        min1.rec.x = min1.posX;
+        min2.rec.x = min2.posX;
+        min1.Healthbar.x = min1.posX;
+        min2.Healthbar.x = min2.posX;
 
-
-
-        
 
         //MOVEMENT
         /*if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
@@ -249,7 +253,7 @@ namespace World2 {
         if ( !touchingLeft && (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT) ) ) {
             pPos.x -= 2.0f * pSpeed;
             pAttackPos.x -= 2 * pSpeed;
->>>>>>> 319ff0fad1465a587401d0b2bfc15cdbd347c2ce
+
         }
         else {
             pVel.x = 0;
