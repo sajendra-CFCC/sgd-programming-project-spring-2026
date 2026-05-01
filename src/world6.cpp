@@ -82,7 +82,7 @@ namespace World6 {
         //Collision stuff
         //NOTE: there is a mistake here, but you need to check collision logic if you change this
         //NOTE lets discuss in class
-        Rectangle doorHB = { door_x, door_y };
+        Rectangle doorHB = { door_x, door_y};
         bool DoorCollision = CheckCollisionRecs(bossHB, doorHB);
         if (DoorCollision == true) {
             printf("collision\n"); 
@@ -164,12 +164,10 @@ namespace World6 {
         //Window
         if (window_closed) {
             DrawRectangle(window_x, window_y, window_width, window_height, BLUE);
-        } else {
+        }
+        else {
             DrawRectangleLines(window_x, window_y, window_width, window_height, BLUE);
         }
-        
-        //float boss_size = size * 20;
-        //boss_scale = boss_size;
 
        Bosses::Draw(currentBoss, boss_x, boss_y, boss_scale);
        //Bosses::DrawHealthBar(currentBoss, boss_x - boss_size, boss_y + boss_size, boss_size *2);
