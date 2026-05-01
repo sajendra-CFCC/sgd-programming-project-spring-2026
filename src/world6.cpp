@@ -111,17 +111,6 @@ namespace World6 {
         else if (DoorCollision == false) {
             boss2_scale *= (1 + boss_grow_rate);
         }
-
-        Rectangle windowHB = { window_x, window_y };
-        bool WindowCollision = CheckCollisionRecs(bossHB2, windowHB);
-        if (WindowCollision == true) {
-            printf("collision\n");
-            game.health -= 15;
-            boss2_scale = 1;
-        }
-        else if (WindowCollision == false) {
-            boss2_scale *= (1 + boss_grow_rate);
-        }
         
         //boss health
         if (currentBoss.health <= 0) {
