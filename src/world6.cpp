@@ -77,6 +77,7 @@ namespace World6 {
         if (IsKeyDown(KEY_E) && battery_life > 0) {
             battery_life -= 1;
             window_closed = true;
+            boss2_scale = 1;
         } else {
             window_closed = false;
         }
@@ -101,6 +102,16 @@ namespace World6 {
             boss_scale *= (1 + boss_grow_rate);
         }
 
+        Rectangle windowHB = { window_x, window_y };
+        bool WindowCollision = CheckCollisionRecs(bossHB2, windowHB);
+        if (WindowCollision == true) {
+            printf("collision\n");
+            game.health -= 15;
+            boss2_scale = 1;
+        }
+        else if (WindowCollision == false) {
+            boss2_scale *= (1 + boss_grow_rate);
+        }
         
         //boss health
         if (currentBoss.health <= 0) {
