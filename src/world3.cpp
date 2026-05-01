@@ -19,8 +19,8 @@ namespace World3 {
     int player_rotation;
     
     
-    const int player_width = 100;
-    const int player_height = 25;
+    const float player_width = 100;
+    const float player_height = 25;
 
     
     // movement parameters
@@ -38,6 +38,13 @@ namespace World3 {
     const int CIRC_RADIUS = 275;
     const Vector2 PLAYER_START_POINT = { CENTER_X, CENTER_Y - CIRC_RADIUS };
     Vector2 player_point_on_circle;
+
+    //I'm going to suggest you check collision with line on "face" of rotated rectangle
+    Vector2 COLLISION_LINE_START_POINT1 = { PLAYER_START_POINT.x - player_width/2, PLAYER_START_POINT.y + player_height/2 };
+    Vector2 COLLISION_LINE_START_POINT2 = { PLAYER_START_POINT.x + player_width/2, PLAYER_START_POINT.y + player_height/2};
+    Vector2 collsionLinePoint1;
+    Vector2 collsionLinePoint2;
+
 
     void Init() {
         //set up anything you need for your game / world here
@@ -67,6 +74,8 @@ namespace World3 {
 
         player_rotation = 0;
         player_point_on_circle = RotatePointAroundCenter(PLAYER_START_POINT, player_rotation);
+        collsionLinePoint1 = RotatePointAroundCenter(COLLISION_LINE_START_POINT1, player_rotation);
+        collsionLinePoint2 = RotatePointAroundCenter(COLLISION_LINE_START_POINT2, player_rotation);
     }
 
     WorldUpdateResult Update(GameState& game) {
@@ -113,6 +122,9 @@ namespace World3 {
 
         //keep paddle position on circle updated
         player_point_on_circle = RotatePointAroundCenter(PLAYER_START_POINT, player_rotation);
+        //keep collision line rotated
+        collsionLinePoint1 = RotatePointAroundCenter(COLLISION_LINE_START_POINT1, player_rotation);
+        collsionLinePoint2 = RotatePointAroundCenter(COLLISION_LINE_START_POINT2, player_rotation);
         
 
         //Ball and Rectangle Collision Setup
@@ -183,9 +195,12 @@ namespace World3 {
         Vector2 pivotBottomRight = { player_width , player_height };
         
         //draw each of these so we can see
-        DrawRectanglePro(player_rect_on_circle, pivotTopLeft, player_rotation, YELLOW);
+        DrawRectanglePro(player_rect_on_circle, pivotTopLeft, player_rotation, MAGENTA);
         DrawRectanglePro(player_rect_on_circle, pivotCenter, player_rotation, GREEN);
         DrawRectanglePro(player_rect_on_circle, pivotBottomRight, player_rotation, PURPLE);
+
+        //draw the collision line so we can see it
+        DrawLineV(collsionLinePoint1, collsionLinePoint2, YELLOW);
 
         //testing drawing a point at right radius
         DrawCircleV(PLAYER_START_POINT, 5, WHITE);
