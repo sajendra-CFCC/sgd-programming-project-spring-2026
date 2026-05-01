@@ -79,9 +79,7 @@ namespace World6 {
         //increase boss scale
         //boss_scale *= (1 + boss_grow_rate);
 
-        //Collision stuff
-        //NOTE: there is a mistake here, but you need to check collision logic if you change this
-        //NOTE lets discuss in class
+      
         Rectangle doorHB = { door_x, door_y};
         bool DoorCollision = CheckCollisionRecs(bossHB, doorHB);
         if (DoorCollision == true) {
