@@ -73,6 +73,7 @@ namespace World2 {
         float sizeX;
         float sizeY;
         Rectangle rec;
+        Rectangle Healthbar;
     };
 
     minion min1;
@@ -108,7 +109,11 @@ namespace World2 {
         eSize = 1;
 
         //Minions
-        min1 = { 250.0f, 350.0f, 50.0f, 50.0f, {min1.posX, min1.posY, min1.sizeX, min1.sizeY} };
+        min1 = { 
+            250.0f, 350.0f, 50.0f, 50.0f, 
+            {min1.posX, min1.posY, min1.sizeX, min1.sizeY},
+            {min1.posX, min1.posY + 60, min1.sizeX, min1.sizeY - 40}
+        };
         
 
 
@@ -306,6 +311,7 @@ namespace World2 {
         DrawRectangleRec(floor, BLUE);
 
         DrawRectangleRec(min1.rec, PURPLE);
+        DrawRectangleRec(min1.Healthbar, RED);
 
 
         DrawText("Hit space while on a wall to wall jump!", (float)GetScreenWidth() / 2 - 10, (float)GetScreenHeight() / 2, 20, WHITE);
