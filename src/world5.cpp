@@ -41,7 +41,9 @@ namespace World5 {
         //use init to set the value, or we might not be in right directory
         //Texture2D TestDirTexture = LoadTexture("assets/images/TestDir.png");
     }
-    void BossFireProj(int count, float delaypershot, int speed) {
+    
+    //what does each variable mean? use comments if not clear
+    void BossFireProj(int count, float delaypershot, int speed) { //be careful doing delay like this, it will hold up the whole program
         for (int i = 0; i < count; i++) {
             for (int d = 0; d < delaypershot * 60; d++) {
                 std::cout << "Waiting" << std::endl;
@@ -85,6 +87,8 @@ namespace World5 {
             world_complete = true;
         }
 
+        //this bit of code is not clear, nor what you are trying to accomplish. Use comments if not clear
+        //check random functions exposed by raylib, they can be easier to use
         if (rand() % 3 == 0 && FireCD <= 0) {
             if (rand() % 1 == 0){
                 BossFireProj(rand() % 6 + 1, 1.0f, rand() % 3 + 1);
