@@ -5,13 +5,11 @@
 namespace World5 {
     bool world_complete = false;
     bool Debug = false; // for testing purposes toggle with Q key
-    int WasHitThisFrame = 0;
     int PlayerX = 400;
     int PlayerY = 300;
     int FireCD = 120;
     int BossRad = 30;
     int PlayerRad = 20;
-    float DeltaTime = 0.0f;
     float BossAccel = 0.25;
     float BossAngletoPlayer = 0.0f;
     Vector2 MouseLoc = {
@@ -62,9 +60,6 @@ namespace World5 {
 
         game.score++;
 
-        DeltaTime = DeltaTime + 0.1f;
-        std::cout << "DeltaTime: " << DeltaTime << std::endl;
-
         if (IsKeyPressed(KEY_ESCAPE)) {
             world_complete = true;
         }
@@ -90,7 +85,7 @@ namespace World5 {
         //this bit of code is not clear, nor what you are trying to accomplish. Use comments if not clear
         //check random functions exposed by raylib, they can be easier to use
         if (rand() % 3 == 0 && FireCD <= 0) {
-            if (rand() % 1 == 0){
+            if (rand() % 2 == 0){
                 BossFireProj(rand() % 6 + 1, 1.0f, rand() % 3 + 1);
             } else {
                 BossFireProj(rand() % 3 + 1, 1.0f, rand() % 3 + 1);
