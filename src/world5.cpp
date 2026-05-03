@@ -28,7 +28,12 @@ namespace World5 {
         Vector2 Speed;
         float Angle;
         int Lifetime;
+        int Count;
     } ProjectileBoss;
+    Vector2 ProjHitbox = { 0, 0 };
+    const int MaxProj = 100; // projectiles still sometimes get deleted after each volley :(
+    ProjectileBoss Proj[MaxProj] = { 0 };
+    ProjectileBoss Proj2[MaxProj] = { 0 };
     
     //if you put file paths here it might break for assets.. main has to do work first
     //Texture2D TestDirTexture;
@@ -44,14 +49,37 @@ namespace World5 {
     //what does each variable mean? use comments if not clear
     // count is meant to be the number of projectiles fired, delaypershot is the delay between each projectile (technically in frames but its *60 so the input is in seconds), and speed is the speed of the projectiles.
     void BossFireProj(int count, float delaypershot, int speed) { //Be careful doing delay like this, it will hold up the whole program
-        for (int i = 0; i < count; i++) {
-            /*for (int d = 0; d < delaypershot * 60; d++) {
-                std::cout << "Waiting" << std::endl;
-            }*/
+        float anglestep = 360.0f / (float)count;
+        for (int i = 0; i < count; i++) { // fire projectiles in a circle pattern based on # of projectiles
+            float angle = anglestep * i;
             std::cout << "Attempted to fire proj" << std::endl;
+            Proj[i].Count = count;
+            Proj[i].Position = BossPos;
+            Proj[i].Angle = angle;
+            Proj[i].Lifetime = 10000;
+            Proj[i].Speed.x = cos(angle * (PI / 180.0f)) * speed;
+            Proj[i].Speed.y = sin(angle * (PI / 180.0f)) * speed;
+            ProjHitbox.x = Proj[i].Position.x - 5;
+            ProjHitbox.y = Proj[i].Position.y - 5;
+        }
             // play shoot audio
         }
-    }
+    void BossFireProj2(int count, float delaypershot, int speed) {
+        float anglestep = 360.0f / (float)count;
+        for (int i = 0; i < count; i++) { // fire projectiles in a circle pattern based on # of projectiles
+            float angle = anglestep * i;
+            std::cout << "Attempted to fire proj" << std::endl;
+            Proj2[i].Count = count;
+            Proj2[i].Position = BossPos;
+            Proj2[i].Angle = angle;
+            Proj2[i].Lifetime = 10000;
+            Proj2[i].Speed.x = cos(angle * (PI / 180.0f)) * speed;
+            Proj2[i].Speed.y = sin(angle * (PI / 180.0f)) * speed;
+            ProjHitbox.x = Proj2[i].Position.x - 5;
+            ProjHitbox.y = Proj2[i].Position.y - 5;
+        }
+            // play shoot audio
+        }
 
     WorldUpdateResult Update(GameState& game) {
 
@@ -81,6 +109,57 @@ namespace World5 {
         }
         }
 
+        // move projectiles and collision check each frame VVV
+
+        for (int i = 0; i < MaxProj; i++) {
+            Proj[i].Angle = atan2(MouseLoc.y - Proj[i].Position.y, MouseLoc.x - Proj[i].Position.x);
+            Proj[i].Position.x += Proj[i].Speed.x * cos(Proj[i].Angle);
+            Proj[i].Position.y += Proj[i].Speed.y * sin(Proj[i].Angle);
+            ProjHitbox.x = Proj[i].Position.x - 5;
+            ProjHitbox.y = Proj[i].Position.y - 5;
+            Proj[i].Lifetime--;
+            if (Proj[i].Lifetime <= 0) {
+                Proj[i] = { 0 };
+                Proj[i].Position = { -10000, -10000 };
+            }
+        }
+
+        for (int i = 0; i < MaxProj; i++) {
+            Proj2[i].Position.x += Proj2[i].Speed.x;
+            Proj2[i].Position.y += Proj2[i].Speed.y;
+            ProjHitbox.x = Proj2[i].Position.x - 5;
+            ProjHitbox.y = Proj2[i].Position.y - 5;
+            Proj2[i].Lifetime--;
+            if (Proj2[i].Lifetime <= 0) {
+                Proj2[i] = { 0 };
+                Proj2[i].Position = { -10000, -10000 };
+            }
+        }
+        
+        for (int i = 0; i < MaxProj; i++) {
+            ProjHitbox = { Proj[i].Position.x, Proj[i].Position.y};
+            DrawCircleV(ProjHitbox, 10, RED);
+            if (CheckCollisionCircleRec(ProjHitbox, 10, PlayerHitbox)) {
+                game.health -= 5;
+                if (Debug == true) {
+                DrawText(TextFormat("Hit Detected"), MouseLoc.x - 55, MouseLoc.y - 30, 20, RED);
+            }
+            }
+        }
+
+        for (int i = 0; i < MaxProj; i++) {
+            ProjHitbox = { Proj2[i].Position.x, Proj2[i].Position.y};
+            DrawCircleV(ProjHitbox, 10, WHITE);
+            if (CheckCollisionCircleRec(ProjHitbox, 10, PlayerHitbox)) {
+                game.health -= 5;
+                if (Debug == true) {
+                DrawText(TextFormat("Hit Detected"), MouseLoc.x - 55, MouseLoc.y - 30, 20, RED);
+            }
+            }
+        }
+
+        // move projectiles and collision check each frame ^^^
+
         if (game.health <= 0) {
             world_complete = true;
         }
@@ -90,9 +169,9 @@ namespace World5 {
         // this is meant to randomly attempt to fire projectiles each frame, with FireCD working as a cooldown between each trigger
         if (rand() % 3 == 0 && FireCD <= 0) {
             if (rand() % 2 == 0){
-                BossFireProj(rand() % 6 + 1, 1.0f, rand() % 3 + 1);
+                BossFireProj(8, 1.0f, 12);
             } else { // this bit is meant to either fire a larger or smaller number of projectiles
-                BossFireProj(rand() % 3 + 1, 1.0f, rand() % 3 + 1);
+                BossFireProj2(12, 1.0f, rand() % 10 + 1);
             }
             FireCD = rand() % (120 - 40 + 1) + 40;
             BossAccel = 1.0f;
@@ -125,9 +204,15 @@ namespace World5 {
         Rectangle PlayerHitbox = { MouseLoc.x - (PlayerRad/2), MouseLoc.y - (PlayerRad/2), (PlayerRad), (PlayerRad) };
         const BossState& currentBoss = Bosses::ActiveBoss(game);
         Bosses::Draw(currentBoss, BossPos.x, BossPos.y, 1);
+        for (int i = 0; i < MaxProj; i++) {
+                ProjHitbox = { Proj[i].Position.x, Proj[i].Position.y };
+                DrawCircleV(ProjHitbox, 10, RED);
+                ProjHitbox = { Proj2[i].Position.x, Proj2[i].Position.y };
+                DrawCircleV(ProjHitbox, 10, WHITE);
+        }
         if (Debug == true) {
             DrawRectangleRec(PlayerHitbox, WHITE); // hitbox visualization
-            DrawRectangle(BossPos.x - (BossRad/2), BossPos.y - (BossRad/2), (BossRad), (BossRad), WHITE); // changed cause old method didnt want to follow the boss after it started moving
+            DrawRectangle(BossPos.x - (BossRad/2), BossPos.y - (BossRad/2), (BossRad), (BossRad), WHITE); // changed cause old method didnt want to follow the boss after it started moving 
             DrawText(TextFormat("Debug on"), MouseLoc.x - 49, MouseLoc.y + 25, 20, YELLOW);
             DrawLineV(MouseLoc, BossPos, GREEN); // line from player to boss
         }
