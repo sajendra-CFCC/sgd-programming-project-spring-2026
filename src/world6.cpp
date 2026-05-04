@@ -167,6 +167,9 @@ namespace World6 {
         //positions
         int text_x = 100;
         int text_y = 100;
+        int level_text_x = 35;
+        int level_text_y = 150;
+        DrawText("Block the bosses from getting to you! Shut them out before they escape!", level_text_x, level_text_y, 20, RED);
         DrawText("Battery Life -", text_x, text_y, 20, WHITE);
         DrawText("E to Close Window", window_x, 550, 20, WHITE);
         DrawText("Q to Close Door", door_x, 550, 20, WHITE);
