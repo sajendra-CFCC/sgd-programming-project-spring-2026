@@ -265,7 +265,7 @@ namespace World2 {
         if (min1.eAttackTime > 0) min1.eAttackTime -= dt;
         if (CheckCollisionRecs(pRec, min1.rec) && min1.eAttackTime <= 0)
         {
-            if (min1.eAttackTime <= 0)
+            if (min1.eAttackTime <= 0 && min1.isAlive == true)
             {
                 game.health = game.health - eAtk;
                 min1.eAttackTime = min1.eAtkSpeed;
@@ -278,6 +278,21 @@ namespace World2 {
             }
         }
 
+        if (min1.eAttackTime > 0) min1.eAttackTime -= dt;
+        if (CheckCollisionRecs(pRec, min2.rec) && min1.eAttackTime <= 0)
+        {
+            if (min1.eAttackTime <= 0 && min2.isAlive == true)
+            {
+                game.health = game.health - eAtk;
+                min1.eAttackTime = min1.eAtkSpeed;
+                DrawText("Hit!", 200, 80, 20, WHITE);
+                TraceLog(LOG_INFO, "Hitting.");
+            }
+            else
+            {
+                min1.eAttackTime = min1.eAtkSpeed;
+            }
+        }
 
         //MOVEMENT
         /*if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
