@@ -15,6 +15,7 @@ namespace World1 {
     int boss_scale;
     Vector2 circ_pos;
     Vector2 rand_pos;
+    int bull_damage;
     
     const int maxBullets = 15;
     int numBullets = 5;
@@ -35,6 +36,7 @@ namespace World1 {
         rand_pos.y = SCREEN_HEIGHT / 2 + 200;
         circ_pos.x = SCREEN_WIDTH / 2;
         circ_pos.y = SCREEN_HEIGHT / 2;
+        bull_damage = 25;
 
         for (int i = 0; i < numBullets; i++) {
             bullets[i].x = i * SCREEN_WIDTH / numBullets;
@@ -88,8 +90,9 @@ namespace World1 {
         
 
         if (spawn_rand) {
-            currentBoss.health -= 50;
+            currentBoss.health -= bull_damage;
             game.score = game.score + 50;
+            bull_damage = bull_damage + 8;
         }
 
         if (currentBoss.health <= 0) {
