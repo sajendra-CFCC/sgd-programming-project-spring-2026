@@ -64,7 +64,7 @@ namespace World6 {
             currentBoss.health -= 10;
         }
 
-        if (IsKeyDown(KEY_Q) && battery_life > 0) {
+        if (IsKeyDown(KEY_Q) && battery_life > 0 && window_closed == false) {
             battery_life -= 1;
             door_closed = true;
             sizeDoor = 0;
@@ -73,7 +73,7 @@ namespace World6 {
             door_closed = false;
         }
 
-        if (IsKeyDown(KEY_E) && battery_life > 0) {
+        if (IsKeyDown(KEY_E) && battery_life > 0 && door_closed == false) {
             battery_life -= 1;
             window_closed = true;
             sizeWindow = 0;
