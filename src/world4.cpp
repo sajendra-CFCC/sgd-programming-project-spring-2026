@@ -70,7 +70,7 @@ namespace World4 {
 
         
         
-        if (IsKeyPressed(KEY_SPACE) && b.active == false ) {
+        if (IsKeyPressed(KEY_SPACE) && b.active == false && bulletAvaliable > 0) {
             float speed = 20.0f;
             b.Bullet_Possition = playerPosition;
             b.Bullet_Velocity = { 0 , -speed };
@@ -78,7 +78,7 @@ namespace World4 {
             b.active = true;
 
             bulletAvaliable--;
-            
+
             //currentBoss.health -= 10;
 
 

@@ -23,6 +23,7 @@ namespace World3 {
     const float player_height = 25;
 
     
+    
     // movement parameters
     const int playerSpeed = 5; // pixels per frame
 
@@ -80,6 +81,7 @@ namespace World3 {
 
     WorldUpdateResult Update(GameState& game) {
         // continuous input for smooth movement
+        
         if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) {
            player_x += playerSpeed;
            player_rotation++;
@@ -149,6 +151,7 @@ namespace World3 {
             std::cout << "HIT!\n";
             currentBoss.health -= 10;
             ballPosition = { 10, 10 };
+            game.score += 150;
         }
 
         // Collision with Player and Ball
@@ -158,8 +161,8 @@ namespace World3 {
             Vector2 directionToBoss = Vector2Subtract(bossPos, ballPosition);
             ballSpeed = Vector2Normalize(directionToBoss);
             ballSpeed = Vector2Scale(ballSpeed, initialBallSpeed);
-
         }
+
         Vector2 OuterCirc = { 400 , 300 };
         /*if (CheckCollisionCircles(OuterCirc, 275, ballPosition, ballRadius)) {
             ballSpeed.x *= -1;
