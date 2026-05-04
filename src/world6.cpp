@@ -65,7 +65,7 @@ namespace World6 {
         }
 
         if (IsKeyDown(KEY_Q) && battery_life > 0 && window_closed == false) {
-            battery_life -= 1;
+            battery_life -= 3;
             door_closed = true;
             sizeDoor = 0;
             window_closed = false;
@@ -74,7 +74,7 @@ namespace World6 {
         }
 
         if (IsKeyDown(KEY_E) && battery_life > 0 && door_closed == false) {
-            battery_life -= 1;
+            battery_life -= 3;
             window_closed = true;
             sizeWindow = 0;
             door_closed = false;

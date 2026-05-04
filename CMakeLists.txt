@@ -52,6 +52,8 @@ add_executable(${PROJECT_NAME}
     src/world5.cpp
     src/world6.h
     src/world6.cpp
+    src/world7.h
+    src/world7.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} raylib) #we want to link raylib to our project
