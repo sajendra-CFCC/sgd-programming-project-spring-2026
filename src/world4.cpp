@@ -167,7 +167,7 @@ namespace World4 {
 
         DrawCircleV(ammoBallPos, ammoBallRadius, GREEN);
 
-        DrawText(TextFormat("Ammo: %d", bulletAvaliable), 20, 20, 20, GRAY);
+        DrawText(TextFormat("Ammo: %d", bulletAvaliable), 40, 60, 20, GRAY);
 
         
     }
