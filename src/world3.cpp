@@ -143,21 +143,19 @@ namespace World3 {
         //NOTE this is incorrect (Rectangle takes for paramters
         Rectangle BossBox = { (int)boss_x, (int)boss_y, boss_scale };
         //use the built in get boss hitbox , will return rectangle for you
+
+        //Collision for Boss and Ball
         if (CheckCollisionCircleRec(ballPosition, ballRadius, BossBox)) {
             std::cout << "HIT!\n";
             currentBoss.health -= 10;
             ballPosition = { 10, 10 };
         }
+
+        // Collision with Player and Ball
         if (CheckCollisionCircleLine(ballPosition, ballRadius, collsionLinePoint1, collsionLinePoint2)) {
             std::cout << "bounce\n";
             Vector2 bossPos = { boss_x, boss_y };
             Vector2 directionToBoss = Vector2Subtract(bossPos, ballPosition);
-            /*ballSpeed.x *= 1;
-            ballSpeed.y *= -1;*/
-            /*directionToBoss.x /= 100;
-            directionToBoss.y /= 100;*/
-
-            
             ballSpeed = Vector2Normalize(directionToBoss);
             ballSpeed = Vector2Scale(ballSpeed, initialBallSpeed);
 
