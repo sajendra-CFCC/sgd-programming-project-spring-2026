@@ -67,8 +67,8 @@ namespace World6 {
         if (IsKeyDown(KEY_Q) && battery_life > 0) {
             battery_life -= 1;
             door_closed = true;
-            boss_scale = 1;
             sizeDoor = 0;
+            window_closed = false;
         } else {
             door_closed = false;
         }
@@ -76,8 +76,8 @@ namespace World6 {
         if (IsKeyDown(KEY_E) && battery_life > 0) {
             battery_life -= 1;
             window_closed = true;
-            boss2_scale = 1;
             sizeWindow = 0;
+            door_closed = false;
         } else {
             window_closed = false;
         }
@@ -185,15 +185,19 @@ namespace World6 {
         //door
         if (door_closed) {
             DrawRectangle(door_x, door_y, door_width, door_height, PINK);
+            boss_scale = 1;
         } else {
             DrawRectangleLines(door_x, door_y, door_width, door_height, PINK);
+            boss_scale *= (1 + boss_grow_rate);
         }
         //Window
         if (window_closed) {
             DrawRectangle(window_x, window_y, window_width, window_height, BLUE);
+            boss2_scale = 1;
         }
         else {
             DrawRectangleLines(window_x, window_y, window_width, window_height, BLUE);
+            boss2_scale *= (1 + boss_grow_rate);
         }
 
        //Bosses::Draw(currentBoss, boss_x, boss_y, boss_scale);
