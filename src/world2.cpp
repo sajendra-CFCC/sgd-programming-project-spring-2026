@@ -1,7 +1,7 @@
 #include "world2.h"
 #include "bosses.h"
 #include "shared.h"
-
+using namespace std;
 
 namespace World2 {
     bool world_complete = false;
@@ -22,8 +22,8 @@ namespace World2 {
     float pRadiusVis;
     Rectangle aRadius;
     Vector2 pVel;
-
     Rectangle pRad;
+    int currentHealth;
 
     //Walls
     Vector2 LWallPos;
@@ -66,6 +66,8 @@ namespace World2 {
     float ePos_x;
     float ePos_y;
     int eSize;
+    int eAtk;
+
     Rectangle Boss;
 
     struct minion {
@@ -76,7 +78,10 @@ namespace World2 {
         Rectangle rec;
         Rectangle Healthbar;
         bool isAlive;
+        bool attacking;
         float minSpeed;
+        int eAtkSpeed;
+        float eAttackTime;
     };
     minion min1;
     minion min2;
@@ -111,6 +116,7 @@ namespace World2 {
         ePos_x = 300;
         ePos_y = -500;
         eSize = 1;
+        eAtk = 10;
 
         //Minions
         min1 = { 250.0f, 100.0f, 50.0f, 50.0f, };
@@ -124,8 +130,10 @@ namespace World2 {
         min2.Healthbar = { min2.posX, min2.posY + 60, min2.sizeX, min2.sizeY - 40 };
         min2.isAlive = true;
         min2.minSpeed = 2.5;
-
+        min1.attacking = false;
         minionCount = 2;
+        min1.eAttackTime = 1.0f;
+        min1.eAtkSpeed = 1.0f;
         
         //Jumping logic
         gravity = 0.5f;
@@ -162,6 +170,7 @@ namespace World2 {
 
     WorldUpdateResult Update(GameState& game) {
         //  camera.target = { pPos.x + pSpeed, pPos.y + pSpeed };
+        float dt = GetFrameTime();
         camera.target.y = pPos.y;
         game.score++;
         pVel.y += gravity;
@@ -169,6 +178,8 @@ namespace World2 {
 
         touchingLeft = CheckCollisionRecs(pRec, lWall);
         touchingRight = CheckCollisionRecs(pRec, rWall);
+
+        
 
         //MOVEMENT
         /*if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
@@ -248,6 +259,24 @@ namespace World2 {
         min2.rec.x = min2.posX;
         min1.Healthbar.x = min1.posX;
         min2.Healthbar.x = min2.posX;
+
+        //Minion attack logic
+      
+        if (min1.eAttackTime > 0) min1.eAttackTime -= dt;
+        if (CheckCollisionRecs(pRec, min1.rec) && min1.eAttackTime <= 0)
+        {
+            if (min1.eAttackTime <= 0)
+            {
+                game.health = game.health - eAtk;
+                min1.eAttackTime = min1.eAtkSpeed;
+                DrawText("Hit!", 200, 80, 20, WHITE);
+                TraceLog(LOG_INFO, "Hitting.");
+            }
+            else
+            {
+                min1.eAttackTime = min1.eAtkSpeed;
+            }
+        }
 
 
         //MOVEMENT
