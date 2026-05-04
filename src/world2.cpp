@@ -144,9 +144,9 @@ namespace World2 {
         //walljumpY = -8.0f;
 
         //Wall and floor shapes
-        lWall = { 0 , -450, 40, 1000 };
-        rWall = { 790, -450, 40, 1000 };
-        floor = { 0, 440, 800, 40 };
+        lWall = { 0 , -1000, 40, 1450 };
+        rWall = { 790, -1000, 40, 1450 };
+        floor = { 0, 440, 900, 40 };
 
 
         //Rectangle LWallSize = { 100, 5000 };
