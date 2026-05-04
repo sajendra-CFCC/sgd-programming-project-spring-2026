@@ -94,7 +94,7 @@ namespace World6 {
         bool DoorCollision = CheckCollisionRecs(bossHB, doorHB);
         if (DoorCollision == true) {
             printf("collision\n"); 
-            game.health -= 15;
+            game.health -= 10;
             boss_scale = 1;
             sizeDoor = 0;
         }
@@ -104,7 +104,7 @@ namespace World6 {
         bool WindowCollision = CheckCollisionRecs(bossHB2, windowHB);
         if (WindowCollision == true) {
             printf("collision\n");
-            game.health -= 15;
+            game.health -= 10;
             boss2_scale = 1;
             sizeWindow = 0;
         }
