@@ -31,6 +31,13 @@ namespace World4 {
 
     bullet b;
 
+    int bulletAvaliable = 5;
+    int maxBullet = 5;
+
+    Vector2 ammoBallPos = { 200 , 200 };
+    float ammoBallRadius = 10.0f;
+    
+
     void Init() {
         //set up anything you need for your game / world here
        
@@ -48,6 +55,8 @@ namespace World4 {
         boss_x = SCREEN_WIDTH / 2;
         boss_y = SCREEN_HEIGHT / 2;
         boss_scale = 1;
+
+        bulletAvaliable = maxBullet;
         
     }
 
@@ -67,6 +76,8 @@ namespace World4 {
             b.Bullet_Velocity = { 0 , -speed };
             b.radius = 10.0;
             b.active = true;
+
+            bulletAvaliable--;
             
             //currentBoss.health -= 10;
 
@@ -101,6 +112,15 @@ namespace World4 {
             b.Bullet_Velocity.x = GetRandomValue(-5, 5);
             currentBoss.health -= 10;
             b.active = false;
+        }
+
+        if (CheckCollisionCircles(playerPosition, playerSize, ammoBallPos, ammoBallRadius)) {
+            bulletAvaliable = maxBullet;
+
+            ammoBallPos = {
+                (float)GetRandomValue(50, SCREEN_WIDTH - 50),
+                (float)GetRandomValue(50, SCREEN_HEIGHT - 50)
+            };
         }
 
 
@@ -144,6 +164,10 @@ namespace World4 {
         if(b.active) {
             DrawCircleV(b.Bullet_Possition, b.radius, RED);
         }
+
+        DrawCircleV(ammoBallPos, ammoBallRadius, GREEN);
+
+        DrawText(TextFormat("Ammo: %d", bulletAvaliable), 20, 20, 20, GRAY);
 
         
     }
