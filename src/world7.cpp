@@ -174,11 +174,11 @@ namespace World7 {
     }
 
     void Draw(const GameState& game) {
-        DrawCircleLines(400,300, 275, BLACK);
+        DrawCircleLines(400,300, 150, BLACK);
         // draw background text
         int text_x = 250;
         int text_y = 100;
-        DrawText("Evan and Richie World - EVIL EDITION", text_x, text_y, 25, RED);
+        DrawText("PREPARE TO MEET YOUR DOOM", text_x, text_y, 25, RED);
 
         
         // draw player square
