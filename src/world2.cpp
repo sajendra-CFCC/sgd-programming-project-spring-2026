@@ -80,6 +80,7 @@ namespace World2 {
     };
     minion min1;
     minion min2;
+    int minionCount;
 
     void Init() {
         world_complete = false;
@@ -112,22 +113,20 @@ namespace World2 {
         eSize = 1;
 
         //Minions
-       
-
-        min1 = { 250.0f, 350.0f, 50.0f, 50.0f, };
+        min1 = { 250.0f, 100.0f, 50.0f, 50.0f, };
         min1.rec = { min1.posX, min1.posY, min1.sizeX, min1.sizeY };
         min1.Healthbar = { min1.posX, min1.posY + 60, min1.sizeX, min1.sizeY - 40 };
         min1.isAlive = true;
         min1.minSpeed = 2.5;
 
-        min2 = { 350.0f, 250.0f, 50.0f, 50.0f, };
+        min2 = { 350.0f, -200.0f, 50.0f, 50.0f, };
         min2.rec = { min2.posX, min2.posY, min2.sizeX, min2.sizeY };
         min2.Healthbar = { min2.posX, min2.posY + 60, min2.sizeX, min2.sizeY - 40 };
         min2.isAlive = true;
         min2.minSpeed = 2.5;
+
+        minionCount = 2;
         
-
-
         //Jumping logic
         gravity = 0.5f;
         jumpForce = 12.0f;
@@ -151,9 +150,6 @@ namespace World2 {
 
 
         //Rectangle LWallSize = { 100, 5000 };
-
-
-
 
         //if ((CheckCollisionRecs(, LWallSize))){
             //onLeftwall = true;
@@ -211,7 +207,7 @@ namespace World2 {
 
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionRecs(aRadius, Boss)) {
             pRadiusVis = 0.3f;
-            currentBoss.health -= 10;
+            if (minionCount <= 0) currentBoss.health -= 10;
         }
         else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) pRadiusVis = 0.3f;
         else pRadiusVis = -0.0f;
@@ -234,6 +230,9 @@ namespace World2 {
         if (min2.Healthbar.width <= 0) {
             min2.isAlive = false;
         }
+
+        if (!min1.isAlive) minionCount -= 1;
+        if (!min2.isAlive) minionCount -= 1;
 
         
         //minion movement
