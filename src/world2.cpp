@@ -144,9 +144,9 @@ namespace World2 {
         //walljumpY = -8.0f;
 
         //Wall and floor shapes
-        lWall = { 0 , -450, 40, 1000 };
-        rWall = { 790, -450, 40, 1000 };
-        floor = { 0, 440, 800, 40 };
+        lWall = { 0 , -1000, 40, 1450 };
+        rWall = { 790, -1000, 40, 1450 };
+        floor = { 0, 440, 900, 40 };
 
 
         //Rectangle LWallSize = { 100, 5000 };
@@ -380,8 +380,9 @@ namespace World2 {
             }
 
 
-            DrawText("Hit space while on a wall to wall jump!", (float)GetScreenWidth() / 2 - 10, (float)GetScreenHeight() / 2, 20, WHITE);
-            DrawText("Move Left and right when on the floor!", (float)GetScreenWidth() / 2 - 10, (float)GetScreenHeight() / 2 - 20, 20, WHITE);
+            DrawText("Defeat all of the minion before fighting to boss!", (float)GetScreenWidth() / 2 - 200, (float)GetScreenHeight() / 2 + 20, 20, WHITE);
+            DrawText("Hit space while on a wall to wall jump!", (float)GetScreenWidth() / 2 - 200, (float)GetScreenHeight() / 2, 20, WHITE);
+            DrawText("Move Left and right when on the floor!", (float)GetScreenWidth() / 2 - 200, (float)GetScreenHeight() / 2 - 20, 20, WHITE);
 
             const BossState& currentBoss = Bosses::ActiveBoss(game);
             int boss_size = 30 * eSize;

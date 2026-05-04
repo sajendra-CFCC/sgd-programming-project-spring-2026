@@ -5,27 +5,30 @@
 // return zero for world zero (template)
 //return 1 for entering world one
 // etc..
-int UpdateOverworld(GameState &game) {
-    if( IsKeyPressed(KEY_ZERO) || IsKeyPressed(KEY_KP_0) ) {
+int UpdateOverworld(GameState& game) {
+    if (IsKeyPressed(KEY_ZERO) || IsKeyPressed(KEY_KP_0)) {
         return 0;
     }
-    if( IsKeyPressed(KEY_ONE) || IsKeyPressed(KEY_KP_1) ) {
+    if (IsKeyPressed(KEY_ONE) || IsKeyPressed(KEY_KP_1)) {
         return 1;
     }
-    if( IsKeyPressed(KEY_TWO) || IsKeyPressed(KEY_KP_2) ) {
+    if (IsKeyPressed(KEY_TWO) || IsKeyPressed(KEY_KP_2)) {
         return 2;
     }
-    if( IsKeyPressed(KEY_THREE) || IsKeyPressed(KEY_KP_3) ) {
+    if (IsKeyPressed(KEY_THREE) || IsKeyPressed(KEY_KP_3)) {
         return 3;
     }
-    if (IsKeyPressed(KEY_FOUR) || IsKeyPressed(KEY_KP_4) ) {
+    if (IsKeyPressed(KEY_FOUR) || IsKeyPressed(KEY_KP_4)) {
         return 4;
     }
-    if (IsKeyPressed(KEY_FIVE) || IsKeyPressed(KEY_KP_5) ) {
+    if (IsKeyPressed(KEY_FIVE) || IsKeyPressed(KEY_KP_5)) {
         return 5;
     }
-    if ( IsKeyPressed(KEY_SIX) || IsKeyPressed(KEY_KP_6) ) {
+    if (IsKeyPressed(KEY_SIX) || IsKeyPressed(KEY_KP_6)) {
         return 6;
+    }
+    if (IsKeyPressed(KEY_SEVEN) || IsKeyPressed(KEY_KP_7)){
+        return 7;
     }
     return -1; //stay on the MENU
 }
@@ -39,5 +42,6 @@ void DrawOverworld() {
     DrawText("Press 4 - World 4 (Rocco/Josh)", 200, 280, 20, YELLOW);
     DrawText("Press 5 - World 5 (Braedyn)", 200, 300, 20, DARKPURPLE);
     DrawText("Press 6 - World 6 (Haley/Alden)", 200, 320, 20, YELLOW);
+    DrawText("Press 7 - World 7 Richy and Evan's Evil Wonderland", 200, 340, 20, RED);
     DrawText("ESC - Quit", 200, 400, 20, RAYWHITE);
 }
