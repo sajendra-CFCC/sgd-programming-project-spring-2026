@@ -10,6 +10,9 @@ namespace World2 {
 
     Camera2D camera = { 0 };
 
+    Texture2D texture;
+    Texture2D windowTexture;
+
     //player
 
 
@@ -170,6 +173,7 @@ namespace World2 {
 
     WorldUpdateResult Update(GameState& game) {
         //  camera.target = { pPos.x + pSpeed, pPos.y + pSpeed };
+
         float dt = GetFrameTime();
         camera.target.y = pPos.y;
         game.score++;
@@ -407,12 +411,15 @@ namespace World2 {
         void Draw(const GameState& game) {
             //Camera Start
             BeginMode2D(camera);
-
+            Image clouds = LoadImage("assets/images/cloudfull.jpg");     // Loads to RAM
+            texture = LoadTextureFromImage(clouds);    // Transfers to GPU VRAM
+            UnloadImage(clouds);
             //DrawRectangleV(LWallPos, LWallSize, GRAY);
             DrawRectangleRec(pRec, GREEN);
             DrawRectangleRec(lWall, BLUE);
             DrawRectangleRec(rWall, BLUE);
             DrawRectangleRec(floor, BLUE);
+
 
             if (min1.isAlive) {
                 DrawRectangleRec(min1.rec, PURPLE);
