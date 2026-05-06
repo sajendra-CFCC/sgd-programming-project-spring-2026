@@ -35,6 +35,7 @@ struct GameState {
 
     BossState bosses[BOSS_COUNT];   // all bosses, persisted across levels
     int       activeBoss = 0;    // index into bosses[]
+    bool      endlessBosses = false; //set true for endless bossess
 
     //don't think we are using these
     Vector2 position = {0, 0}; //hub world position? consistent position?

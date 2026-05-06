@@ -49,6 +49,7 @@ int main() {
     GameMode currentGameMode = GAME_MODE_OVERWORLD;
     GameState gameState; //check defualt values in shared.h
     Bosses::InitAll(gameState);
+    gameState.endlessBosses = true;
 
     ChangeDirectory( GetApplicationDirectory() );//assumption we make for assets
     InitAudioDevice();

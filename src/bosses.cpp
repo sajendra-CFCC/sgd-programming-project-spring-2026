@@ -21,13 +21,22 @@ namespace Bosses {
 
 	bool AdvanceToNext(GameState& gs) {
 		gs.bosses[gs.activeBoss].alive = false;
+		//looking for next living boss
 		for (int i = gs.activeBoss + 1; i < BOSS_COUNT; i++) {
 			if (gs.bosses[i].alive) {
 				gs.activeBoss = i;
 				return true;
 			}
 		}
-		return false;  // all dead
+		// all dead
+		
+		if (gs.endlessBosses) {
+			Bosses::InitAll(gs);   // reset all bosses back to full hp
+			gs.activeBoss = 0;
+			return true;           // never signals "done"
+		}
+		
+		return false;  // all dead and no endless bossess
 	}
 
 	void Draw(const BossState& boss, float x, float y, float scale) {
