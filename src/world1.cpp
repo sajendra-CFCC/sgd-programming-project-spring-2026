@@ -36,7 +36,7 @@ namespace World1 {
         rand_pos.y = SCREEN_HEIGHT / 2 + 200;
         circ_pos.x = SCREEN_WIDTH / 2;
         circ_pos.y = SCREEN_HEIGHT / 2;
-        bull_damage = 25;
+        bull_damage = 20;
 
         for (int i = 0; i < numBullets; i++) {
             bullets[i].x = i * SCREEN_WIDTH / numBullets;
