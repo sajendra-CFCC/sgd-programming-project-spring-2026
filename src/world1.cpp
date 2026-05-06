@@ -76,11 +76,12 @@ namespace World1 {
             bullets[i].y += 3;
             if (bullets[i].y >= 590) {
                 bullets[i].x = std::rand() % 801 + 0;
-                bullets[i].y = 20;
+                bullets[i].y = std::rand() % 41 + 0;
             }
             if (bull_rand[i]) {
                 //NOTE: try also setting y back to start position, see if that makes more sense
                 bullets[i].x = std::rand() % 801 + 0;
+                bullets[i].y = std::rand() % 41 + 0;
                 game.health -= 10;
                 bull_rand[i] = false;
 
