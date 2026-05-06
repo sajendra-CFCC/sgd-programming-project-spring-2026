@@ -70,6 +70,7 @@ namespace World2 {
     float ePos_y;
     int eSize;
     int eAtk;
+    int eSpeed;
 
     Rectangle celing;
 
@@ -124,6 +125,7 @@ namespace World2 {
         ePos_y = -1800;
         eSize = 1;
         eAtk = 10;
+        eSpeed = 2.5;
 
         //Minions
         min1 = { 250.0f, -500.0f, 50.0f, 50.0f, };
@@ -268,6 +270,13 @@ namespace World2 {
         min2.rec.x = min2.posX;
         min1.Healthbar.x = min1.posX;
         min2.Healthbar.x = min2.posX;
+
+        //boss movement
+        if (ePos_x >= 750 || ePos_x <= 40) {
+            eSpeed /= -1;
+        }
+        ePos_x += eSpeed;
+       
 
         //Minion attack logic
 
