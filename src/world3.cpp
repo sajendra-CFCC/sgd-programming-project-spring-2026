@@ -26,7 +26,7 @@ namespace World3 {
     Texture2D balltexture;
     float balltexture_rotation = 0;
     float balltexture_rotation_speed = 1.5; //degrees per frame
-    float balltexture_scale = 0.025; //scale by image dimensions aprox
+    float balltexture_scale = 0.035; //scale by image dimensions aprox
 
     
     // movement parameters
@@ -193,7 +193,7 @@ namespace World3 {
     }
 
     void Draw(const GameState& game) {
-        DrawCircleLines(400,300, 275, PURPLE);
+        //DrawCircleLines(400,300, 275, PURPLE);
         // draw background text
         int text_x = 250;
         int text_y = 100;
@@ -212,12 +212,12 @@ namespace World3 {
 
         //draw ball
         // I commented this out but comment back in to see ball
-        //DrawCircleV(ballPosition, ballRadius, BLUE);
+        DrawCircleLines(ballPosition.x,ballPosition.y, ballRadius, BLUE);
         
         //optional, draw texture for ball, approximating for now
         Vector2 ballTexturePosition = ballPosition;
-        ballTexturePosition.x -= 10; //hacking a little, should fix
-        ballTexturePosition.y -= 10;
+        ballTexturePosition.x -= 2; //hacking a little, should fix
+        ballTexturePosition.y -= 2;
         //comment this out to hide texture drawing
         DrawTextureEx(balltexture, ballTexturePosition, balltexture_rotation, balltexture_scale, WHITE);
 
