@@ -371,6 +371,13 @@ namespace World2 {
             pVel.y += gravity;
         }
 
+        bool onCeling = CheckCollisionRecs(pRec, celing);
+        if (onCeling)
+        {
+            pVel.y = 0;
+            pPos.y = celing.y - pRec.height;
+        }
+
 
         if (!onFloor && (touchingLeft || touchingRight))
         {
@@ -440,6 +447,7 @@ namespace World2 {
         DrawText("Defeat all of the minion before fighting to boss!", (float)GetScreenWidth() / 2 - 200, (float)GetScreenHeight() / 2 + 20, 20, WHITE);
         DrawText("Hit space while on a wall to wall jump!", (float)GetScreenWidth() / 2 - 200, (float)GetScreenHeight() / 2, 20, WHITE);
         DrawText("Move Left and right when on the floor!", (float)GetScreenWidth() / 2 - 200, (float)GetScreenHeight() / 2 - 20, 20, WHITE);
+        DrawText("How'd you get up here??? CHEATER.", 200, -2400, 20, RED);
 
         const BossState& currentBoss = Bosses::ActiveBoss(game);
         int boss_size = 30 * eSize;
