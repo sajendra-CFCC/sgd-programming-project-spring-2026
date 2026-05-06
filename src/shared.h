@@ -9,10 +9,15 @@ const int SCREEN_HEIGHT = 600;
 const Color BG_COLOR = BLACK;
 
 enum BossType {
-    BOSS_CREATURE_A = 0,
-    BOSS_CREATURE_B = 1,
-    BOSS_CREATURE_C = 2,
-    BOSS_COUNT = 3
+    BOSS_CREATURE_A = 0,   // round / eye-heavy
+    BOSS_CREATURE_B = 1,   // tall rect / imposing
+    BOSS_CREATURE_C = 2,   // hexagon / spiky
+    BOSS_CREATURE_D = 3,   // cat — sleek, pointed ears
+    BOSS_CREATURE_E = 4,   // cat — chonky, wide face
+    BOSS_CREATURE_F = 5,   // cat — feral, asymmetric
+    BOSS_CREATURE_G = 6,   // skull / undead
+    BOSS_CREATURE_H = 7,   // slime / blob
+    BOSS_COUNT = 8
 };
 
 struct BossState {
