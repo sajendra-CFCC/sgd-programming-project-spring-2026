@@ -160,7 +160,7 @@ namespace World3 {
         //Collision for Boss and Ball
         if (CheckCollisionCircleRec(ballPosition, ballRadius, BossBox)) {
             std::cout << "HIT!\n";
-            currentBoss.health -= 25;
+            currentBoss.health -= 50;
             ballPosition = { 10, 10 };
             game.score += 150;
         }
