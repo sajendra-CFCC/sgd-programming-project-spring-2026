@@ -71,6 +71,8 @@ namespace World2 {
     int eSize;
     int eAtk;
 
+    Rectangle celing;
+
     Rectangle Boss;
 
     struct minion {
@@ -95,7 +97,7 @@ namespace World2 {
         text_x = 100;
         text_y = 100;
 
-        bg_texture = LoadTexture("assets/images/citybg.png");
+        bg_texture = LoadTexture("assets/images/cloudfull.png");
 
         //Camera
         camera.offset = { (float)GetScreenWidth() / 2 - 420, (float)GetScreenHeight() / 2 };
@@ -157,9 +159,10 @@ namespace World2 {
         //walljumpY = -8.0f;
 
         //Wall and floor shapes
-        lWall = { 0 , -1000, 40, 1450 };
-        rWall = { 790, -1000, 40, 1450 };
-        floor = { 0, 440, 900, 40 };
+        lWall = { 0 , -2000, 40, 2550 };
+        rWall = { 790, -2000, 40, 2550 };
+        floor = { 0, 440, 900, 400 };
+        celing = { 0, -2350, 900, 400 };
 
 
         //Rectangle LWallSize = { 100, 5000 };
@@ -422,6 +425,7 @@ namespace World2 {
         DrawRectangleRec(lWall, BLUE);
         DrawRectangleRec(rWall, BLUE);
         DrawRectangleRec(floor, BLUE);
+        DrawRectangleRec(celing, BLUE);
 
             if (min1.isAlive) {
                 DrawRectangleRec(min1.rec, PURPLE);
@@ -466,7 +470,7 @@ namespace World2 {
         float textureAnchorY = anchorPos - bg_texture.height;
         //float textureAnchorY = 550 - bg_texture.height; // Anchor to floor
         float parallaxOffset = camera.target.y * bgScrollFactor;
-        Vector2 bgPos = { 0.0f, textureAnchorY + parallaxOffset };
+        Vector2 bgPos = { 40.0f, textureAnchorY + parallaxOffset };
         
         // C. Draw the texture in World Space 
         DrawTextureV(bg_texture, bgPos, WHITE);
