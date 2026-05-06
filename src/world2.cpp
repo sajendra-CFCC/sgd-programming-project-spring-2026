@@ -123,7 +123,7 @@ namespace World2 {
         ePos_x = 375;
         ePos_y = -1800;
         eSize = 1;
-        eAtk = 10;
+        eAtk = 5;
 
         //Minions
         min1 = { 250.0f, -500.0f, 50.0f, 50.0f, };
@@ -139,8 +139,8 @@ namespace World2 {
         min2.minSpeed = 2.5;
         min1.attacking = false;
         minionCount = 2;
-        min1.eAttackTime = 1.0f;
-        min1.eAtkSpeed = 1.0f;
+        min1.eAttackTime = 2.5f;
+        min1.eAtkSpeed = 2.0f;
         
         //Jumping logic
         gravity = 0.5f;
