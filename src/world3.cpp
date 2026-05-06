@@ -193,7 +193,7 @@ namespace World3 {
     }
 
     void Draw(const GameState& game) {
-        DrawCircleLines(400,300, 275, PURPLE);
+        //DrawCircleLines(400,300, 275, PURPLE);
         // draw background text
         int text_x = 250;
         int text_y = 100;
