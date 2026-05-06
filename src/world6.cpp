@@ -98,8 +98,8 @@ namespace World6 {
         game.score++; // just updating score every frame for some reason
        
         //hitboxes
-        Rectangle doorHB = { door_x, door_y};
-        Rectangle windowHB = { window_x, window_y };
+        Rectangle doorHB = { (float)door_x, (float)door_y};
+        Rectangle windowHB = { (float)window_x, (float)window_y };
        
         //collisions
         bool DoorCollision = CheckCollisionRecs(bossHB, doorHB);
@@ -146,11 +146,11 @@ namespace World6 {
         int window_cat_x = 500;
         int window_cat_y = 200;
         //drawing door cat
-        Vector2 CatPosition = { door_cat_x , door_cat_y };
+        Vector2 CatPosition = { (float)door_cat_x , (float)door_cat_y };
         DrawTextureEx(texture, CatPosition, 0, sizeDoor, RAYWHITE);
         
         //drawing window cat
-        Vector2 CatWindowPosition = { window_cat_x , window_cat_y };
+        Vector2 CatWindowPosition = { (float)window_cat_x , (float)window_cat_y };
         DrawTextureEx(windowTexture, CatWindowPosition, 0, sizeWindow, RAYWHITE);
 
         //get the current boss

@@ -21,8 +21,8 @@ namespace World5 {
         50,
         500
     };
-    Rectangle PlayerHitbox = { MouseLoc.x - (PlayerRad/2), MouseLoc.y - (PlayerRad/2), (PlayerRad), (PlayerRad) };
-    Rectangle BossHitbox = { BossPos.x - (BossRad/2), BossPos.y - (BossRad/2), (BossRad), (BossRad) };
+    Rectangle PlayerHitbox = { (float)MouseLoc.x - (PlayerRad/2), (float)MouseLoc.y - (PlayerRad/2), (float)(PlayerRad), (float)(PlayerRad) };
+    Rectangle BossHitbox = { (float)BossPos.x - (BossRad/2), (float)BossPos.y - (BossRad/2), (float)(BossRad), (float)(BossRad) };
     typedef struct ProjectileBoss {
         Vector2 Position;
         Vector2 Speed;
@@ -99,8 +99,8 @@ namespace World5 {
 
         MouseLoc = GetMousePosition();
 
-        Rectangle PlayerHitbox = { MouseLoc.x - (PlayerRad/2), MouseLoc.y - (PlayerRad/2), (PlayerRad), (PlayerRad) }; //update hitboxes each frame
-        Rectangle BossHitbox = { BossPos.x - (BossRad/2), BossPos.y - (BossRad/2), (BossRad), (BossRad) };
+        Rectangle PlayerHitbox = { (float)MouseLoc.x - (PlayerRad/2), (float)MouseLoc.y - (PlayerRad/2), (float)(PlayerRad), (float)(PlayerRad) }; //update hitboxes each frame
+        Rectangle BossHitbox = { (float)BossPos.x - (BossRad/2), (float)BossPos.y - (BossRad/2), (float)(BossRad), (float)(BossRad) };
 
         if (CheckCollisionRecs(PlayerHitbox, BossHitbox)) {
             game.health -= 1;
@@ -201,7 +201,7 @@ namespace World5 {
         DrawText(TextFormat("Survive to gain SCORE"), 564, 70, 20, WHITE);
         MouseLoc = GetMousePosition();
         DrawCircleV(MouseLoc, PlayerRad, BLUE);
-        Rectangle PlayerHitbox = { MouseLoc.x - (PlayerRad/2), MouseLoc.y - (PlayerRad/2), (PlayerRad), (PlayerRad) };
+        Rectangle PlayerHitbox = { (float)MouseLoc.x - (PlayerRad/2), (float)MouseLoc.y - (PlayerRad/2), (float)(PlayerRad), (float)(PlayerRad) };
         const BossState& currentBoss = Bosses::ActiveBoss(game);
         Bosses::Draw(currentBoss, BossPos.x, BossPos.y, 1);
         for (int i = 0; i < MaxProj; i++) {

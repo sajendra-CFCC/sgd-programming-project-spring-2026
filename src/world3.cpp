@@ -1,3 +1,4 @@
+
 #include "world3.h"
 #include "bosses.h"
 #include "raymath.h"
@@ -154,7 +155,7 @@ namespace World3 {
         BossState& currentBoss  = Bosses::ActiveBoss(game);
 
         //NOTE this is incorrect (Rectangle takes for paramters
-        Rectangle BossBox = { (int)boss_x, (int)boss_y, boss_scale };
+        Rectangle BossBox = { (float)boss_x, (float)boss_y, (float)boss_scale };
         //use the built in get boss hitbox , will return rectangle for you
 
         //Collision for Boss and Ball
@@ -168,7 +169,7 @@ namespace World3 {
         // Collision with Player and Ball
         if (CheckCollisionCircleLine(ballPosition, ballRadius, collsionLinePoint1, collsionLinePoint2)) {
             std::cout << "bounce\n";
-            Vector2 bossPos = { boss_x, boss_y };
+            Vector2 bossPos = { (float)boss_x, (float)boss_y };
             Vector2 directionToBoss = Vector2Subtract(bossPos, ballPosition);
             ballSpeed = Vector2Normalize(directionToBoss);
             ballSpeed = Vector2Scale(ballSpeed, initialBallSpeed);

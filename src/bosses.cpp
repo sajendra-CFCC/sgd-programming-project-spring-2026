@@ -139,7 +139,7 @@ namespace Bosses {
 
 	// boss draw functions
 	// A: round eye-heavy — ghostly white/blue
-	static void DrawBossA(Vector2 pos, float s) {
+	void DrawBossA(Vector2 pos, float s) {
 		DrawCircleV(pos, 32 * s, { 200, 220, 255, 255 });
 		for (int i = -3; i <= 3; i++)
 			DrawCircle(pos.x + i * 10 * s, pos.y + 28 * s, 8 * s, { 200, 220, 255, 255 });
@@ -149,7 +149,7 @@ namespace Bosses {
 	}
 
 	// B: tall rect — dark charcoal with red eyes
-	static void DrawBossB(Vector2 pos, float s) {
+	void DrawBossB(Vector2 pos, float s) {
 		DrawRectangle(pos.x - 22 * s, pos.y - 38 * s, 44 * s, 76 * s, { 50, 50, 60, 255 });
 		DrawTriangle({ pos.x - 22 * s, pos.y - 38 * s },
 			{ pos.x - 32 * s, pos.y - 60 * s },
@@ -167,7 +167,7 @@ namespace Bosses {
 	}
 
 	// C: hexagon spiky — deep orange/amber
-	static void DrawBossC(Vector2 pos, float s) {
+	void DrawBossC(Vector2 pos, float s) {
 		DrawPoly(pos, 6, 30 * s, 30.0f, { 220, 130, 30, 255 });
 		for (int i = 0; i < 6; i++) {
 			float a = DEG2RAD * (60 * i + 30);
@@ -181,7 +181,7 @@ namespace Bosses {
 	}
 
 	// D: cat sleek — dark grey/blue, menacing
-	static void DrawBossD(Vector2 pos, float s) {
+	void DrawBossD(Vector2 pos, float s) {
 		DrawEllipse(pos.x, pos.y, 26 * s, 24 * s, { 70, 75, 90, 255 });
 		DrawCatEar({ pos.x - 18 * s, pos.y - 28 * s }, 18 * s, -0.6f, { 70, 75, 90, 255 }, { 180, 100, 120, 255 });
 		DrawCatEar({ pos.x + 18 * s, pos.y - 28 * s }, 18 * s, 3.8f, { 70, 75, 90, 255 }, { 180, 100, 120, 255 });
@@ -199,7 +199,7 @@ namespace Bosses {
 	}
 
 	// E: cat chonky — warm orange tabby
-	static void DrawBossE(Vector2 pos, float s) {
+	void DrawBossE(Vector2 pos, float s) {
 		DrawCircleV(pos, 34 * s, { 210, 140, 60, 255 });
 		DrawCircle(pos.x - 26 * s, pos.y + 6 * s, 14 * s, { 225, 160, 80, 255 });
 		DrawCircle(pos.x + 26 * s, pos.y + 6 * s, 14 * s, { 225, 160, 80, 255 });
@@ -216,7 +216,7 @@ namespace Bosses {
 	}
 
 	// F: cat feral — muted green/grey, scarred
-	static void DrawBossF(Vector2 pos, float s) {
+	void DrawBossF(Vector2 pos, float s) {
 		DrawEllipse(pos.x - 2 * s, pos.y, 28 * s, 25 * s, { 100, 115, 90, 255 });
 		DrawCatEar({ pos.x - 20 * s, pos.y - 26 * s }, 16 * s, -0.5f, { 100, 115, 90, 255 }, { 140, 60, 70, 255 });
 		DrawCatEar({ pos.x + 22 * s, pos.y - 24 * s }, 12 * s, 3.9f, { 100, 115, 90, 255 }, { 180, 130, 140, 255 });
@@ -233,7 +233,7 @@ namespace Bosses {
 	}
 
 	// G: skull — bone white with green glow
-	static void DrawBossG(Vector2 pos, float s) {
+	void DrawBossG(Vector2 pos, float s) {
 		DrawCircleV(pos, 28 * s, { 235, 230, 215, 255 });
 		DrawRectangle(pos.x - 22 * s, pos.y + 8 * s, 44 * s, 20 * s, { 235, 230, 215, 255 });
 		DrawCircleV({ pos.x - 11 * s, pos.y - 6 * s }, 9 * s, BLACK);
@@ -247,7 +247,7 @@ namespace Bosses {
 	}
 
 	// H: slime — toxic green/yellow
-	static void DrawBossH(Vector2 pos, float s) {
+	void DrawBossH(Vector2 pos, float s) {
 		DrawCircle(pos.x, pos.y, 30 * s, { 120, 200, 60, 255 });
 		DrawCircle(pos.x - 20 * s, pos.y + 8 * s, 20 * s, { 120, 200, 60, 255 });
 		DrawCircle(pos.x + 22 * s, pos.y + 6 * s, 18 * s, { 120, 200, 60, 255 });
@@ -261,13 +261,13 @@ namespace Bosses {
 		DrawEye({ pos.x + 16 * s, pos.y - 48 * s }, 7 * s, 2 * s, 2 * s);
 	}
 
-	static void DrawEye(Vector2 center, float r, float pupilOffX, float pupilOffY) {
+	void DrawEye(Vector2 center, float r, float pupilOffX, float pupilOffY) {
 		DrawCircleV(center, r, WHITE);
 		DrawCircleV({ center.x + pupilOffX, center.y + pupilOffY }, r * 0.45f, BLACK);
 		DrawCircleV({ center.x + pupilOffX + r * 0.12f, center.y + pupilOffY - r * 0.12f }, r * 0.15f, WHITE);
 	}
 
-	static void DrawCatEar(Vector2 tip, float size, float angle, Color outer, Color inner) {
+	void DrawCatEar(Vector2 tip, float size, float angle, Color outer, Color inner) {
 		Vector2 base1 = { tip.x - cosf(angle) * size,      tip.y - sinf(angle) * size };
 		Vector2 base2 = { tip.x - cosf(angle + 0.9f) * size, tip.y - sinf(angle + 0.9f) * size };
 		DrawTriangle(tip, base1, base2, outer);
@@ -277,7 +277,7 @@ namespace Bosses {
 		DrawTriangle(itip, ib1, ib2, inner);
 	}
 
-	static void DrawWhiskers(Vector2 center, float s, Color c) {
+	void DrawWhiskers(Vector2 center, float s, Color c) {
 		DrawLineEx({ center.x - s * 0.4f, center.y + s * 0.05f }, { center.x - s * 1.1f, center.y - s * 0.05f }, 1.5f, c);
 		DrawLineEx({ center.x - s * 0.4f, center.y + s * 0.12f }, { center.x - s * 1.1f, center.y + s * 0.18f }, 1.5f, c);
 		DrawLineEx({ center.x - s * 0.4f, center.y + s * 0.00f }, { center.x - s * 1.1f, center.y + s * 0.28f }, 1.5f, c);
