@@ -22,7 +22,12 @@ namespace World3 {
     const float player_width = 150;
     const float player_height = 25;
 
-    
+    //variables for thanos image for ball
+    Texture2D balltexture;
+    float balltexture_rotation = 0;
+    float balltexture_rotation_speed = 1.5; //degrees per frame
+    float balltexture_scale = 0.025; //scale by image dimensions aprox
+
     
     // movement parameters
     const int playerSpeed = 5; // pixels per frame
@@ -50,6 +55,10 @@ namespace World3 {
     void Init() {
         //set up anything you need for your game / world here
         world_complete = false;
+        
+        //load ball texture here.. note we don't unload, so slight gpu memory leak
+        balltexture = LoadTexture("assets/images/thanos.png");
+        
         
         // initial boss placement
         boss_x = SCREEN_WIDTH / 2;
@@ -100,6 +109,8 @@ namespace World3 {
         //update position ball
         ballPosition.x += ballSpeed.x;
         ballPosition.y += ballSpeed.y;
+
+        balltexture_rotation += balltexture_rotation_speed; //increase texture rotation
 
         //check bounds
         if (ballPosition.y <= 0)
@@ -200,8 +211,16 @@ namespace World3 {
         Bosses::DrawHealthBar(currentBoss, boss_x - boss_size, boss_y + boss_size, boss_size * 2);
 
         //draw ball
-        DrawCircleV(ballPosition, ballRadius, BLUE);
+        // I commented this out but comment back in to see ball
+        //DrawCircleV(ballPosition, ballRadius, BLUE);
         
+        //optional, draw texture for ball, approximating for now
+        Vector2 ballTexturePosition = ballPosition;
+        ballTexturePosition.x -= 10; //hacking a little, should fix
+        ballTexturePosition.y -= 10;
+        //comment this out to hide texture drawing
+        DrawTextureEx(balltexture, ballTexturePosition, balltexture_rotation, balltexture_scale, WHITE);
+
         
         //testing drawing paddle at rotated location (draw here for z order)
         Rectangle player_rect_on_circle = { player_point_on_circle.x, player_point_on_circle.y,
