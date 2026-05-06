@@ -44,7 +44,6 @@ namespace World6 {
         //set up anything you need for your game / world here
         world_complete = false;
         
-
         boss_x = SCREEN_WIDTH / 2;
         boss_y = SCREEN_HEIGHT / 2;
         boss_scale = 1;
@@ -52,6 +51,18 @@ namespace World6 {
         boss_y = SCREEN_HEIGHT / 2;
         boss2_scale = 1;
         battery_life = 800;
+
+        //load door cat
+        Image image = LoadImage("assets/images/blackcat.jpg");     // Loads to RAM
+        texture = LoadTextureFromImage(image);    // Transfers to GPU VRAM
+        UnloadImage(image);
+
+        //load window cat
+        Image Windowimage = LoadImage("assets/images/WindowCat.png");     // Loads to RAM
+        windowTexture = LoadTextureFromImage(Windowimage);    // Transfers to GPU VRAM
+        UnloadImage(Windowimage);
+
+
     }
 
     WorldUpdateResult Update(GameState& game) {
@@ -135,18 +146,11 @@ namespace World6 {
         int window_cat_x = 500;
         int window_cat_y = 200;
         //drawing door cat
-        Image image = LoadImage("assets/images/blackcat.jpg");     // Loads to RAM
-        texture = LoadTextureFromImage(image);    // Transfers to GPU VRAM
-        UnloadImage(image);
         Vector2 CatPosition = { door_cat_x , door_cat_y };
-
         DrawTextureEx(texture, CatPosition, 0, sizeDoor, RAYWHITE);
+        
         //drawing window cat
-        Image Windowimage = LoadImage("assets/images/WindowCat.png");     // Loads to RAM
-        windowTexture = LoadTextureFromImage(Windowimage);    // Transfers to GPU VRAM
-        UnloadImage(Windowimage);
         Vector2 CatWindowPosition = { window_cat_x , window_cat_y };
-
         DrawTextureEx(windowTexture, CatWindowPosition, 0, sizeWindow, RAYWHITE);
 
         //get the current boss

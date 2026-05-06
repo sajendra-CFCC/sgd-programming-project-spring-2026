@@ -49,6 +49,7 @@ int main() {
     GameMode currentGameMode = GAME_MODE_OVERWORLD;
     GameState gameState; //check defualt values in shared.h
     Bosses::InitAll(gameState);
+    gameState.endlessBosses = true;
 
     ChangeDirectory( GetApplicationDirectory() );//assumption we make for assets
     InitAudioDevice();
@@ -79,6 +80,13 @@ int main() {
             DrawText(TextFormat("Score: %d", gameState.score), 10, 10, 20, PINK);
             DrawText(TextFormat("HP: %i", gameState.health), 10, 40, 20, RED);
             DrawText("Toggle Music: M", 10, SCREEN_HEIGHT - 30, 20, ORANGE);
+            
+            int textWidth = MeasureText(TextFormat("Bosses Killed: %d", gameState.numBossesKilled), 20);
+            DrawText(TextFormat("Bosses Killed: %d", gameState.numBossesKilled), SCREEN_WIDTH / 2 - textWidth/2, 10, 20, YELLOW);
+            
+            textWidth = MeasureText(TextFormat("Worlds Survived: %d", gameState.worldsSurvived), 20);
+            DrawText(TextFormat("Worlds Survived: %d", gameState.worldsSurvived), SCREEN_WIDTH / 2 - textWidth / 2, 40, 20, YELLOW);
+            
             //Overlay only when inside worlds
             if (currentGameMode >= 0)
                 DrawWorldOverlay(gameState); //shows time remaining.. boss health?
@@ -252,6 +260,7 @@ void WorldTimerUpdate(GameState& gs, GameMode& gm) {
     gs.worldTimeRemaining -= GetFrameTime();
     if (gs.worldTimeRemaining <= 0) {
         gm = GAME_MODE_OVERWORLD;
+        gs.worldsSurvived++;
         ChangeMusicTrack(gs.currentTrack, gs.menuTrack, gs.musicPlaying);
     }
 }

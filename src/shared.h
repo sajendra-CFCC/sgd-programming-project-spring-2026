@@ -9,10 +9,15 @@ const int SCREEN_HEIGHT = 600;
 const Color BG_COLOR = BLACK;
 
 enum BossType {
-    BOSS_CREATURE_A = 0,
-    BOSS_CREATURE_B = 1,
-    BOSS_CREATURE_C = 2,
-    BOSS_COUNT = 3
+    BOSS_CREATURE_A = 0,   // round / eye-heavy
+    BOSS_CREATURE_B = 1,   // tall rect / imposing
+    BOSS_CREATURE_C = 2,   // hexagon / spiky
+    BOSS_CREATURE_D = 3,   // cat — sleek, pointed ears
+    BOSS_CREATURE_E = 4,   // cat — chonky, wide face
+    BOSS_CREATURE_F = 5,   // cat — feral, asymmetric
+    BOSS_CREATURE_G = 6,   // skull / undead
+    BOSS_CREATURE_H = 7,   // slime / blob
+    BOSS_COUNT = 8
 };
 
 struct BossState {
@@ -28,6 +33,8 @@ struct GameState {
     
     //for future use with collectibles?
     int keysCollected = 0;
+
+    int worldsSurvived = 0;
     
     //timer logic
     float worldTimeRemaining = SECONDS_PER_LEVEL;
@@ -35,6 +42,8 @@ struct GameState {
 
     BossState bosses[BOSS_COUNT];   // all bosses, persisted across levels
     int       activeBoss = 0;    // index into bosses[]
+    int       numBossesKilled = 0; //keep track of killed bosses
+    bool      endlessBosses = false; //set true for endless bossess
 
     //don't think we are using these
     Vector2 position = {0, 0}; //hub world position? consistent position?
