@@ -122,7 +122,7 @@ namespace World2 {
 
         //Boss
         ePos_x = 375;
-        ePos_y = -1800;
+        ePos_y = -1500;
         eSize = 1;
         eAtk = 10;
         eSpeed = 2.5;
