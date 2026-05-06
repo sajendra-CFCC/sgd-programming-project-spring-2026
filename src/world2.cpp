@@ -175,6 +175,7 @@ namespace World2 {
 
     WorldUpdateResult Update(GameState& game) {
         //  camera.target = { pPos.x + pSpeed, pPos.y + pSpeed };
+
         float dt = GetFrameTime();
         camera.target.y = pPos.y;
         game.score++;
@@ -389,30 +390,29 @@ namespace World2 {
             }
         }
 
-        if (IsKeyPressed(KEY_SPACE))
-        {
-            if (onFloor || touchingLeft || touchingRight)
+            if (IsKeyPressed(KEY_SPACE))
             {
-                pVel.y = -jumpForce;
-                onFloor = false;
-                jumpCount = 1;
+                if (onFloor || touchingLeft || touchingRight)
+                {
+                    pVel.y = -jumpForce;
+                    onFloor = false;
+                    jumpCount = 1;
+                }
+                else if (jumpCount < maxJumps)
+                {
+                    pVel.y = -jumpForce;
+                    jumpCount++;
+                }
             }
-            else if (jumpCount < maxJumps)
-            {
-                pVel.y = -jumpForce;
-                jumpCount++;
-            }
+            if (world_complete)
+                return WORLD_COMPLETED;
+            else
+                return WORLD_IN_PROGRESS;
         }
-        if (world_complete)
-            return WORLD_COMPLETED;
-        else
-            return WORLD_IN_PROGRESS;
-    }
-    
 
-    void Draw(const GameState& game) {
-        //Camera Start
-        BeginMode2D(camera);
+        void Draw(const GameState& game) {
+            //Camera Start
+            BeginMode2D(camera);
 
         //draw background image with parralax effect
         DrawBGTexture(camera); //uncomment to put in
@@ -423,14 +423,14 @@ namespace World2 {
         DrawRectangleRec(rWall, BLUE);
         DrawRectangleRec(floor, BLUE);
 
-        if (min1.isAlive) {
-            DrawRectangleRec(min1.rec, PURPLE);
-            DrawRectangleRec(min1.Healthbar, RED);
-        }
-        if (min2.isAlive) {
-            DrawRectangleRec(min2.rec, PURPLE);
-            DrawRectangleRec(min2.Healthbar, RED);
-        }
+            if (min1.isAlive) {
+                DrawRectangleRec(min1.rec, PURPLE);
+                DrawRectangleRec(min1.Healthbar, RED);
+            }
+            if (min2.isAlive) {
+                DrawRectangleRec(min2.rec, PURPLE);
+                DrawRectangleRec(min2.Healthbar, RED);
+            }
 
 
         DrawText("Defeat all of the minion before fighting to boss!", (float)GetScreenWidth() / 2 - 200, (float)GetScreenHeight() / 2 + 20, 20, WHITE);
