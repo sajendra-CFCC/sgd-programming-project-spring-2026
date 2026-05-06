@@ -9,12 +9,12 @@ namespace World6 {
     int boss_x;
     int boss_y;
     float boss_scale;
-    float boss_grow_rate = 0.01;
+    float boss_grow_rate = 0.005;
 
     int boss2_x;
     int boss2_y;
     float boss2_scale;
-    float boss2_grow_rate = 0.01;
+    float boss2_grow_rate = 0.005;
 
     int battery_life;
 
@@ -76,7 +76,7 @@ namespace World6 {
         }
 
         if (IsKeyDown(KEY_Q) && battery_life > 0 && window_closed == false) {
-            battery_life -= 3;
+            battery_life -= 2;
             door_closed = true;
             sizeDoor = 0;
             window_closed = false;
@@ -85,7 +85,7 @@ namespace World6 {
         }
 
         if (IsKeyDown(KEY_E) && battery_life > 0 && door_closed == false) {
-            battery_life -= 3;
+            battery_life -= 2;
             window_closed = true;
             sizeWindow = 0;
             door_closed = false;
