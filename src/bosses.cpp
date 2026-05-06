@@ -21,6 +21,7 @@ namespace Bosses {
 
 	bool AdvanceToNext(GameState& gs) {
 		gs.bosses[gs.activeBoss].alive = false;
+		gs.numBossesKilled++;
 		//looking for next living boss
 		for (int i = gs.activeBoss + 1; i < BOSS_COUNT; i++) {
 			if (gs.bosses[i].alive) {

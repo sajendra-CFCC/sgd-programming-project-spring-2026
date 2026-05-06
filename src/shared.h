@@ -28,6 +28,8 @@ struct GameState {
     
     //for future use with collectibles?
     int keysCollected = 0;
+
+    int worldsSurvived = 0;
     
     //timer logic
     float worldTimeRemaining = SECONDS_PER_LEVEL;
@@ -35,6 +37,7 @@ struct GameState {
 
     BossState bosses[BOSS_COUNT];   // all bosses, persisted across levels
     int       activeBoss = 0;    // index into bosses[]
+    int       numBossesKilled = 0; //keep track of killed bosses
     bool      endlessBosses = false; //set true for endless bossess
 
     //don't think we are using these
