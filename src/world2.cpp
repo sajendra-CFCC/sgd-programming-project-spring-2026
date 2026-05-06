@@ -415,7 +415,7 @@ namespace World2 {
         BeginMode2D(camera);
 
         //draw background image with parralax effect
-        //DrawBGTexture(camera); //uncomment to put in
+        DrawBGTexture(camera); //uncomment to put in
 
         //DrawRectangleV(LWallPos, LWallSize, GRAY);
         DrawRectangleRec(pRec, GREEN);
