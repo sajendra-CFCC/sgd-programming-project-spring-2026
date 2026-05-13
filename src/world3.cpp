@@ -27,7 +27,8 @@ namespace World3 {
     Texture2D balltexture;
     float balltexture_rotation = 0;
     float balltexture_rotation_speed = 1.5; //degrees per frame
-    float balltexture_scale = 0.035; //scale by image dimensions aprox
+    //float balltexture_scale = 0.035; //scale by image dimensions aprox
+    float balltexture_scale = 1; //scaled image size directly to fix memory problem web build
 
     
     // movement parameters
